@@ -15,36 +15,36 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>Users</h4>
+        <h4>@BankCP.Resources.LangText.users</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.bankName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.LabelFor(model => model.bankName, BankCP.Resources.LangText.bankName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
                 @Html.EditorFor(model => model.bankName, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.bankName, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.userName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.LabelFor(model => model.userName, BankCP.Resources.LangText.userName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
                 @Html.EditorFor(model => model.userName, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.userName, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.password, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.LabelFor(model => model.password, BankCP.Resources.LangText.password, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
                 @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input id="login" type="submit" value="Login" class="btn btn-default" />
+            <div class="col-md-offset-2 col-md-6">
+                <input id="login" type="submit" value="@BankCP.Resources.LangText.login" class="btn btn-default" />
             </div>
         </div>
     </div>

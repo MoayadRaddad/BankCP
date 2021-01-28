@@ -1,7 +1,7 @@
 ﻿@model BusinessObjects.Models.Service
 
 @{
-    ViewBag.Title = "AddService";
+    ViewBag.Title = BankCP.Resources.LangText.addService;
 }
 
 <h2>AddService</h2>
@@ -11,11 +11,11 @@
     @Html.AntiForgeryToken()
 
 <div class="form-horizontal">
-    <h4>Service</h4>
+    <h4>@BankCP.Resources.LangText.service </h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
-        @Html.LabelFor(model => model.name, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.name, BankCP.Resources.LangText.name, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
@@ -23,7 +23,7 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.active, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.active, BankCP.Resources.LangText.active, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             <div class="checkbox">
                 @Html.EditorFor(model => model.active)
@@ -33,7 +33,7 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.tickets, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.tickets, BankCP.Resources.LangText.ticket, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.tickets, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.tickets, "", new { @class = "text-danger" })
@@ -42,12 +42,12 @@
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
+            <input type="submit" value="@BankCP.Resources.LangText.create " class="btn btn-default" />
         </div>
     </div>
 </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "ServiceHome")
+    @Html.ActionLink(BankCP.Resources.LangText.backToList, "ServiceHome")
 </div>

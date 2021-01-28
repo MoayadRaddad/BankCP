@@ -1,0 +1,60 @@
+﻿@model IEnumerable<BusinessObjects.Models.Counter>
+
+@{
+    ViewBag.Title = "CounterHome";
+}
+
+<h2>CounterHome</h2>
+
+<p>
+    @Html.ActionLink("Create New Counter", "AddCounter")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.enName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.arName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.active)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.type)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        using (Html.BeginForm("DeleteCounter", "Counters", new { counterId = item.id }))
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.enName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.arName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.active)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.type)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "EditCounter", new { counterId = item.id }) |
+                    @Html.ActionLink("Add Services", "AllocateCounterServiceHome", "AllocateCounterService", new { counterId = item.id, serviceId = 0 }, null) |
+                    <input type="submit" value="Delete" class="buttonLink" onclick="return confirm('Are you sure you want to delete @item.enName');" />
+                </td>
+            </tr>
+        }
+    }
+
+</table>
+
+
+<div>
+    @Html.ActionLink("Back to Branches", "BranchesHome", "Branches")
+</div>

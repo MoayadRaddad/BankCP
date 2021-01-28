@@ -1,0 +1,41 @@
+﻿@model List<BusinessObjects.Models.Service>
+
+@{
+    ViewBag.Title = "AllocateHome";
+}
+
+<h2>@BankCP.Resources.LangText.allocateCounterService</h2>
+
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        @Html.Label(BankCP.Resources.LangText.services, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("serviceId", Model.Select(item => new SelectListItem
+             {
+                 Value = item.id.ToString(),
+                 Text = item.name.ToString(),
+                 Selected = "select" == item.id.ToString()
+              }), new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="@BankCP.Resources.LangText.add " class="btn btn-default" />
+        </div>
+    </div>
+}
+
+<div>
+    @{Html.RenderAction("_AllocateCounterServiceList");}
+</div>
+
+@using (Html.BeginForm("insertDeleteAllocateCounterService", "AllocateCounterService"))
+{
+    <input type="submit" value="@BankCP.Resources.LangText.saveData" class="buttonLink" />
+}
+
+<div>
+    @Html.ActionLink(BankCP.Resources.LangText.backToCounters, "CounterHome", "Counters", new { branchId = Session["branchId"] }, null)
+</div>

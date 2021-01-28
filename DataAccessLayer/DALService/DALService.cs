@@ -84,7 +84,7 @@ namespace DataAccessLayer.DALService
                 serviceParams.Add(new SqlParameter("@name", service.name));
                 serviceParams.Add(new SqlParameter("@bankId", service.bankId));
                 serviceParams.Add(new SqlParameter("@active", service.active));
-                serviceParams.Add(new SqlParameter("@tickets", service.active));
+                serviceParams.Add(new SqlParameter("@tickets", service.tickets));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
                 service.id = Convert.ToInt32(dBHelper.executeScalar(pquery, serviceParams));
                 return service;

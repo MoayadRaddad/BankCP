@@ -1,0 +1,25 @@
+﻿@model IEnumerable<BusinessObjects.Models.AllocateCounterService>
+
+<table class="table">
+    <tr>
+        <th>
+            @BankCP.Resources.LangText.serviceName
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        using (Html.BeginForm("DeleteAllocateCounterService", "AllocateCounterService", item))
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.serviceName)
+                </td>
+                <td>
+                    <input type="submit" value="@BankCP.Resources.LangText.delete " class="buttonLink"/>
+                </td>
+            </tr>
+        }
+    }
+</table>

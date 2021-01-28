@@ -1,21 +1,21 @@
-﻿@model BusinessObjects.Models.Branch
+﻿@model BusinessObjects.Models.Counter
 
 @{
-    ViewBag.Title = BankCP.Resources.LangText.addBranch;
+    ViewBag.Title = "AddCounter";
 }
 
-<h2>AddBranch</h2>
+<h2>AddCounter</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>@BankCP.Resources.LangText.branch</h4>
+        <h4>Counter</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.enName, BankCP.Resources.LangText.enName, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.enName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.enName, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.enName, "", new { @class = "text-danger" })
@@ -23,7 +23,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.arName, BankCP.Resources.LangText.arName, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.arName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.arName, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.arName, "", new { @class = "text-danger" })
@@ -31,7 +31,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.active, BankCP.Resources.LangText.active, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.active, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="checkbox">
                     @Html.EditorFor(model => model.active)
@@ -41,13 +41,20 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.type, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.type, new SelectList(new List<string> { "Teller", "Customer Service" }), new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="@BankCP.Resources.LangText.create " class="btn btn-default" />
+                <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink(BankCP.Resources.LangText.backToList, "BranchesHome")
+    @Html.ActionLink("Back to List", "CounterHome", new {branchId = Session["branchId"] })
 </div>

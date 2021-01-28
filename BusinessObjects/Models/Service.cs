@@ -16,5 +16,6 @@ namespace BusinessObjects.Models
         [Range(1, 100)]
         public int tickets { get; set; }
         public int bankId { get; set; }
+        public bool isDeleted { get; set; }
     }
 }

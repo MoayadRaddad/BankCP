@@ -7,17 +7,18 @@ using System.Web.Mvc;
 
 namespace BankCP.Controllers
 {
-    public class ServicesController : Controller
+    public class CountersController : Controller
     {
-        public ActionResult ServiceHome()
+        public ActionResult CounterHome(int branchId)
         {
             try
             {
-                BusinessAccessLayer.BALService.BALService bALService = new BusinessAccessLayer.BALService.BALService();
-                List<BusinessObjects.Models.Service> lstServices = bALService.selectServicesByBankId(((BusinessObjects.Models.User)Session["UserObj"]).bankId);
-                if (lstServices != null)
+                Session["BranchId"] = branchId;
+                BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
+                List<BusinessObjects.Models.Counter> lstCounters = bALCounter.selectCountersByBranchId((int)Session["BranchId"]);
+                if (lstCounters != null)
                 {
-                    return View(lstServices);
+                    return View(lstCounters);
                 }
                 else
                 {
@@ -31,7 +32,7 @@ namespace BankCP.Controllers
             }
         }
         [HttpGet]
-        public ActionResult AddService()
+        public ActionResult AddCounter()
         {
             try
             {
@@ -45,18 +46,18 @@ namespace BankCP.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddService(BusinessObjects.Models.Service service)
+        public ActionResult AddCounter(BusinessObjects.Models.Counter counter)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    BusinessAccessLayer.BALService.BALService bALServices = new BusinessAccessLayer.BALService.BALService();
-                    service.bankId = ((BusinessObjects.Models.User)Session["UserObj"]).bankId;
-                    service = bALServices.insertService(service);
-                    if (service != null && service.id != 0)
+                    BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
+                    counter.branchId = Convert.ToInt32(Session["branchId"]);
+                    counter = bALCounter.insertCounter(counter);
+                    if (counter != null && counter.id != 0)
                     {
-                        return RedirectToAction("ServiceHome", "Services");
+                        return RedirectToAction("CounterHome", "Counters", new { branchId = Convert.ToInt32(Session["branchId"]) });
                     }
                     else
                     {
@@ -75,14 +76,14 @@ namespace BankCP.Controllers
             }
         }
         [HttpPost]
-        public ActionResult DeleteService(int serviceId)
+        public ActionResult DeleteCounter(int counterId)
         {
             try
             {
-                BusinessAccessLayer.BALService.BALService bALServices = new BusinessAccessLayer.BALService.BALService();
-                if (bALServices.deleteServiceById(serviceId) != 0)
+                BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
+                if (bALCounter.deleteCounterById(counterId) != 0)
                 {
-                    return RedirectToAction("ServiceHome", "Services");
+                    return RedirectToAction("CounterHome", "Counters", new { branchId = Convert.ToInt32(Session["branchId"]) });
                 }
                 else
                 {
@@ -97,15 +98,15 @@ namespace BankCP.Controllers
             }
         }
         [HttpGet]
-        public ActionResult EditService(int serviceId)
+        public ActionResult EditCounter(int counterId)
         {
             try
             {
-                BusinessAccessLayer.BALService.BALService bALServices = new BusinessAccessLayer.BALService.BALService();
-                BusinessObjects.Models.Service service = bALServices.selectServicesById(serviceId);
-                if (service != null)
+                BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
+                BusinessObjects.Models.Counter counter = bALCounter.selectCountersById(counterId);
+                if (counter != null)
                 {
-                    return View(service);
+                    return View(counter);
                 }
                 else
                 {
@@ -120,15 +121,15 @@ namespace BankCP.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditService(BusinessObjects.Models.Service Service)
+        public ActionResult EditCounter(BusinessObjects.Models.Counter counter)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    BusinessAccessLayer.BALService.BALService bALServices = new BusinessAccessLayer.BALService.BALService();
-                    Service = bALServices.updateService(Service);
-                    return RedirectToAction("ServiceHome", "Services");
+                    BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
+                    counter = bALCounter.updateCounter(counter);
+                    return RedirectToAction("CounterHome", "Counters", new { branchId = Convert.ToInt32(Session["branchId"]) });
                 }
                 else
                 {

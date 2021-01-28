@@ -7,18 +7,18 @@
 <h2>ServiceHome</h2>
 
 <p>
-    @Html.ActionLink("Create New Service", "AddService")
+    @Html.ActionLink(BankCP.Resources.LangText.createService, "AddService")
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.name)
+            @Html.DisplayName(BankCP.Resources.LangText.name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.active)
+            @Html.DisplayName(BankCP.Resources.LangText.active)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.tickets)
+            @Html.DisplayName(BankCP.Resources.LangText.ticket)
         </th>
         <th></th>
     </tr>
@@ -38,8 +38,8 @@
                     @Html.DisplayFor(modelItem => item.tickets)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "EditService", new { serviceId = item.id }) |
-                    <input type="submit" value="Delete" class="buttonLink" onclick="return confirm('Are you sure you want to delete @item.name');" />
+                    @Html.ActionLink(BankCP.Resources.LangText.edit, "EditService", new { serviceId = item.id }) |
+                    <input type="submit" value="@BankCP.Resources.LangText.delete " class="buttonLink" onclick="return confirm('Are you sure you want to delete @item.name');" />
                 </td>
             </tr>
         }
@@ -49,5 +49,5 @@
 
 
 <div>
-    @Html.ActionLink("Back to Branches", "BranchesHome", "Branches")
+    @Html.ActionLink(BankCP.Resources.LangText.backToBranches, "BranchesHome", "Branches")
 </div>

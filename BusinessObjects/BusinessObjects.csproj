@@ -42,10 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\AllocateCounterService.cs" />
     <Compile Include="Models\ApplicationException.cs" />
     <Compile Include="Models\Bank.cs" />
     <Compile Include="Models\Branch.cs" />
     <Compile Include="Models\Button.cs" />
+    <Compile Include="Models\Counter.cs" />
     <Compile Include="Models\IssueTicketButton.cs" />
     <Compile Include="Models\Screen.cs" />
     <Compile Include="Models\Service.cs" />

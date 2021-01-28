@@ -42,9 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DALAllocateCounterService\DALAllocateCounterService.cs" />
     <Compile Include="DALBank\DALBank.cs" />
     <Compile Include="DALBranches\DALBranches.cs" />
     <Compile Include="DALButton\DALButton.cs" />
+    <Compile Include="DALCounter\DALCounter.cs" />
     <Compile Include="DALDBHelper\DALDBHelper.cs" />
     <Compile Include="DALLogin\DALLogin.cs" />
     <Compile Include="DALScreen\DALScreen.cs" />
