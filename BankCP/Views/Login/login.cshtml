@@ -9,43 +9,65 @@
     @Html.Raw(TempData["msg"])
     TempData["msg"] = null;
 }
-
+<h2 class="login100-form-title p-b-51 text-center p-t-150">@BankCP.Resources.LangText.login </h2>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>@BankCP.Resources.LangText.users</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.bankName, BankCP.Resources.LangText.bankName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-6">
-                @Html.EditorFor(model => model.bankName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.bankName, "", new { @class = "text-danger" })
+            <div class="col-md-4 center-block">
+                <div class="wrap-input100">
+                    @Html.EditorFor(model => model.bankName, new { htmlAttributes = new { @class = "input100", placeholder = BankCP.Resources.LangText.bankName } })
+                    <span class="focus-input100"></span>
+                    @Html.ValidationMessageFor(model => model.bankName, "", new { @class = "text-danger" })
+                </div>
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.userName, BankCP.Resources.LangText.userName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-6">
-                @Html.EditorFor(model => model.userName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.userName, "", new { @class = "text-danger" })
+            <div class="col-md-4 center-block">
+                <div class="wrap-input100">
+                    @Html.EditorFor(model => model.userName, new { htmlAttributes = new { @class = "input100", placeholder = BankCP.Resources.LangText.userName } })
+                    <span class="focus-input100"></span>
+                    @Html.ValidationMessageFor(model => model.userName, "", new { @class = "text-danger" })
+                </div>
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.password, BankCP.Resources.LangText.password, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-6">
-                @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
+            <div class="col-md-4 center-block">
+                <div class="wrap-input100">
+                    @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "input100", placeholder = BankCP.Resources.LangText.password } })
+                    <span class="focus-input100"></span>
+                    @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
+                </div>
             </div>
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-6">
-                <input id="login" type="submit" value="@BankCP.Resources.LangText.login" class="btn btn-default" />
+            <div class="col-md-4 center-block">
+                <input id="login" type="submit" value="@BankCP.Resources.LangText.login" class="login100-form-btn" />
             </div>
         </div>
     </div>
 }
+
+<script>
+        var validations = {
+            "en" : {
+                "name"  : "Maximum Length is 5"
+            },
+            "ar" : {
+                "name"  : "أقصى طول هو 5"
+            }
+        };
+        $("#lang").on('change', function(){
+            var currLang = $('#lang option:selected').attr('value');
+            $("#name").attr('data-validation-error-msg',validations[currLang].name);
+        });
+        $.validate({
+        });
+</script>

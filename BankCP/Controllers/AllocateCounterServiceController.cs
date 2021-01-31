@@ -38,7 +38,8 @@ namespace BankCP.Controllers
                     BusinessObjects.Models.Service service = lstServices.Where(x => x.id == serviceId && x.isDeleted == false).FirstOrDefault();
                     if (service != null)
                     {
-                        Session["serviceName"] = service.name;
+                        Session["serviceEnName"] = service.enName;
+                        Session["serviceArName"] = service.arName;
                         Session["serviceId"] = service.id;
                         int index = lstServices.IndexOf(service);
                         service.isDeleted = true;
@@ -86,9 +87,10 @@ namespace BankCP.Controllers
                 if (Session["serviceId"] != null)
                 {
                     lstAllocateCounterService = (List<BusinessObjects.Models.AllocateCounterService>)Session["lstAllocateCounterService"];
-                    lstAllocateCounterService.Add(new BusinessObjects.Models.AllocateCounterService { id = 0, counterId = Convert.ToInt32(Session["counterId"]), serviceId = Convert.ToInt32(Session["serviceId"]), serviceName = Session["serviceName"].ToString() });
+                    lstAllocateCounterService.Add(new BusinessObjects.Models.AllocateCounterService { id = 0, counterId = Convert.ToInt32(Session["counterId"]), serviceId = Convert.ToInt32(Session["serviceId"]), serviceEnName = Session["serviceEnName"].ToString(), serviceArName = Session["serviceArName"].ToString() });
                     Session["serviceId"] = null;
-                    Session["serviceName"] = null;
+                    Session["serviceEnName"] = null;
+                    Session["serviceArName"] = null;
                 }
                 else
                 {

@@ -129,6 +129,9 @@
   <data name="addBranch" xml:space="preserve">
     <value>Add Branch</value>
   </data>
+  <data name="addCounter" xml:space="preserve">
+    <value>Add Counter</value>
+  </data>
   <data name="addService" xml:space="preserve">
     <value>Add Service</value>
   </data>
@@ -156,8 +159,14 @@
   <data name="branch" xml:space="preserve">
     <value>Branch</value>
   </data>
+  <data name="branches" xml:space="preserve">
+    <value>Branches</value>
+  </data>
   <data name="contact" xml:space="preserve">
     <value>Contact</value>
+  </data>
+  <data name="counter" xml:space="preserve">
+    <value>Counter</value>
   </data>
   <data name="counters" xml:space="preserve">
     <value>Counters</value>
@@ -167,6 +176,9 @@
   </data>
   <data name="createBranch" xml:space="preserve">
     <value>Create New Branch</value>
+  </data>
+  <data name="createCounter" xml:space="preserve">
+    <value>Create New Counter</value>
   </data>
   <data name="createService" xml:space="preserve">
     <value>Create New Service</value>
@@ -182,6 +194,9 @@
   </data>
   <data name="editBranch" xml:space="preserve">
     <value>Edit Branch</value>
+  </data>
+  <data name="editCounter" xml:space="preserve">
+    <value>Edit Counter</value>
   </data>
   <data name="editService" xml:space="preserve">
     <value>Edit Service</value>
@@ -216,14 +231,23 @@
   <data name="service" xml:space="preserve">
     <value>Service</value>
   </data>
-  <data name="serviceName" xml:space="preserve">
-    <value>Service Name</value>
+  <data name="serviceArName" xml:space="preserve">
+    <value>Arabic Service Name</value>
+  </data>
+  <data name="serviceEnName" xml:space="preserve">
+    <value>English Service Name</value>
   </data>
   <data name="services" xml:space="preserve">
     <value>Services</value>
   </data>
+  <data name="signOut" xml:space="preserve">
+    <value>Sign-Out</value>
+  </data>
   <data name="ticket" xml:space="preserve">
     <value>Ticket</value>
+  </data>
+  <data name="type" xml:space="preserve">
+    <value>Type</value>
   </data>
   <data name="userName" xml:space="preserve">
     <value>User Name</value>

@@ -121,6 +121,24 @@ namespace DataAccessLayer.DALCounter
                 return null;
             }
         }
+        public int deleteAllocateCounterServiceByCounterId(int counterId)
+        {
+            try
+            {
+                string pquery = string.Empty;
+                pquery = "delete from tblAllocateCounterService where counterId = @counterId";
+                List<SqlParameter> screnParams = new List<SqlParameter>();
+                screnParams.Add(new SqlParameter("@counterId", counterId));
+                DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
+                dBHelper.executeNonQuery(pquery, screnParams);
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                ExceptionsWriter.saveExceptionToLogFile(ex);
+                return 0;
+            }
+        }
         public int deleteCounterById(int counterId)
         {
             try

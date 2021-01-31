@@ -1,53 +1,71 @@
 ﻿@model IEnumerable<BusinessObjects.Models.Service>
 
 @{
-    ViewBag.Title = "ServiceHome";
+    ViewBag.Title = BankCP.Resources.LangText.services;
 }
 
-<h2>ServiceHome</h2>
+<h1 class="title-custom">@BankCP.Resources.LangText.services</h1>
 
 <p>
-    @Html.ActionLink(BankCP.Resources.LangText.createService, "AddService")
+    @Html.ActionLink(BankCP.Resources.LangText.createService, "AddService", null, new { @class = "button4" })
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayName(BankCP.Resources.LangText.name)
-        </th>
-        <th>
-            @Html.DisplayName(BankCP.Resources.LangText.active)
-        </th>
-        <th>
-            @Html.DisplayName(BankCP.Resources.LangText.ticket)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        using (Html.BeginForm("DeleteService", "Services", new { serviceId = item.id }))
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.active)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.tickets)
-                </td>
-                <td>
-                    @Html.ActionLink(BankCP.Resources.LangText.edit, "EditService", new { serviceId = item.id }) |
-                    <input type="submit" value="@BankCP.Resources.LangText.delete " class="buttonLink" onclick="return confirm('Are you sure you want to delete @item.name');" />
-                </td>
-            </tr>
-        }
-    }
-
-</table>
 
 
-<div>
-    @Html.ActionLink(BankCP.Resources.LangText.backToBranches, "BranchesHome", "Branches")
+<div class="wrap-table100">
+    <div class="table100 ver1 m-b-110">
+        <div class="table100-head">
+            <table>
+                <thead>
+                    <tr class="row100 head">
+                        <th class="cell100 column1">
+                            @Html.DisplayName(BankCP.Resources.LangText.enName)
+                        </th>
+                        <th class="cell100 column2">
+                            @Html.DisplayName(BankCP.Resources.LangText.arName)
+                        </th>
+                        <th class="cell100 column3">
+                            @Html.DisplayName(BankCP.Resources.LangText.active)
+                        </th>
+                        <th class="cell100 column4">
+                            @Html.DisplayName(BankCP.Resources.LangText.ticket)
+                        </th>
+                        <th class="cell100 column5"></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="table100-body js-pscroll">
+            <table>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        using (Html.BeginForm("DeleteService", "Services", new { serviceId = item.id }))
+                        {
+                            <tr class="row100 body">
+                                <td class="cell100 column1">
+                                    @Html.DisplayFor(modelItem => item.enName)
+                                </td>
+                                <td class="cell100 column2">
+                                    @Html.DisplayFor(modelItem => item.arName)
+                                </td>
+                                <td class="cell100 column3">
+                                    @Html.DisplayFor(modelItem => item.active)
+                                </td>
+                                <td class="cell100 column4">
+                                    @Html.DisplayFor(modelItem => item.tickets)
+                                </td>
+                                <td>
+                                </td>
+                                <td class="cell100 column5">
+                                    @Html.ActionLink(BankCP.Resources.LangText.edit, "EditService", new { serviceId = item.id }) |
+                                    <input type="submit" value="@BankCP.Resources.LangText.delete " class="buttonLink" onclick="return confirm('Are you sure you want to delete @item.enName');" />
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    @Html.ActionLink(BankCP.Resources.LangText.backToBranches, "BranchesHome", "Branches", null, new { @class = "button4" })
 </div>

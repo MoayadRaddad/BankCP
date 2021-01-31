@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<BusinessObjects.Models.Branch>
 
 @{
-    ViewBag.Title = "BranchesHome";
+    ViewBag.Title = BankCP.Resources.LangText.branches;
 }
 
 @if (TempData["msg"] != null)
@@ -9,50 +9,62 @@
     @Html.Raw(TempData["msg"])
     TempData["msg"] = null;
 }
-<h2>BranchesHome</h2>
-<div class="row">
-    <div class="col-md-2">
-        @Html.ActionLink(BankCP.Resources.LangText.createBranch, "AddBranch")
+<h1 class="title-custom">@BankCP.Resources.LangText.branches</h1>
+<div class="row p-b-10">
+    <div class="col-md-3 padding-lang">
+        @Html.ActionLink(BankCP.Resources.LangText.createBranch, "AddBranch", null, new { @class = "button4" })
     </div>
-    <div class="col-md-offset-8 col-2">
-        @Html.ActionLink(BankCP.Resources.LangText.services, "ServiceHome", "Services")
+    <div class="col-2 revert-float">
+        @Html.ActionLink(BankCP.Resources.LangText.services, "ServiceHome", "Services", null, new { @class = "button4" })
     </div>
 </div>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayName(BankCP.Resources.LangText.enName)
-        </th>
-        <th>
-            @Html.DisplayName(BankCP.Resources.LangText.arName)
-        </th>
-        <th>
-            @Html.DisplayName(BankCP.Resources.LangText.active)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        using (Html.BeginForm("DeleteBranch", "Branches", new { branchId = item.id }))
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.enName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.arName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.active)
-                </td>
-                <td>
-                    @Html.ActionLink(BankCP.Resources.LangText.edit, "EditBranch", new { branchId = item.id }) |
-                    @Html.ActionLink(BankCP.Resources.LangText.counters, "CounterHome", "Counters", new { branchId = item.id },null) |
-                    <input type="submit" value="@BankCP.Resources.LangText.services" class="buttonLink" onclick="return confirm('Are you sure you want to delete @item.enName');" />
-                </td>
-            </tr>
-        }
-    }
-
-</table>
+<div class="wrap-table100">
+    <div class="table100 ver1 m-b-110">
+        <div class="table100-head">
+            <table>
+                <thead>
+                    <tr class="row100 head">
+                        <th class="cell100 column1">
+                            @Html.DisplayName(BankCP.Resources.LangText.enName)
+                        </th>
+                        <th class="cell100 column2">
+                            @Html.DisplayName(BankCP.Resources.LangText.arName)
+                        </th>
+                        <th class="cell100 column3">
+                            @Html.DisplayName(BankCP.Resources.LangText.active)
+                        </th>
+                        <th class="cell100 column4"></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="table100-body js-pscroll">
+            <table>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        using (Html.BeginForm("DeleteBranch", "Branches", new { branchId = item.id }))
+                        {
+                            <tr class="row100 body">
+                                <td class="cell100 column1">
+                                    @Html.DisplayFor(modelItem => item.enName)
+                                </td>
+                                <td class="cell100 column2">
+                                    @Html.DisplayFor(modelItem => item.arName)
+                                </td>
+                                <td class="cell100 column3">
+                                    @Html.DisplayFor(modelItem => item.active)
+                                </td>
+                                <td class="cell100 column4">
+                                    @Html.ActionLink(BankCP.Resources.LangText.edit, "EditBranch", new { branchId = item.id }) |
+                                    @Html.ActionLink(BankCP.Resources.LangText.counters, "CounterHome", "Counters", new { branchId = item.id }, null) |
+                                    <input type="submit" value="@BankCP.Resources.LangText.delete " class="buttonLink" onclick="return confirm('Are you sure you want to delete @item.enName');" />
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

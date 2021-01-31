@@ -97,6 +97,15 @@ namespace BankCP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Counter.
+        /// </summary>
+        public static string addCounter {
+            get {
+                return ResourceManager.GetString("addCounter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Service.
         /// </summary>
         public static string addService {
@@ -178,11 +187,29 @@ namespace BankCP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Branches.
+        /// </summary>
+        public static string branches {
+            get {
+                return ResourceManager.GetString("branches", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact.
         /// </summary>
         public static string contact {
             get {
                 return ResourceManager.GetString("contact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Counter.
+        /// </summary>
+        public static string counter {
+            get {
+                return ResourceManager.GetString("counter", resourceCulture);
             }
         }
         
@@ -210,6 +237,15 @@ namespace BankCP.Resources {
         public static string createBranch {
             get {
                 return ResourceManager.GetString("createBranch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create New Counter.
+        /// </summary>
+        public static string createCounter {
+            get {
+                return ResourceManager.GetString("createCounter", resourceCulture);
             }
         }
         
@@ -255,6 +291,15 @@ namespace BankCP.Resources {
         public static string editBranch {
             get {
                 return ResourceManager.GetString("editBranch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Counter.
+        /// </summary>
+        public static string editCounter {
+            get {
+                return ResourceManager.GetString("editCounter", resourceCulture);
             }
         }
         
@@ -358,11 +403,20 @@ namespace BankCP.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Service Name.
+        ///   Looks up a localized string similar to Arabic Service Name.
         /// </summary>
-        public static string serviceName {
+        public static string serviceArName {
             get {
-                return ResourceManager.GetString("serviceName", resourceCulture);
+                return ResourceManager.GetString("serviceArName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to English Service Name.
+        /// </summary>
+        public static string serviceEnName {
+            get {
+                return ResourceManager.GetString("serviceEnName", resourceCulture);
             }
         }
         
@@ -376,11 +430,29 @@ namespace BankCP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sign-Out.
+        /// </summary>
+        public static string signOut {
+            get {
+                return ResourceManager.GetString("signOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ticket.
         /// </summary>
         public static string ticket {
             get {
                 return ResourceManager.GetString("ticket", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string type {
+            get {
+                return ResourceManager.GetString("type", resourceCulture);
             }
         }
         

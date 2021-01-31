@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace BusinessAccessLayer.BALCounter
 {
@@ -65,8 +66,14 @@ namespace BusinessAccessLayer.BALCounter
         {
             try
             {
-                DataAccessLayer.DALCounter.DALCounter dALCounter = new DataAccessLayer.DALCounter.DALCounter();
-                return dALCounter.deleteCounterById(counterId);
+                using (TransactionScope scope = new TransactionScope())
+                {
+                    DataAccessLayer.DALCounter.DALCounter dALCounter = new DataAccessLayer.DALCounter.DALCounter();
+                    dALCounter.deleteAllocateCounterServiceByCounterId(counterId);
+                    dALCounter.deleteCounterById(counterId);
+                    scope.Complete();
+                }
+                return 1;
             }
             catch (Exception ex)
             {

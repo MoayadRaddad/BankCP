@@ -16,7 +16,7 @@ namespace DataAccessLayer.DALAllocateCounterService
             try
             {
                 List<BusinessObjects.Models.AllocateCounterService> lstAllocateCounterService = new List<BusinessObjects.Models.AllocateCounterService>();
-                string pquery = "SELECT tblAllocateCounterService.*,tblService.name as serviceName FROM tblAllocateCounterService inner join tblService on tblAllocateCounterService.serviceId = tblService.id where tblAllocateCounterService.counterId = @counterId";
+                string pquery = "SELECT tblAllocateCounterService.*,tblService.enName as serviceEnName,tblService.arName as serviceArName FROM tblAllocateCounterService inner join tblService on tblAllocateCounterService.serviceId = tblService.id where tblAllocateCounterService.counterId = @counterId";
                 List<SqlParameter> AllocateCounterServiceParams = new List<SqlParameter>();
                 AllocateCounterServiceParams.Add(new SqlParameter("@counterId", counterId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
@@ -29,7 +29,8 @@ namespace DataAccessLayer.DALAllocateCounterService
                         allocateCounterService.id = Convert.ToInt32(dataRow["id"]);
                         allocateCounterService.counterId = Convert.ToInt32(dataRow["counterId"]);
                         allocateCounterService.serviceId = Convert.ToInt32(dataRow["serviceId"]);
-                        allocateCounterService.serviceName = dataRow["serviceName"].ToString();
+                        allocateCounterService.serviceEnName = dataRow["serviceEnName"].ToString();
+                        allocateCounterService.serviceArName = dataRow["serviceArName"].ToString();
                         lstAllocateCounterService.Add(allocateCounterService);
                     }
                     return lstAllocateCounterService;
@@ -85,7 +86,8 @@ namespace DataAccessLayer.DALAllocateCounterService
                     {
                         BusinessObjects.Models.Service service = new BusinessObjects.Models.Service();
                         service.id = Convert.ToInt32(dataRow["id"]);
-                        service.name = dataRow["name"].ToString();
+                        service.enName = dataRow["enName"].ToString();
+                        service.arName = dataRow["arName"].ToString();
                         service.active = Convert.ToBoolean(dataRow["active"]);
                         service.tickets = Convert.ToInt32(dataRow["tickets"]);
                         service.bankId = Convert.ToInt32(dataRow["bankId"]);

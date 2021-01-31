@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Transactions;
 
 namespace BusinessAccessLayer.BALService
 {
@@ -63,8 +64,14 @@ namespace BusinessAccessLayer.BALService
         {
             try
             {
-                DataAccessLayer.DALService.DALService dALServices = new DataAccessLayer.DALService.DALService();
-                return dALServices.deleteServiceById(ServiceId);
+                using (TransactionScope scope = new TransactionScope())
+                {
+                    DataAccessLayer.DALService.DALService dALServices = new DataAccessLayer.DALService.DALService();
+                    dALServices.deleteAllocateCounterServiceByServiceId(ServiceId);
+                    dALServices.deleteServiceById(ServiceId);
+                    scope.Complete();
+                }
+                return 1;
             }
             catch (Exception ex)
             {

@@ -11,7 +11,8 @@ namespace BusinessObjects.Models
         public int id { get; set; }
         public int counterId { get; set; }
         public int serviceId { get; set; }
-        public string serviceName { get; set; }
+        public string serviceEnName { get; set; }
+        public string serviceArName { get; set; }
         public bool isDeleted { get; set; }
     }
 }

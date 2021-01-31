@@ -9,7 +9,8 @@ namespace BankCP
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                   "~/Scripts/jquery-{version}.js"));
+                   "~/Scripts/jquery-{version}.js",
+                   "~/Scripts/main.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -23,10 +24,20 @@ namespace BankCP
                "~/Scripts/bootstrap.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
+                "~/Content/Site.css",
+                "~/Content/main.css",
                "~/Content/bootstrap.css"));
 
             bundles.Add(new StyleBundle("~/Content/rtl/css").Include(
+                "~/Content/SiteAr.css",
+                "~/Content/mainAr.css",
                 "~/Content/bootstrap.rtl.css"));
+
+            bundles.Add(new StyleBundle("~/Content/css-main").Include(
+                "~/Content/util.css",
+                "~/Content/animate.css",
+                "~/Content/select2.min.css",
+                "~/Content/perfect-scrollbar.css"));
         }
     }
 }

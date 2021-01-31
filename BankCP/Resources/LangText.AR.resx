@@ -129,6 +129,9 @@
   <data name="addBranch" xml:space="preserve">
     <value>أضافة فرع</value>
   </data>
+  <data name="addCounter" xml:space="preserve">
+    <value>أضافة نافذة</value>
+  </data>
   <data name="addService" xml:space="preserve">
     <value>أضافة خدمة</value>
   </data>
@@ -156,8 +159,14 @@
   <data name="branch" xml:space="preserve">
     <value>فرع</value>
   </data>
+  <data name="branches" xml:space="preserve">
+    <value>الفروع</value>
+  </data>
   <data name="contact" xml:space="preserve">
     <value>للتواصل</value>
+  </data>
+  <data name="counter" xml:space="preserve">
+    <value>النافذة</value>
   </data>
   <data name="counters" xml:space="preserve">
     <value>النوافذ</value>
@@ -167,6 +176,9 @@
   </data>
   <data name="createBranch" xml:space="preserve">
     <value>أنشاء فرع جديد</value>
+  </data>
+  <data name="createCounter" xml:space="preserve">
+    <value>أنشاء نافذة جديدة</value>
   </data>
   <data name="createService" xml:space="preserve">
     <value>أنشاء خدمة جديدة</value>
@@ -182,6 +194,9 @@
   </data>
   <data name="editBranch" xml:space="preserve">
     <value>تعديل فرع</value>
+  </data>
+  <data name="editCounter" xml:space="preserve">
+    <value>تعديل نافذة</value>
   </data>
   <data name="editService" xml:space="preserve">
     <value>تعديل الخدمة</value>
@@ -216,14 +231,23 @@
   <data name="service" xml:space="preserve">
     <value>خدمة</value>
   </data>
-  <data name="serviceName" xml:space="preserve">
-    <value>أسم الخدمة</value>
+  <data name="serviceArName" xml:space="preserve">
+    <value>أسم الخدمة باللغة العربية</value>
+  </data>
+  <data name="serviceEnName" xml:space="preserve">
+    <value> أسم الخدمة باللغة الأنجليزية</value>
   </data>
   <data name="services" xml:space="preserve">
     <value>الخدمات</value>
   </data>
+  <data name="signOut" xml:space="preserve">
+    <value>تسجيل الخروج</value>
+  </data>
   <data name="ticket" xml:space="preserve">
     <value>تذكرة</value>
+  </data>
+  <data name="type" xml:space="preserve">
+    <value>النوع</value>
   </data>
   <data name="userName" xml:space="preserve">
     <value>اسم المستخدم</value>

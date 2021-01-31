@@ -10,7 +10,10 @@ namespace BusinessObjects.Models
         public int id { get; set; }
         [Required]
         [MaxLength(100)]
-        public string name { get; set; }
+        public string enName { get; set; }
+        [Required]
+        [MaxLength(100)]
+        public string arName { get; set; }
         public bool active { get; set; }
         [Required]
         [Range(1, 100)]

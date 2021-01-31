@@ -12,6 +12,7 @@
     {
         @Styles.Render("~/Content/rtl/css")
     }
+    @Styles.Render("~/Content/css-main")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
@@ -23,21 +24,22 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink(BankCP.Resources.LangText.applicationName, "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink(BankCP.Resources.LangText.applicationName, "BranchesHome", "Branches", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink(BankCP.Resources.LangText.home, "Index", "Home")</li>
-                    <li>@Html.ActionLink(BankCP.Resources.LangText.about, "About", "Home")</li>
-                    <li>@Html.ActionLink(BankCP.Resources.LangText.contact, "Contact", "Home")</li>
                     @{
                         if (BankCP.Resources.LangText.languageText == "English")
                         {
-                            <li>@Html.ActionLink(BankCP.Resources.LangText.languageText, "Change", "Lang", new { lang = "En" }, null)</li>
+                            <li style="font-size: 18px;" class="revert-float">@Html.ActionLink(BankCP.Resources.LangText.languageText, "Change", "Lang", new { lang = "En" }, new { style = "font-size: 17px;" })</li>
                         }
                         else
                         {
-                            <li>@Html.ActionLink(BankCP.Resources.LangText.languageText, "Change", "Lang", new { lang = "Ar" }, null)</li>
+                            <li class="revert-float">@Html.ActionLink(BankCP.Resources.LangText.languageText, "Change", "Lang", new { lang = "Ar" }, new { style = "font-size: 18px;" })</li>
+                        }
+                        if (Session["UserObj"] != null)
+                        {
+                            <li class="revert-float">@Html.ActionLink(BankCP.Resources.LangText.signOut, "login", "Login", null, new { style = "font-size: 18px;" })</li>
                         }
                     }
                 </ul>
@@ -53,5 +55,27 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    <!--===============================================================================================-->
+    <script src="../vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="../vendor/bootstrap/js/popper.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="../vendor/select2/select2.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="../vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+
+    <script>
+    $('.js-pscroll').each(function () {
+        var ps = new PerfectScrollbar(this);
+
+        $(window).on('resize', function () {
+            ps.update();
+        })
+    });
+
+
+    </script>
+    <script src="../js/main.js"></script>
 </body>
 </html>

@@ -37,9 +37,9 @@
 }
 
 .revert-float {
-    float: right !important;
+    float: left !important;
 }
 
 .padding-lang {
-    padding-left: 30px !important;
+    padding-right: 30px !important;
 }

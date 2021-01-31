@@ -1,62 +1,62 @@
 ﻿@model BusinessObjects.Models.Counter
 
 @{
-    ViewBag.Title = "EditCounter";
+    ViewBag.Title = BankCP.Resources.LangText.editCounter;
 }
 
-<h2>EditCounter</h2>
+<h2>@BankCP.Resources.LangText.editCounter</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Counter</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.id)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.enName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.enName, new { htmlAttributes = new { @class = "form-control" } })
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.id)
+
+    <div class="form-group">
+        <div class="col-md-4">
+            <div class="wrap-input100">
+                @Html.EditorFor(model => model.enName, new { htmlAttributes = new { @class = "input100", placeholder = BankCP.Resources.LangText.enName } })
+                <span class="focus-input100"></span>
                 @Html.ValidationMessageFor(model => model.enName, "", new { @class = "text-danger" })
             </div>
         </div>
+    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.arName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.arName, new { htmlAttributes = new { @class = "form-control" } })
+    <div class="form-group">
+        <div class="col-md-4">
+            <div class="wrap-input100">
+                @Html.EditorFor(model => model.arName, new { htmlAttributes = new { @class = "input100", placeholder = BankCP.Resources.LangText.arName } })
+                <span class="focus-input100"></span>
                 @Html.ValidationMessageFor(model => model.arName, "", new { @class = "text-danger" })
             </div>
         </div>
+    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.active, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.active)
-                    @Html.ValidationMessageFor(model => model.active, "", new { @class = "text-danger" })
-                </div>
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.type, BankCP.Resources.LangText.type, htmlAttributes: new { @class = "control-label col-md-1 font-label" })
+        <div class="col-md-3">
+            @Html.DropDownListFor(model => model.type, new SelectList(new List<string> { "Teller", "Customer Service" }), new { @class = "form-control" })
         </div>
+    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.type, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.type, new SelectList(new List<string> { "Teller", "Customer Service" }), new { @class = "form-control" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+    <div class="form-group">
+        @Html.LabelFor(model => model.active, BankCP.Resources.LangText.active, htmlAttributes: new { @class = "control-label col-md-1 font-label" })
+        <div class="col-md-1">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.active)
+                @Html.ValidationMessageFor(model => model.active, "", new { @class = "text-danger" })
             </div>
         </div>
     </div>
-}
 
-<div>
-    @Html.ActionLink("Back to List", "CounterHome", new { branchId = Session["branchId"] })
+    <div class="form-group">
+        <div class="col-md-4">
+            @Html.ActionLink(BankCP.Resources.LangText.backToList, "CounterHome", new { branchId = Session["branchId"] }, new { @class = "button4" })
+            <input type="submit" style="float:right;" value="@BankCP.Resources.LangText.save " class="button4" />
+        </div>
+    </div>
 </div>
+}
