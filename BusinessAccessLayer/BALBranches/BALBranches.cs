@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace BusinessAccessLayer.BALBranches
 {
@@ -65,8 +66,14 @@ namespace BusinessAccessLayer.BALBranches
         {
             try
             {
-                DataAccessLayer.DALBranches.DALBranches dALBranches = new DataAccessLayer.DALBranches.DALBranches();
-                return dALBranches.deleteBranchById(branchId);
+                using (TransactionScope scope = new TransactionScope())
+                {
+                    DataAccessLayer.DALBranches.DALBranches dALBranches = new DataAccessLayer.DALBranches.DALBranches();
+                    dALBranches.deleteCountersByBranchId(branchId);
+                    dALBranches.deleteBranchById(branchId);
+                    scope.Complete();
+                }
+                return 1;
             }
             catch (Exception ex)
             {

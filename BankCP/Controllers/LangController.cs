@@ -12,6 +12,9 @@ namespace BankCP.Controllers
 {
     public class LangController : Controller
     {
+        /// <summary>
+        /// change language for the site by changing culture.
+        /// </summary>
         public ActionResult Change(string lang)
         {
             try

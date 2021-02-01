@@ -120,6 +120,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AllocateController.cs" />
     <Compile Include="Controllers\AllocateCounterServiceController.cs" />
     <Compile Include="Controllers\BranchesController.cs" />
     <Compile Include="Controllers\CountersController.cs" />
@@ -130,16 +131,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\LangText.AR.Designer.cs">
-      <DependentUpon>LangText.AR.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Resources\LangText.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LangText.resx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\animate.css" />
@@ -207,6 +198,7 @@
     <Content Include="Views\Counters\EditCounter.cshtml" />
     <Content Include="Views\AllocateCounterService\_AllocateCounterServiceList.cshtml" />
     <Content Include="Views\AllocateCounterService\AllocateCounterServiceHome.cshtml" />
+    <Content Include="Views\Allocate\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -238,16 +230,10 @@
       <Project>{b50993cc-d3fd-4c2e-9a9c-355bee05e5ae}</Project>
       <Name>BusinessObjects</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\LangText.AR.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>LangText.AR.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\LangText.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>LangText.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <ProjectReference Include="..\GlobalResource\GlobalResource.csproj">
+      <Project>{870e9bf0-8490-43cf-a3cc-2d88618a5f91}</Project>
+      <Name>GlobalResource</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

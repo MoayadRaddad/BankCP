@@ -51,8 +51,8 @@ namespace BankCP.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    BusinessAccessLayer.BALService.BALService bALServices = new BusinessAccessLayer.BALService.BALService();
                     service.bankId = ((BusinessObjects.Models.User)Session["UserObj"]).bankId;
+                    BusinessAccessLayer.BALService.BALService bALServices = new BusinessAccessLayer.BALService.BALService();
                     service = bALServices.insertService(service);
                     if (service != null && service.id != 0)
                     {
@@ -86,7 +86,7 @@ namespace BankCP.Controllers
                 }
                 else
                 {
-                    TempData["msg"] = "<script>alert('Please check your connection');</script>";
+                    ViewBag.connectionMsg = "<script>alert('" + GlobalResource.Resources.LangText.checkConnection + "');</script>";
                     return View();
                 }
             }

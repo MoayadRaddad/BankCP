@@ -52,8 +52,8 @@ namespace BankCP.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    BusinessAccessLayer.BALBranches.BALBranches bALBranches = new BusinessAccessLayer.BALBranches.BALBranches();
                     branch.bankId = ((BusinessObjects.Models.User)Session["UserObj"]).bankId;
+                    BusinessAccessLayer.BALBranches.BALBranches bALBranches = new BusinessAccessLayer.BALBranches.BALBranches();
                     branch = bALBranches.insertBranch(branch);
                     if (branch != null && branch.id != 0)
                     {
@@ -87,7 +87,7 @@ namespace BankCP.Controllers
                 }
                 else
                 {
-                    TempData["msg"] = "<script>alert('Please check your connection');</script>";
+                    ViewBag.connectionMsg = "<script>alert('" + GlobalResource.Resources.LangText.checkConnection + "');</script>";
                     return View();
                 }
             }

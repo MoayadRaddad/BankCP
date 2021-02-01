@@ -294,7 +294,7 @@ iframe {
 
     .label-checkbox100::before {
         content: "\f00c";
-        font-family: FontAwesome;
+        font-family: Ubuntu-Regular;
         font-size: 13px;
         color: transparent;
         display: -webkit-box;
@@ -403,7 +403,7 @@ iframe {
 
 .alert-validate::after {
     content: "\f12a";
-    font-family: FontAwesome;
+    font-family: Ubuntu-Regular;
     display: block;
     position: absolute;
     color: #c80000;
@@ -532,6 +532,11 @@ th, td {
     padding-right: 10px;
 }
 
+.column00 {
+    width: 5%;
+    padding-left: 40px;
+}
+
 .column1 {
     width: 23%;
     padding-left: 40px;
@@ -595,7 +600,7 @@ th, td {
 }
 
 .table100.ver1 td {
-    font-family: Lato-Regular;
+    font-family: Ubuntu-Regular;
     font-size: 17px;
     color: #808080;
     line-height: 1.4;
@@ -650,7 +655,7 @@ th, td {
 }
 
 .table100.ver2 td {
-    font-family: Lato-Regular;
+    font-family: Ubuntu-Regular;
     font-size: 15px;
     color: #808080;
     line-height: 1.4;
@@ -701,7 +706,7 @@ th, td {
     }
 
     .table100.ver3 td {
-        font-family: Lato-Regular;
+        font-family: Ubuntu-Regular;
         font-size: 15px;
         color: #808080;
         line-height: 1.4;
@@ -745,7 +750,7 @@ th, td {
     }
 
     .table100.ver4 th {
-        font-family: Ubuntu-Bold;
+        font-family: Ubuntu-Regular;
         font-size: 18px;
         color: #4272d7;
         line-height: 1.4;
@@ -758,7 +763,7 @@ th, td {
     }
 
     .table100.ver4 td {
-        font-family: Lato-Regular;
+        font-family: Ubuntu-Regular;
         font-size: 15px;
         color: #808080;
         line-height: 1.4;
@@ -811,7 +816,7 @@ th, td {
     }
 
     .table100.ver5 td {
-        font-family: Lato-Regular;
+        font-family: Ubuntu-Regular;
         font-size: 15px;
         color: #808080;
         line-height: 1.4;

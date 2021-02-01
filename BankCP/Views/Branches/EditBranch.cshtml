@@ -1,10 +1,11 @@
 ﻿@model BusinessObjects.Models.Branch
+@using GlobalResource.Resources
 
 @{
-    ViewBag.Title = BankCP.Resources.LangText.editBranch;
+    ViewBag.Title = LangText.editBranch;
 }
 
-<h2>@BankCP.Resources.LangText.editBranch</h2>
+<h2>@LangText.editBranch</h2>
 
 @using (Html.BeginForm())
 {
@@ -18,7 +19,7 @@
         <div class="form-group">
             <div class="col-md-4">
                 <div class="wrap-input100">
-                    @Html.EditorFor(model => model.enName, new { htmlAttributes = new { @class = "input100", placeholder = BankCP.Resources.LangText.enName } })
+                    @Html.EditorFor(model => model.enName, new { htmlAttributes = new { @class = "input100", placeholder = LangText.enName } })
                     <span class="focus-input100"></span>
                     @Html.ValidationMessageFor(model => model.enName, "", new { @class = "text-danger" })
                 </div>
@@ -28,7 +29,7 @@
         <div class="form-group">
             <div class="col-md-4">
                 <div class="wrap-input100">
-                    @Html.EditorFor(model => model.arName, new { htmlAttributes = new { @class = "input100", placeholder = BankCP.Resources.LangText.arName } })
+                    @Html.EditorFor(model => model.arName, new { htmlAttributes = new { @class = "input100", placeholder = LangText.arName } })
                     <span class="focus-input100"></span>
                     @Html.ValidationMessageFor(model => model.arName, "", new { @class = "text-danger" })
                 </div>
@@ -36,7 +37,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.active, BankCP.Resources.LangText.active, htmlAttributes: new { @class = "control-label col-md-1 font-label" })
+            @Html.LabelFor(model => model.active, LangText.active, htmlAttributes: new { @class = "control-label col-md-1 font-label" })
             <div class="col-md-1">
                 <div class="checkbox">
                     @Html.EditorFor(model => model.active)
@@ -47,8 +48,8 @@
 
         <div class="form-group">
             <div class="col-md-4">
-                @Html.ActionLink(BankCP.Resources.LangText.backToList, "BranchesHome", null, new { @class = "button4" })
-                <input type="submit" style="float:right;" value="@BankCP.Resources.LangText.save " class="button4" />
+                @Html.ActionLink(LangText.backToList, "BranchesHome", null, new { @class = "button4" })
+                <input type="submit" value="@LangText.save " class="button4 revert-float" />
             </div>
         </div>
     </div>

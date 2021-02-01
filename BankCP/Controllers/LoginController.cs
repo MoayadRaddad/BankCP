@@ -36,11 +36,11 @@ namespace BankCP.Controllers
                     if (pUser != null && pUser.id != 0)
                     {
                         Session["UserObj"] = pUser;
-                        return RedirectToAction("BranchesHome", "Branches");
+                        return RedirectToAction("BranchesHome", "Branches", new { bankId = pUser.bankId });
                     }
                     else
                     {
-                        TempData["msg"] = "<script>alert('Bank name, username or password is not correct');</script>";
+                        ViewBag.loginMsg = "<script>alert('" + GlobalResource.Resources.LangText.loginMessage + "');</script>";
                         return View();
                     }
                 }

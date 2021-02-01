@@ -1,13 +1,21 @@
 ﻿@model IEnumerable<BusinessObjects.Models.Service>
+@using GlobalResource.Resources
 
-@{
-    ViewBag.Title = BankCP.Resources.LangText.services;
+
+@if (ViewBag.connectionMsg != null)
+{
+    @Html.Raw(ViewBag.loginMsg)
+    ViewBag.loginMsg = null;
 }
 
-<h1 class="title-custom">@BankCP.Resources.LangText.services</h1>
+@{
+    ViewBag.Title = LangText.services;
+}
+
+<h1 class="title-custom">@LangText.services</h1>
 
 <p>
-    @Html.ActionLink(BankCP.Resources.LangText.createService, "AddService", null, new { @class = "button4" })
+    @Html.ActionLink(LangText.createService, "AddService", null, new { @class = "button4" })
 </p>
 
 
@@ -18,16 +26,16 @@
                 <thead>
                     <tr class="row100 head">
                         <th class="cell100 column1">
-                            @Html.DisplayName(BankCP.Resources.LangText.enName)
+                            @Html.DisplayName(LangText.enName)
                         </th>
                         <th class="cell100 column2">
-                            @Html.DisplayName(BankCP.Resources.LangText.arName)
+                            @Html.DisplayName(LangText.arName)
                         </th>
                         <th class="cell100 column3">
-                            @Html.DisplayName(BankCP.Resources.LangText.active)
+                            @Html.DisplayName(LangText.active)
                         </th>
                         <th class="cell100 column4">
-                            @Html.DisplayName(BankCP.Resources.LangText.ticket)
+                            @Html.DisplayName(LangText.ticket)
                         </th>
                         <th class="cell100 column5"></th>
                     </tr>
@@ -57,8 +65,8 @@
                                 <td>
                                 </td>
                                 <td class="cell100 column5">
-                                    @Html.ActionLink(BankCP.Resources.LangText.edit, "EditService", new { serviceId = item.id }) |
-                                    <input type="submit" value="@BankCP.Resources.LangText.delete " class="buttonLink" onclick="return confirm('Are you sure you want to delete @item.enName');" />
+                                    @Html.ActionLink(LangText.edit, "EditService", new { serviceId = item.id }) |
+                                    <input type="submit" value="@LangText.delete " class="buttonLink" onclick="return confirm('@GlobalResource.Resources.LangText.deleteMsg');" />
                                 </td>
                             </tr>
                         }
@@ -67,5 +75,5 @@
             </table>
         </div>
     </div>
-    @Html.ActionLink(BankCP.Resources.LangText.backToBranches, "BranchesHome", "Branches", null, new { @class = "button4" })
+    @Html.ActionLink(LangText.backToBranches, "BranchesHome", "Branches", null, new { @class = "button4" })
 </div>

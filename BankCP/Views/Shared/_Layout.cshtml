@@ -1,10 +1,12 @@
-﻿<!DOCTYPE html>
-<html lang="@BankCP.Resources.LangText.language" dir="@BankCP.Resources.LangText.direction">
+﻿@using GlobalResource.Resources
+
+<!DOCTYPE html>
+<html lang="@LangText.language" dir="@LangText.direction">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
-    @if (BankCP.Resources.LangText.language == "en")
+    @if (LangText.language == "en")
     {
         @Styles.Render("~/Content/css")
     }
@@ -24,22 +26,22 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink(BankCP.Resources.LangText.applicationName, "BranchesHome", "Branches", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink(LangText.applicationName, "BranchesHome", "Branches", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     @{
-                        if (BankCP.Resources.LangText.languageText == "English")
+                        if (LangText.languageText == "English")
                         {
-                            <li style="font-size: 18px;" class="revert-float">@Html.ActionLink(BankCP.Resources.LangText.languageText, "Change", "Lang", new { lang = "En" }, new { style = "font-size: 17px;" })</li>
+                            <li style="font-size: 18px;" class="revert-float">@Html.ActionLink(LangText.languageText, "Change", "Lang", new { lang = "En" }, new { style = "font-size: 17px;" })</li>
                         }
                         else
                         {
-                            <li class="revert-float">@Html.ActionLink(BankCP.Resources.LangText.languageText, "Change", "Lang", new { lang = "Ar" }, new { style = "font-size: 18px;" })</li>
+                            <li class="revert-float">@Html.ActionLink(LangText.languageText, "Change", "Lang", new { lang = "Ar" }, new { style = "font-size: 18px;" })</li>
                         }
                         if (Session["UserObj"] != null)
                         {
-                            <li class="revert-float">@Html.ActionLink(BankCP.Resources.LangText.signOut, "login", "Login", null, new { style = "font-size: 18px;" })</li>
+                            <li class="revert-float">@Html.ActionLink(LangText.signOut, "login", "Login", null, new { style = "font-size: 18px;" })</li>
                         }
                     }
                 </ul>
@@ -66,13 +68,13 @@
     <script src="../vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 
     <script>
-    $('.js-pscroll').each(function () {
-        var ps = new PerfectScrollbar(this);
+        $('.js-pscroll').each(function () {
+            var ps = new PerfectScrollbar(this);
 
-        $(window).on('resize', function () {
-            ps.update();
-        })
-    });
+            $(window).on('resize', function () {
+                ps.update();
+            })
+        });
 
 
     </script>

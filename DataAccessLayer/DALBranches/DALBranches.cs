@@ -135,5 +135,23 @@ namespace DataAccessLayer.DALBranches
                 return 0;
             }
         }
+        public int deleteCountersByBranchId(int branchId)
+        {
+            try
+            {
+                string pquery = string.Empty;
+                pquery = "sp_Delete_Allocate_Counter";
+                List<SqlParameter> screenParams = new List<SqlParameter>();
+                screenParams.Add(new SqlParameter("@branchId", branchId));
+                DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
+                dBHelper.executeNonQueryProc(pquery, screenParams);
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                ExceptionsWriter.saveExceptionToLogFile(ex);
+                return 0;
+            }
+        }
     }
 }

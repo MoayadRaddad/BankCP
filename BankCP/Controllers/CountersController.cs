@@ -13,9 +13,9 @@ namespace BankCP.Controllers
         {
             try
             {
-                Session["BranchId"] = branchId;
+                ViewBag.branchId = branchId;
                 BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
-                List<BusinessObjects.Models.Counter> lstCounters = bALCounter.selectCountersByBranchId((int)Session["BranchId"]);
+                List<BusinessObjects.Models.Counter> lstCounters = bALCounter.selectCountersByBranchId(branchId);
                 if (lstCounters != null)
                 {
                     return View(lstCounters);
@@ -32,10 +32,11 @@ namespace BankCP.Controllers
             }
         }
         [HttpGet]
-        public ActionResult AddCounter()
+        public ActionResult AddCounter(int branchId)
         {
             try
             {
+                ViewBag.branchId = branchId;
                 return View();
             }
             catch (Exception ex)
@@ -46,18 +47,18 @@ namespace BankCP.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddCounter(BusinessObjects.Models.Counter counter)
+        public ActionResult AddCounter(BusinessObjects.Models.Counter counter, int branchId)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
                     BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
-                    counter.branchId = Convert.ToInt32(Session["branchId"]);
+                    counter.branchId = branchId;
                     counter = bALCounter.insertCounter(counter);
                     if (counter != null && counter.id != 0)
                     {
-                        return RedirectToAction("CounterHome", "Counters", new { branchId = Convert.ToInt32(Session["branchId"]) });
+                        return RedirectToAction("CounterHome", "Counters", new { branchId = branchId });
                     }
                     else
                     {
@@ -76,18 +77,18 @@ namespace BankCP.Controllers
             }
         }
         [HttpPost]
-        public ActionResult DeleteCounter(int counterId)
+        public ActionResult DeleteCounter(int counterId, int branchId)
         {
             try
             {
                 BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
                 if (bALCounter.deleteCounterById(counterId) != 0)
                 {
-                    return RedirectToAction("CounterHome", "Counters", new { branchId = Convert.ToInt32(Session["branchId"]) });
+                    return RedirectToAction("CounterHome", "Counters", new { branchId = branchId });
                 }
                 else
                 {
-                    TempData["msg"] = "<script>alert('Please check your connection');</script>";
+                    ViewBag.connectionMsg = "<script>alert('" + GlobalResource.Resources.LangText.checkConnection + "');</script>";
                     return View();
                 }
             }
@@ -129,7 +130,7 @@ namespace BankCP.Controllers
                 {
                     BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
                     counter = bALCounter.updateCounter(counter);
-                    return RedirectToAction("CounterHome", "Counters", new { branchId = Convert.ToInt32(Session["branchId"]) });
+                    return RedirectToAction("CounterHome", "Counters", new { branchId = counter.branchId });
                 }
                 else
                 {

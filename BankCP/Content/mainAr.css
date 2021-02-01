@@ -171,7 +171,6 @@ iframe {
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
-    ;
 }
 
 
@@ -294,7 +293,7 @@ iframe {
 
     .label-checkbox100::before {
         content: "\f00c";
-        font-family: FontAwesome;
+        font-family: Cairo-Regular;
         font-size: 13px;
         color: transparent;
         display: -webkit-box;
@@ -403,7 +402,7 @@ iframe {
 
 .alert-validate::after {
     content: "\f12a";
-    font-family: FontAwesome;
+    font-family: Cairo-Regular;
     display: block;
     position: absolute;
     color: #c80000;
@@ -532,6 +531,11 @@ th, td {
     padding-right: 10px;
 }
 
+.column00 {
+    width: 5%;
+    padding-right: 40px;
+}
+
 .column1 {
     width: 23%;
     padding-right: 40px;
@@ -595,7 +599,7 @@ th, td {
 }
 
 .table100.ver1 td {
-    font-family: Lato-Regular;
+    font-family: Cairo-Regular;
     font-size: 17px;
     color: #808080;
     line-height: 1.4;
@@ -650,7 +654,7 @@ th, td {
 }
 
 .table100.ver2 td {
-    font-family: Lato-Regular;
+    font-family: Cairo-Regular;
     font-size: 15px;
     color: #808080;
     line-height: 1.4;
@@ -701,7 +705,7 @@ th, td {
     }
 
     .table100.ver3 td {
-        font-family: Lato-Regular;
+        font-family: Cairo-Regular;
         font-size: 15px;
         color: #808080;
         line-height: 1.4;
@@ -758,7 +762,7 @@ th, td {
     }
 
     .table100.ver4 td {
-        font-family: Lato-Regular;
+        font-family: Cairo-Regular;
         font-size: 15px;
         color: #808080;
         line-height: 1.4;
@@ -811,7 +815,7 @@ th, td {
     }
 
     .table100.ver5 td {
-        font-family: Lato-Regular;
+        font-family: Cairo-Regular;
         font-size: 15px;
         color: #808080;
         line-height: 1.4;

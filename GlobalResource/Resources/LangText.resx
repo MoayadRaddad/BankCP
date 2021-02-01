@@ -162,6 +162,9 @@
   <data name="branches" xml:space="preserve">
     <value>Branches</value>
   </data>
+  <data name="checkConnection" xml:space="preserve">
+    <value>يرجى التحقق من اتصالك بقاعدة البيانات</value>
+  </data>
   <data name="contact" xml:space="preserve">
     <value>Contact</value>
   </data>
@@ -186,6 +189,9 @@
   <data name="delete" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="deleteMsg" xml:space="preserve">
+    <value>Are you sure you want to delete this item ?</value>
+  </data>
   <data name="direction" xml:space="preserve">
     <value>ltr</value>
   </data>
@@ -204,6 +210,33 @@
   <data name="enName" xml:space="preserve">
     <value>English Name</value>
   </data>
+  <data name="errorArName" xml:space="preserve">
+    <value>Arabic name field required</value>
+  </data>
+  <data name="errorBankName" xml:space="preserve">
+    <value>Bank field required</value>
+  </data>
+  <data name="errorEnName" xml:space="preserve">
+    <value>English name field required</value>
+  </data>
+  <data name="errorMax" xml:space="preserve">
+    <value>Length must be less than 100 character</value>
+  </data>
+  <data name="errorPassword" xml:space="preserve">
+    <value>Password field required</value>
+  </data>
+  <data name="errorRange" xml:space="preserve">
+    <value>Ticket value must be between 1 - 100</value>
+  </data>
+  <data name="errorTickets" xml:space="preserve">
+    <value>Ticket field required</value>
+  </data>
+  <data name="errorType" xml:space="preserve">
+    <value>Type field required</value>
+  </data>
+  <data name="errorUserName" xml:space="preserve">
+    <value>User-name field required</value>
+  </data>
   <data name="home" xml:space="preserve">
     <value>Home</value>
   </data>
@@ -215,6 +248,9 @@
   </data>
   <data name="login" xml:space="preserve">
     <value>Login</value>
+  </data>
+  <data name="loginMessage" xml:space="preserve">
+    <value>Bank name, username or password is not correct</value>
   </data>
   <data name="name" xml:space="preserve">
     <value>Name</value>

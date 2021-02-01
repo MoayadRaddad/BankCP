@@ -162,6 +162,9 @@
   <data name="branches" xml:space="preserve">
     <value>الفروع</value>
   </data>
+  <data name="checkConnection" xml:space="preserve">
+    <value />
+  </data>
   <data name="contact" xml:space="preserve">
     <value>للتواصل</value>
   </data>
@@ -186,6 +189,9 @@
   <data name="delete" xml:space="preserve">
     <value>حذف</value>
   </data>
+  <data name="deleteMsg" xml:space="preserve">
+    <value>هل أنت متأكد أنك تريد حذف هذا البند ؟</value>
+  </data>
   <data name="direction" xml:space="preserve">
     <value>rtl</value>
   </data>
@@ -204,6 +210,33 @@
   <data name="enName" xml:space="preserve">
     <value>الأسم باللغة الأنجليزية</value>
   </data>
+  <data name="errorArName" xml:space="preserve">
+    <value>حقل الأسم باللغة العربية مطلوب</value>
+  </data>
+  <data name="errorBankName" xml:space="preserve">
+    <value>حقل اسم البنك مطلوب</value>
+  </data>
+  <data name="errorEnName" xml:space="preserve">
+    <value>حقل الأسم باللغة الأنجليزية مطلوب</value>
+  </data>
+  <data name="errorMax" xml:space="preserve">
+    <value>يجب ان لا يزيد حجم النص عن 100 حرف</value>
+  </data>
+  <data name="errorPassword" xml:space="preserve">
+    <value>حقل كلمة السر مطلوب</value>
+  </data>
+  <data name="errorRange" xml:space="preserve">
+    <value>يجب ان تكون القيمة ما بين 1 - 100</value>
+  </data>
+  <data name="errorTickets" xml:space="preserve">
+    <value>حقل التذاكر مطلوب</value>
+  </data>
+  <data name="errorType" xml:space="preserve">
+    <value>حقل النوع مطلوب</value>
+  </data>
+  <data name="errorUserName" xml:space="preserve">
+    <value>حقل أسم المستخدم مطلوب</value>
+  </data>
   <data name="home" xml:space="preserve">
     <value>الرئيسية</value>
   </data>
@@ -215,6 +248,9 @@
   </data>
   <data name="login" xml:space="preserve">
     <value>تسجيل الدخول</value>
+  </data>
+  <data name="loginMessage" xml:space="preserve">
+    <value>اسم البنك أو اسم المستخدم أو كلمة المرور غير صحيحة</value>
   </data>
   <data name="name" xml:space="preserve">
     <value>الأسم</value>

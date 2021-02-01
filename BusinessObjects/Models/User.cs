@@ -12,11 +12,14 @@ namespace BusinessObjects.Models
     public class User
     {
         public int id { get; set; }
-        [Required]
+        [Required(ErrorMessageResourceName = "errorUserName", ErrorMessageResourceType = typeof(GlobalResource.Resources.LangText))]
+        [Display(Name = "userName", ResourceType = typeof(GlobalResource.Resources.LangText))]
         public string userName { get; set; }
-        [Required]
+        [Required(ErrorMessageResourceName = "errorPassword", ErrorMessageResourceType = typeof(GlobalResource.Resources.LangText))]
+        [Display(Name = "password", ResourceType = typeof(GlobalResource.Resources.LangText))]
         public string password { get; set; }
-        [Required]
+        [Required(ErrorMessageResourceName = "errorBankName", ErrorMessageResourceType = typeof(GlobalResource.Resources.LangText))]
+        [Display(Name = "bankName", ResourceType = typeof(GlobalResource.Resources.LangText))]
         public string bankName { get; set; }
         public int bankId { get; set; }
     }

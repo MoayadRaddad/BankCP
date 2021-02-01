@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BankCP.Resources {
+namespace GlobalResource.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace BankCP.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BankCP.Resources.LangText", typeof(LangText).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("GlobalResource.Resources.LangText", typeof(LangText).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -196,6 +196,15 @@ namespace BankCP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to يرجى التحقق من اتصالك بقاعدة البيانات.
+        /// </summary>
+        public static string checkConnection {
+            get {
+                return ResourceManager.GetString("checkConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact.
         /// </summary>
         public static string contact {
@@ -268,6 +277,15 @@ namespace BankCP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this item ?.
+        /// </summary>
+        public static string deleteMsg {
+            get {
+                return ResourceManager.GetString("deleteMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ltr.
         /// </summary>
         public static string direction {
@@ -322,6 +340,87 @@ namespace BankCP.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Arabic name field required.
+        /// </summary>
+        public static string errorArName {
+            get {
+                return ResourceManager.GetString("errorArName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bank field required.
+        /// </summary>
+        public static string errorBankName {
+            get {
+                return ResourceManager.GetString("errorBankName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to English name field required.
+        /// </summary>
+        public static string errorEnName {
+            get {
+                return ResourceManager.GetString("errorEnName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Length must be less than 100 character.
+        /// </summary>
+        public static string errorMax {
+            get {
+                return ResourceManager.GetString("errorMax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password field required.
+        /// </summary>
+        public static string errorPassword {
+            get {
+                return ResourceManager.GetString("errorPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ticket value must be between 1 - 100.
+        /// </summary>
+        public static string errorRange {
+            get {
+                return ResourceManager.GetString("errorRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ticket field required.
+        /// </summary>
+        public static string errorTickets {
+            get {
+                return ResourceManager.GetString("errorTickets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type field required.
+        /// </summary>
+        public static string errorType {
+            get {
+                return ResourceManager.GetString("errorType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User-name field required.
+        /// </summary>
+        public static string errorUserName {
+            get {
+                return ResourceManager.GetString("errorUserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Home.
         /// </summary>
         public static string home {
@@ -354,6 +453,15 @@ namespace BankCP.Resources {
         public static string login {
             get {
                 return ResourceManager.GetString("login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bank name, username or password is not correct.
+        /// </summary>
+        public static string loginMessage {
+            get {
+                return ResourceManager.GetString("loginMessage", resourceCulture);
             }
         }
         
