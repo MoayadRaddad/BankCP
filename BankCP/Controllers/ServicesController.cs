@@ -4,11 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using GlobalResource.Resources;
 
 namespace BankCP.Controllers
 {
+    [Authorize]
     public class ServicesController : Controller
     {
+        #region ActionMethods
+        /// <summary>
+        /// Get services for current user bank from database and return ServiceHome view
+        /// </summary>
+        [HttpGet]
         public ActionResult ServiceHome()
         {
             try
@@ -21,15 +28,19 @@ namespace BankCP.Controllers
                 }
                 else
                 {
-                    return View();
+                    ViewBag.connectionMsg = "<script>alert('" + LangText.checkConnection + "');</script>";
+                    return RedirectToAction("BranchesHome", "Branches");
                 }
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return RedirectToAction("login", "Login");
+                return View("Error");
             }
         }
+        /// <summary>
+        /// Return AddService view
+        /// </summary>
         [HttpGet]
         public ActionResult AddService()
         {
@@ -40,9 +51,12 @@ namespace BankCP.Controllers
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return RedirectToAction("login", "Login");
+                return View("Error");
             }
         }
+        /// <summary>
+        /// insert service to database
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddService(BusinessObjects.Models.Service service)
@@ -54,14 +68,11 @@ namespace BankCP.Controllers
                     service.bankId = ((BusinessObjects.Models.User)Session["UserObj"]).bankId;
                     BusinessAccessLayer.BALService.BALService bALServices = new BusinessAccessLayer.BALService.BALService();
                     service = bALServices.insertService(service);
-                    if (service != null && service.id != 0)
+                    if (service == null || service.id == 0)
                     {
-                        return RedirectToAction("ServiceHome", "Services");
+                        ViewBag.connectionMsg = "<script>alert('" + LangText.checkConnection + "');</script>";
                     }
-                    else
-                    {
-                        return View();
-                    }
+                    return RedirectToAction("ServiceHome", "Services");
                 }
                 else
                 {
@@ -71,31 +82,30 @@ namespace BankCP.Controllers
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return RedirectToAction("login", "Login");
+                return View("Error");
             }
         }
+        /// <summary>
+        /// Delete service from database
+        /// </summary>
         [HttpPost]
         public ActionResult DeleteService(int serviceId)
         {
             try
             {
                 BusinessAccessLayer.BALService.BALService bALServices = new BusinessAccessLayer.BALService.BALService();
-                if (bALServices.deleteServiceById(serviceId) != 0)
-                {
-                    return RedirectToAction("ServiceHome", "Services");
-                }
-                else
-                {
-                    ViewBag.connectionMsg = "<script>alert('" + GlobalResource.Resources.LangText.checkConnection + "');</script>";
-                    return View();
-                }
+                bALServices.deleteServiceById(serviceId);
+                return RedirectToAction("ServiceHome", "Services");
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return RedirectToAction("login", "Login");
+                return View("Error");
             }
         }
+        /// <summary>
+        /// Return EditService view
+        /// </summary>
         [HttpGet]
         public ActionResult EditService(int serviceId)
         {
@@ -109,15 +119,19 @@ namespace BankCP.Controllers
                 }
                 else
                 {
-                    return View();
+                    ViewBag.connectionMsg = "<script>alert('" + LangText.itemDeleted + "');</script>";
+                    return RedirectToAction("ServiceHome", "Services");
                 }
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return RedirectToAction("login", "Login");
+                return View("Error");
             }
         }
+        /// <summary>
+        /// edit service and save data to database
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult EditService(BusinessObjects.Models.Service Service)
@@ -128,6 +142,10 @@ namespace BankCP.Controllers
                 {
                     BusinessAccessLayer.BALService.BALService bALServices = new BusinessAccessLayer.BALService.BALService();
                     Service = bALServices.updateService(Service);
+                    if (Service == null)
+                    {
+                        ViewBag.connectionMsg = "<script>alert('" + LangText.itemDeleted + "');</script>";
+                    }
                     return RedirectToAction("ServiceHome", "Services");
                 }
                 else
@@ -138,8 +156,9 @@ namespace BankCP.Controllers
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return RedirectToAction("login", "Login");
+                return View("Error");
             }
         }
+        #endregion
     }
 }

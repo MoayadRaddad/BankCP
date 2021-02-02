@@ -153,6 +153,9 @@
   <data name="backToList" xml:space="preserve">
     <value>الرجوع الى القائمة</value>
   </data>
+  <data name="backToLogin" xml:space="preserve">
+    <value>الرجوع الى صفحة تسجيل الدخول</value>
+  </data>
   <data name="bankName" xml:space="preserve">
     <value>اسم البنك</value>
   </data>
@@ -216,11 +219,17 @@
   <data name="errorBankName" xml:space="preserve">
     <value>حقل اسم البنك مطلوب</value>
   </data>
+  <data name="errorDetail" xml:space="preserve">
+    <value>حدث خطأ أثناء معالجة طلبك</value>
+  </data>
   <data name="errorEnName" xml:space="preserve">
     <value>حقل الأسم باللغة الأنجليزية مطلوب</value>
   </data>
   <data name="errorMax" xml:space="preserve">
     <value>يجب ان لا يزيد حجم النص عن 100 حرف</value>
+  </data>
+  <data name="errorMsg" xml:space="preserve">
+    <value>خطأ</value>
   </data>
   <data name="errorPassword" xml:space="preserve">
     <value>حقل كلمة السر مطلوب</value>
@@ -239,6 +248,9 @@
   </data>
   <data name="home" xml:space="preserve">
     <value>الرئيسية</value>
+  </data>
+  <data name="itemDeleted" xml:space="preserve">
+    <value>شخص ما بالفعل حذف هذا العنصر</value>
   </data>
   <data name="language" xml:space="preserve">
     <value>ar</value>

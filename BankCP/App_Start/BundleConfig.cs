@@ -38,6 +38,13 @@ namespace BankCP
                 "~/Content/animate.css",
                 "~/Content/select2.min.css",
                 "~/Content/perfect-scrollbar.css"));
+
+            bundles.Add(new StyleBundle("~/Content/drop-down-list").Include(
+                "~/Content/jquery.dropdown.min.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/drop-down-list").Include(
+               "~/Scripts/jquery.dropdown.min.js",
+               "~/Scripts/mock.js"));
         }
     }
 }

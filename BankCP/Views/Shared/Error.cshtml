@@ -1,13 +1,17 @@
-﻿<!DOCTYPE html>
+﻿@using GlobalResource.Resources
+<!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Error</title>
 </head>
-<body>
+<body class="text-center">
     <hgroup>
-        <h1>Error.</h1>
-        <h2>An error occurred while processing your request.</h2>
+        <h2>@LangText.errorMsg </h2>
+        <h4>@LangText.errorDetail</h4>
     </hgroup>
+    <div>
+        @Html.ActionLink(LangText.backToLogin, "login", "Login", null, new { @class = "button4" })
+    </div>
 </body>
 </html>

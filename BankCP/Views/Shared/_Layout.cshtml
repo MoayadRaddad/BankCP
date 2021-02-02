@@ -41,7 +41,7 @@
                         }
                         if (Session["UserObj"] != null)
                         {
-                            <li class="revert-float">@Html.ActionLink(LangText.signOut, "login", "Login", null, new { style = "font-size: 18px;" })</li>
+                            <li class="revert-float">@Html.ActionLink(LangText.signOut, "logout", "Login", null, new { style = "font-size: 18px;" })</li>
                         }
                     }
                 </ul>
@@ -57,15 +57,11 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
-    <!--===============================================================================================-->
-    <script src="../vendor/jquery/jquery-3.2.1.min.js"></script>
-    <!--===============================================================================================-->
+    @*<script src="../vendor/jquery/jquery-3.2.1.min.js"></script>
     <script src="../vendor/bootstrap/js/popper.js"></script>
     <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
-    <!--===============================================================================================-->
     <script src="../vendor/select2/select2.min.js"></script>
-    <!--===============================================================================================-->
-    <script src="../vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="../vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>*@
 
     <script>
         $('.js-pscroll').each(function () {

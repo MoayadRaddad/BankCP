@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace BankCP.Controllers
 {
+    [AllowAnonymous]
     public class LangController : Controller
     {
         /// <summary>
@@ -35,7 +36,7 @@ namespace BankCP.Controllers
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return RedirectToAction("login", "Login");
+                return View("Error");
             }
         }
     }

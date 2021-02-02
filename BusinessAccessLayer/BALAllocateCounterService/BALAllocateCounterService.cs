@@ -23,33 +23,40 @@ namespace BusinessAccessLayer.BALAllocateCounterService
                 return null;
             }
         }
-        public int insertDeleteAllocateCounterService(List<BusinessObjects.Models.AllocateCounterService> lstAllocateCounterService)
+        public int insertAllocateCounterService(List<int> lstService, int counterId)
         {
             try
             {
                 DataAccessLayer.DALAllocateCounterService.DALAllocateCounterService dALAllocateCounterService = new DataAccessLayer.DALAllocateCounterService.DALAllocateCounterService();
                 using (TransactionScope scope = new TransactionScope())
                 {
-                    foreach (BusinessObjects.Models.AllocateCounterService pAllocateCounterService in lstAllocateCounterService)
+                    foreach (int serviceId in lstService)
                     {
-                        if(pAllocateCounterService.id != 0 && pAllocateCounterService.isDeleted == true)
+                        int insertCheck = dALAllocateCounterService.insertAllocateCounterService(serviceId, counterId);
+                        if (insertCheck == 0)
                         {
-                            int deleteCheck = dALAllocateCounterService.deleteAllocateCounterService(pAllocateCounterService);
-                            if (deleteCheck == 0)
-                            {
-                                return 0;
-                            }
-                        }
-                        else if (pAllocateCounterService.id == 0)
-                        {
-                            int insertCheck = dALAllocateCounterService.insertAllocateCounterService(pAllocateCounterService);
-                            if (insertCheck == 0)
-                            {
-                                return 0;
-                            }
+                            return 0;
                         }
                     }
                     scope.Complete();
+                }
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                ExceptionsWriter.saveExceptionToLogFile(ex);
+                return 0;
+            }
+        }
+        public int deleteAllocateCounterService(int allocateId)
+        {
+            try
+            {
+                DataAccessLayer.DALAllocateCounterService.DALAllocateCounterService dALAllocateCounterService = new DataAccessLayer.DALAllocateCounterService.DALAllocateCounterService();
+                int insertCheck = dALAllocateCounterService.deleteAllocateCounterService(allocateId);
+                if (insertCheck == 0)
+                {
+                    return 0;
                 }
                 return 1;
             }

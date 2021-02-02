@@ -153,6 +153,9 @@
   <data name="backToList" xml:space="preserve">
     <value>Back to List</value>
   </data>
+  <data name="backToLogin" xml:space="preserve">
+    <value>Back to login page</value>
+  </data>
   <data name="bankName" xml:space="preserve">
     <value>Bank Name</value>
   </data>
@@ -216,11 +219,17 @@
   <data name="errorBankName" xml:space="preserve">
     <value>Bank field required</value>
   </data>
+  <data name="errorDetail" xml:space="preserve">
+    <value>An error occurred while processing your request</value>
+  </data>
   <data name="errorEnName" xml:space="preserve">
     <value>English name field required</value>
   </data>
   <data name="errorMax" xml:space="preserve">
     <value>Length must be less than 100 character</value>
+  </data>
+  <data name="errorMsg" xml:space="preserve">
+    <value>Error</value>
   </data>
   <data name="errorPassword" xml:space="preserve">
     <value>Password field required</value>
@@ -239,6 +248,9 @@
   </data>
   <data name="home" xml:space="preserve">
     <value>Home</value>
+  </data>
+  <data name="itemDeleted" xml:space="preserve">
+    <value>Someone already delete this item</value>
   </data>
   <data name="language" xml:space="preserve">
     <value>en</value>
@@ -278,6 +290,9 @@
   </data>
   <data name="signOut" xml:space="preserve">
     <value>Sign-Out</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
   </data>
   <data name="ticket" xml:space="preserve">
     <value>Ticket</value>

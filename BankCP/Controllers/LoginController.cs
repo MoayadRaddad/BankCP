@@ -4,25 +4,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace BankCP.Controllers
 {
+    [AllowAnonymous]
     public class LoginController : Controller
     {
+        #region ActionMethods
+        /// <summary>
+        /// Redirect users that already loged in or return login view
+        /// </summary>
         [HttpGet]
         public ActionResult login()
         {
             try
             {
-                Session.Clear();
+                if (Session["UserObj"] != null)
+                {
+                    return RedirectToAction("BranchesHome", "Branches", new { bankId = ((BusinessObjects.Models.User)Session["UserObj"]).bankId });
+                }
                 return View();
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return RedirectToAction("login", "Login");
+                return View("Error");
             }
         }
+        /// <summary>
+        /// Geting information from user and return branches action if user authorized
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult login(BusinessObjects.Models.User pUser)
@@ -36,6 +48,7 @@ namespace BankCP.Controllers
                     if (pUser != null && pUser.id != 0)
                     {
                         Session["UserObj"] = pUser;
+                        FormsAuthentication.SetAuthCookie(pUser.userName, false);
                         return RedirectToAction("BranchesHome", "Branches", new { bankId = pUser.bankId });
                     }
                     else
@@ -52,8 +65,27 @@ namespace BankCP.Controllers
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return RedirectToAction("login", "Login");
+                return View("Error");
             }
         }
+        /// <summary>
+        /// Clear session and signout from form authentication
+        /// </summary>
+        [HttpGet]
+        public ActionResult logout()
+        {
+            try
+            {
+                Session.Clear();
+                FormsAuthentication.SignOut();
+                return RedirectToAction("login");
+            }
+            catch (Exception ex)
+            {
+                ExceptionsWriter.saveExceptionToLogFile(ex);
+                return View("Error");
+            }
+        }
+        #endregion
     }
 }

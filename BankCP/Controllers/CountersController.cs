@@ -4,11 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using GlobalResource.Resources;
 
 namespace BankCP.Controllers
 {
+    [Authorize]
     public class CountersController : Controller
     {
+        #region ActionMethods
+        /// <summary>
+        /// Get counters for selected branch from database and return counterHome view
+        /// </summary>
         public ActionResult CounterHome(int branchId)
         {
             try
@@ -22,15 +28,19 @@ namespace BankCP.Controllers
                 }
                 else
                 {
-                    return View();
+                    ViewBag.connectionMsg = "<script>alert('" + LangText.checkConnection + "');</script>";
+                    return RedirectToAction("BranchesHome", "Branches");
                 }
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return RedirectToAction("login", "Login");
+                return View("Error");
             }
         }
+        /// <summary>
+        /// Return AddCounter view
+        /// </summary>
         [HttpGet]
         public ActionResult AddCounter(int branchId)
         {
@@ -42,9 +52,11 @@ namespace BankCP.Controllers
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return RedirectToAction("login", "Login");
+                return View("Error");
             }
         }
+        /// <summary>
+        /// insert counter to database
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddCounter(BusinessObjects.Models.Counter counter, int branchId)
@@ -56,14 +68,11 @@ namespace BankCP.Controllers
                     BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
                     counter.branchId = branchId;
                     counter = bALCounter.insertCounter(counter);
-                    if (counter != null && counter.id != 0)
+                    if (counter == null || counter.id == 0)
                     {
-                        return RedirectToAction("CounterHome", "Counters", new { branchId = branchId });
+                        ViewBag.connectionMsg = "<script>alert('" + LangText.checkConnection + "');</script>";
                     }
-                    else
-                    {
-                        return View();
-                    }
+                    return RedirectToAction("CounterHome", "Counters", new { branchId = branchId });
                 }
                 else
                 {
@@ -73,33 +82,32 @@ namespace BankCP.Controllers
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return RedirectToAction("login", "Login");
+                return View("Error");
             }
         }
+        /// <summary>
+        /// Delete counter from database
+        /// </summary>
         [HttpPost]
         public ActionResult DeleteCounter(int counterId, int branchId)
         {
             try
             {
                 BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
-                if (bALCounter.deleteCounterById(counterId) != 0)
-                {
-                    return RedirectToAction("CounterHome", "Counters", new { branchId = branchId });
-                }
-                else
-                {
-                    ViewBag.connectionMsg = "<script>alert('" + GlobalResource.Resources.LangText.checkConnection + "');</script>";
-                    return View();
-                }
+                bALCounter.deleteCounterById(counterId);
+                return RedirectToAction("CounterHome", "Counters", new { branchId = branchId });
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return RedirectToAction("login", "Login");
+                return View("Error");
             }
         }
+        /// <summary>
+        /// Return EditCounter view
+        /// </summary>
         [HttpGet]
-        public ActionResult EditCounter(int counterId)
+        public ActionResult EditCounter(int counterId, int branchId)
         {
             try
             {
@@ -111,15 +119,19 @@ namespace BankCP.Controllers
                 }
                 else
                 {
-                    return View();
+                    ViewBag.connectionMsg = "<script>alert('" + LangText.itemDeleted + "');</script>";
+                    return RedirectToAction("CounterHome", "Counters", new { branchId = branchId });
                 }
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return RedirectToAction("login", "Login");
+                return View("Error");
             }
         }
+        /// <summary>
+        /// edit counter and save data to database
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult EditCounter(BusinessObjects.Models.Counter counter)
@@ -130,6 +142,10 @@ namespace BankCP.Controllers
                 {
                     BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
                     counter = bALCounter.updateCounter(counter);
+                    if (counter == null)
+                    {
+                        ViewBag.connectionMsg = "<script>alert('" + LangText.itemDeleted + "');</script>";
+                    }
                     return RedirectToAction("CounterHome", "Counters", new { branchId = counter.branchId });
                 }
                 else
@@ -140,8 +156,9 @@ namespace BankCP.Controllers
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return RedirectToAction("login", "Login");
+                return View("Error");
             }
         }
+        #endregion
     }
 }

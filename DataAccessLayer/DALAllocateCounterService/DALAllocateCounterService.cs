@@ -46,14 +46,14 @@ namespace DataAccessLayer.DALAllocateCounterService
                 return null;
             }
         }
-        public int insertAllocateCounterService(BusinessObjects.Models.AllocateCounterService lstAllocateCounterService)
+        public int insertAllocateCounterService(int serviceId, int counterId)
         {
             try
             {
                 string pquery = "insert into tblAllocateCounterService OUTPUT INSERTED.IDENTITYCOL  values (@counterId,@serviceId)";
                 List<SqlParameter> screenParams = new List<SqlParameter>();
-                screenParams.Add(new SqlParameter("@counterId", lstAllocateCounterService.counterId));
-                screenParams.Add(new SqlParameter("@serviceId", lstAllocateCounterService.serviceId));
+                screenParams.Add(new SqlParameter("@counterId", counterId));
+                screenParams.Add(new SqlParameter("@serviceId", serviceId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
                 if(Convert.ToInt32(dBHelper.executeScalar(pquery, screenParams)) != 0)
                 {
@@ -106,14 +106,14 @@ namespace DataAccessLayer.DALAllocateCounterService
                 return null;
             }
         }
-        public int deleteAllocateCounterService(BusinessObjects.Models.AllocateCounterService lstAllocateCounterService)
+        public int deleteAllocateCounterService(int allocateId)
         {
             try
             {
                 string pquery = string.Empty;
                 pquery = "delete from tblAllocateCounterService where id = @id";
                 List<SqlParameter> allocateParams = new List<SqlParameter>();
-                allocateParams.Add(new SqlParameter("@id", lstAllocateCounterService.id));
+                allocateParams.Add(new SqlParameter("@id", allocateId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
                 dBHelper.executeNonQuery(pquery, allocateParams);
                 return 1;

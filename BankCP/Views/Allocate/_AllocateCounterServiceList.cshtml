@@ -1,20 +1,18 @@
 ﻿@model IEnumerable<BusinessObjects.Models.AllocateCounterService>
 @using GlobalResource.Resources
-
 <div class="wrap-table100" style="padding-top: 50px;">
     <div class="table100 ver1 m-b-110">
         <div class="table100-head">
             <table>
                 <thead>
                     <tr class="row100 head">
-                        <th class="cell100 column00">
-                        </th>
                         <th class="cell100 column1">
                             @Html.DisplayName(LangText.serviceEnName)
                         </th>
                         <th class="cell100 column2">
                             @Html.DisplayName(LangText.serviceArName)
                         </th>
+                        <th class="cell100 column3"></th>
                     </tr>
                 </thead>
             </table>
@@ -24,17 +22,17 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        using (Html.BeginForm("DeleteAllocateCounterService", "AllocateCounterService", item))
+                        using (Html.BeginForm("DeleteAllocateCounterService", "Allocate", item))
                         {
                             <tr class="row100 body">
-                                <td class="cell100 column00">
-                                    <input type="checkbox" id="" onclick="addItem(@item.id.ToString())">
-                                </td>
                                 <td class="cell100 column1">
                                     @Html.DisplayFor(modelItem => item.serviceEnName)
                                 </td>
                                 <td class="cell100 column2">
                                     @Html.DisplayFor(modelItem => item.serviceArName)
+                                </td>
+                                <td class="cell100 column3">
+                                    <input type="submit" value="@LangText.delete " class="buttonLink" />
                                 </td>
                             </tr>
                         }
@@ -44,33 +42,3 @@
         </div>
     </div>
 </div>
-<input type="button" value="sss" id="button1">
-
-<script type="text/javascript">
-    var roleList = new Array();
-    function addItem(index) {
-        if (index === 0)
-        {
-            alert(roleList);
-        }
-        else if (parseInt(roleList.find(element => element == index)) == index) {
-            roleList.pop(index);
-        }
-        else {
-            roleList.push(index);
-        }
-    }
-    var btn = document.getElementById('button1').addEventListener('click', () => {
-        $.ajax({
-            url: '@Url.Action("Select", "Allocate")',
-            type: 'POST',
-            dataType: 'json',
-            cache: false,
-            data: { lstService: roleList },
-            traditional: true,
-            success: function (data) {
-            }
-        });
-    });
-
-</script>

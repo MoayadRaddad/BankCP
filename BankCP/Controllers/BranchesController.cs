@@ -4,11 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using GlobalResource.Resources;
 
 namespace BankCP.Controllers
 {
+    [Authorize]
     public class BranchesController : Controller
     {
+        #region ActionMethods
+        /// <summary>
+        /// Get branches for current user bank from database and return brancheshome view
+        /// </summary>
         [HttpGet]
         public ActionResult BranchesHome()
         {
@@ -22,15 +28,19 @@ namespace BankCP.Controllers
                 }
                 else
                 {
-                    return View();
+                    ViewBag.connectionMsg = "<script>alert('" + LangText.checkConnection + "');</script>";
+                    return RedirectToAction("login", "Login");
                 }
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return RedirectToAction("login", "Login");
+                return View("Error");
             }
         }
+        /// <summary>
+        /// Return addbranch view
+        /// </summary>
         [HttpGet]
         public ActionResult AddBranch()
         {
@@ -41,9 +51,12 @@ namespace BankCP.Controllers
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return RedirectToAction("login", "Login");
+                return View("Error");
             }
         }
+        /// <summary>
+        /// insert branch to database
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddBranch(BusinessObjects.Models.Branch branch)
@@ -55,14 +68,11 @@ namespace BankCP.Controllers
                     branch.bankId = ((BusinessObjects.Models.User)Session["UserObj"]).bankId;
                     BusinessAccessLayer.BALBranches.BALBranches bALBranches = new BusinessAccessLayer.BALBranches.BALBranches();
                     branch = bALBranches.insertBranch(branch);
-                    if (branch != null && branch.id != 0)
+                    if (branch == null || branch.id == 0)
                     {
-                        return RedirectToAction("BranchesHome", "Branches");
+                        ViewBag.connectionMsg = "<script>alert('" + LangText.checkConnection + "');</script>";
                     }
-                    else
-                    {
-                        return View();
-                    }
+                    return RedirectToAction("BranchesHome", "Branches");
                 }
                 else
                 {
@@ -72,31 +82,30 @@ namespace BankCP.Controllers
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return RedirectToAction("login", "Login");
+                return View("Error");
             }
         }
+        /// <summary>
+        /// Delete branch from database
+        /// </summary>
         [HttpPost]
         public ActionResult DeleteBranch(int branchId)
         {
             try
             {
                 BusinessAccessLayer.BALBranches.BALBranches bALBranches = new BusinessAccessLayer.BALBranches.BALBranches();
-                if (bALBranches.deleteBranchById(branchId) != 0)
-                {
-                    return RedirectToAction("BranchesHome", "Branches");
-                }
-                else
-                {
-                    ViewBag.connectionMsg = "<script>alert('" + GlobalResource.Resources.LangText.checkConnection + "');</script>";
-                    return View();
-                }
+                bALBranches.deleteBranchById(branchId);
+                return RedirectToAction("BranchesHome", "Branches");
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return RedirectToAction("login", "Login");
+                return View("Error");
             }
         }
+        /// <summary>
+        /// Return editbranch view
+        /// </summary>
         [HttpGet]
         public ActionResult EditBranch(int branchId)
         {
@@ -110,15 +119,19 @@ namespace BankCP.Controllers
                 }
                 else
                 {
-                    return View();
+                    ViewBag.connectionMsg = "<script>alert('" + LangText.itemDeleted + "');</script>";
+                    return RedirectToAction("BranchesHome", "Branches");
                 }
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return RedirectToAction("login", "Login");
+                return View("Error");
             }
         }
+        /// <summary>
+        /// edit branch and save data to database
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult EditBranch(BusinessObjects.Models.Branch branch)
@@ -129,6 +142,10 @@ namespace BankCP.Controllers
                 {
                     BusinessAccessLayer.BALBranches.BALBranches bALBranches = new BusinessAccessLayer.BALBranches.BALBranches();
                     branch = bALBranches.updateBranch(branch);
+                    if (branch == null)
+                    {
+                        ViewBag.connectionMsg = "<script>alert('" + LangText.itemDeleted + "');</script>";
+                    }
                     return RedirectToAction("BranchesHome", "Branches");
                 }
                 else
@@ -139,8 +156,9 @@ namespace BankCP.Controllers
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return RedirectToAction("login", "Login");
+                return View("Error");
             }
         }
+        #endregion
     }
 }

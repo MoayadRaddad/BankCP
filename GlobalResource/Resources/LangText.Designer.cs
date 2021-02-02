@@ -169,6 +169,15 @@ namespace GlobalResource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back to login page.
+        /// </summary>
+        public static string backToLogin {
+            get {
+                return ResourceManager.GetString("backToLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bank Name.
         /// </summary>
         public static string bankName {
@@ -358,6 +367,15 @@ namespace GlobalResource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error occurred while processing your request.
+        /// </summary>
+        public static string errorDetail {
+            get {
+                return ResourceManager.GetString("errorDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to English name field required.
         /// </summary>
         public static string errorEnName {
@@ -372,6 +390,15 @@ namespace GlobalResource.Resources {
         public static string errorMax {
             get {
                 return ResourceManager.GetString("errorMax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string errorMsg {
+            get {
+                return ResourceManager.GetString("errorMsg", resourceCulture);
             }
         }
         
@@ -426,6 +453,15 @@ namespace GlobalResource.Resources {
         public static string home {
             get {
                 return ResourceManager.GetString("home", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Someone already delete this item.
+        /// </summary>
+        public static string itemDeleted {
+            get {
+                return ResourceManager.GetString("itemDeleted", resourceCulture);
             }
         }
         
@@ -543,6 +579,15 @@ namespace GlobalResource.Resources {
         public static string signOut {
             get {
                 return ResourceManager.GetString("signOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
         
