@@ -53,7 +53,7 @@ namespace BankCP.Controllers
                     }
                     else
                     {
-                        ViewBag.loginMsg = "<script>alert('" + GlobalResource.Resources.LangText.loginMessage + "');</script>";
+                        ViewBag.loginMsg = GlobalResource.Resources.LangText.loginMessage;
                         return View();
                     }
                 }

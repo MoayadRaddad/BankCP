@@ -1,11 +1,5 @@
 ﻿@using GlobalResource.Resources
 
-@if (ViewBag.connectionMsg != null)
-{
-    @Html.Raw(ViewBag.connectionMsg)
-    ViewBag.connectionMsg = null;
-}
-
 <!DOCTYPE html>
 <html lang="@LangText.language" dir="@LangText.direction">
 <head>
@@ -22,8 +16,20 @@
     }
     @Styles.Render("~/Content/css-main")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/sweetalert")
 </head>
 <body>
+    @if (ViewBag.connectionMsg != null)
+    {
+        <script>Swal.fire({ title: 'Error!', text: '@ViewBag.connectionMsg', icon: 'error', confirmButtonText: 'ok' })</script>
+        ViewBag.connectionMsg = null;
+    }
+
+    @if (ViewBag.loginMsg != null)
+    {
+        <script>Swal.fire({ title: 'Error!', text: '@ViewBag.loginMsg', icon: 'error', confirmButtonText: 'ok' })</script>
+        ViewBag.loginMsg = null;
+    }
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">

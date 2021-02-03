@@ -4,12 +4,6 @@
 @{
     ViewBag.Title = "login";
 }
-
-@if (ViewBag.loginMsg != null)
-{
-    @Html.Raw(ViewBag.loginMsg)
-    ViewBag.loginMsg = null;
-}
 <h2 class="login100-form-title p-b-51 text-center p-t-150">@LangText.login </h2>
 @using (Html.BeginForm())
 {

@@ -27,7 +27,7 @@ namespace BankCP.Controllers
                 }
                 else
                 {
-                    ViewBag.connectionMsg = "<script>alert('" + LangText.checkConnection + "');</script>";
+                    ViewBag.connectionMsg = LangText.checkConnection;
                     return RedirectToAction("BranchesHome", "Branches");
                 }
             }
@@ -57,7 +57,7 @@ namespace BankCP.Controllers
                         }
                         else
                         {
-                            ViewBag.connectionMsg = "<script>alert('" + LangText.checkConnection + "');</script>";
+                            ViewBag.connectionMsg = LangText.checkConnection;
                             return RedirectToAction("BranchesHome", "Branches");
                         }
                     }
@@ -93,7 +93,7 @@ namespace BankCP.Controllers
                 }
                 else
                 {
-                    ViewBag.connectionMsg = "<script>alert('" + LangText.checkConnection + "');</script>";
+                    ViewBag.connectionMsg = LangText.checkConnection;
                     return RedirectToAction("BranchesHome", "Branches");
                 }
             }
@@ -125,7 +125,7 @@ namespace BankCP.Controllers
                     }
                     else
                     {
-                        ViewBag.connectionMsg = "<script>alert('" + LangText.checkConnection + "');</script>";
+                        ViewBag.connectionMsg = LangText.checkConnection;
                         return RedirectToAction("BranchesHome", "Branches");
                     }
                 }

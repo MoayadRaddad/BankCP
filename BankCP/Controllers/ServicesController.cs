@@ -28,7 +28,7 @@ namespace BankCP.Controllers
                 }
                 else
                 {
-                    ViewBag.connectionMsg = "<script>alert('" + LangText.checkConnection + "');</script>";
+                    ViewBag.connectionMsg = LangText.checkConnection;
                     return RedirectToAction("BranchesHome", "Branches");
                 }
             }
@@ -70,7 +70,7 @@ namespace BankCP.Controllers
                     service = bALServices.insertService(service);
                     if (service == null || service.id == 0)
                     {
-                        ViewBag.connectionMsg = "<script>alert('" + LangText.checkConnection + "');</script>";
+                        ViewBag.connectionMsg = LangText.checkConnection;
                     }
                     return RedirectToAction("ServiceHome", "Services");
                 }
@@ -119,7 +119,7 @@ namespace BankCP.Controllers
                 }
                 else
                 {
-                    ViewBag.connectionMsg = "<script>alert('" + LangText.itemDeleted + "');</script>";
+                    ViewBag.connectionMsg = LangText.itemDeleted;
                     return RedirectToAction("ServiceHome", "Services");
                 }
             }
@@ -144,7 +144,7 @@ namespace BankCP.Controllers
                     Service = bALServices.updateService(Service);
                     if (Service == null)
                     {
-                        ViewBag.connectionMsg = "<script>alert('" + LangText.itemDeleted + "');</script>";
+                        ViewBag.connectionMsg = LangText.itemDeleted;
                     }
                     return RedirectToAction("ServiceHome", "Services");
                 }

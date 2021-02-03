@@ -28,7 +28,7 @@ namespace BankCP.Controllers
                 }
                 else
                 {
-                    ViewBag.connectionMsg = "<script>alert('" + LangText.checkConnection + "');</script>";
+                    ViewBag.connectionMsg = LangText.checkConnection;
                     return RedirectToAction("BranchesHome", "Branches");
                 }
             }
@@ -70,7 +70,7 @@ namespace BankCP.Controllers
                     counter = bALCounter.insertCounter(counter);
                     if (counter == null || counter.id == 0)
                     {
-                        ViewBag.connectionMsg = "<script>alert('" + LangText.checkConnection + "');</script>";
+                        ViewBag.connectionMsg = LangText.checkConnection;
                     }
                     return RedirectToAction("CounterHome", "Counters", new { branchId = branchId });
                 }
@@ -119,7 +119,7 @@ namespace BankCP.Controllers
                 }
                 else
                 {
-                    ViewBag.connectionMsg = "<script>alert('" + LangText.itemDeleted + "');</script>";
+                    ViewBag.connectionMsg = LangText.checkConnection;
                     return RedirectToAction("CounterHome", "Counters", new { branchId = branchId });
                 }
             }
@@ -144,7 +144,7 @@ namespace BankCP.Controllers
                     counter = bALCounter.updateCounter(counter);
                     if (counter == null)
                     {
-                        ViewBag.connectionMsg = "<script>alert('" + LangText.itemDeleted + "');</script>";
+                        ViewBag.connectionMsg = LangText.itemDeleted;
                     }
                     return RedirectToAction("CounterHome", "Counters", new { branchId = counter.branchId });
                 }

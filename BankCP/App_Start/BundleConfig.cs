@@ -23,15 +23,20 @@ namespace BankCP
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                "~/Scripts/bootstrap.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/sweetalert").Include(
+               "~/Scripts/sweetalert.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/Site.css",
                 "~/Content/main.css",
-               "~/Content/bootstrap.css"));
+               "~/Content/bootstrap.css",
+               "~/Content/sweetalert.css"));
 
             bundles.Add(new StyleBundle("~/Content/rtl/css").Include(
                 "~/Content/SiteAr.css",
                 "~/Content/mainAr.css",
-                "~/Content/bootstrap.rtl.css"));
+                "~/Content/bootstrap.rtl.css",
+               "~/Content/sweetalert.css"));
 
             bundles.Add(new StyleBundle("~/Content/css-main").Include(
                 "~/Content/util.css",

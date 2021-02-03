@@ -1,13 +1,6 @@
 ﻿@model IEnumerable<BusinessObjects.Models.Service>
 @using GlobalResource.Resources
 
-
-@if (ViewBag.connectionMsg != null)
-{
-    @Html.Raw(ViewBag.loginMsg)
-    ViewBag.loginMsg = null;
-}
-
 @{
     ViewBag.Title = LangText.services;
 }

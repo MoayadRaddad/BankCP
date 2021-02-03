@@ -5,12 +5,6 @@
     ViewBag.Title = LangText.counters;
 }
 
-@if (ViewBag.connectionMsg != null)
-{
-    @Html.Raw(ViewBag.loginMsg)
-    ViewBag.loginMsg = null;
-}
-
 <h1 class="title-custom">@LangText.counters</h1>
 
 <p>

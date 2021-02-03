@@ -28,7 +28,7 @@ namespace BankCP.Controllers
                 }
                 else
                 {
-                    ViewBag.connectionMsg = "<script>alert('" + LangText.checkConnection + "');</script>";
+                    ViewBag.connectionMsg = LangText.checkConnection;
                     return RedirectToAction("login", "Login");
                 }
             }
@@ -70,7 +70,7 @@ namespace BankCP.Controllers
                     branch = bALBranches.insertBranch(branch);
                     if (branch == null || branch.id == 0)
                     {
-                        ViewBag.connectionMsg = "<script>alert('" + LangText.checkConnection + "');</script>";
+                        ViewBag.connectionMsg = LangText.checkConnection;
                     }
                     return RedirectToAction("BranchesHome", "Branches");
                 }
@@ -119,7 +119,7 @@ namespace BankCP.Controllers
                 }
                 else
                 {
-                    ViewBag.connectionMsg = "<script>alert('" + LangText.itemDeleted + "');</script>";
+                    ViewBag.connectionMsg = LangText.itemDeleted;
                     return RedirectToAction("BranchesHome", "Branches");
                 }
             }
@@ -144,7 +144,7 @@ namespace BankCP.Controllers
                     branch = bALBranches.updateBranch(branch);
                     if (branch == null)
                     {
-                        ViewBag.connectionMsg = "<script>alert('" + LangText.itemDeleted + "');</script>";
+                        ViewBag.connectionMsg = LangText.itemDeleted;
                     }
                     return RedirectToAction("BranchesHome", "Branches");
                 }
