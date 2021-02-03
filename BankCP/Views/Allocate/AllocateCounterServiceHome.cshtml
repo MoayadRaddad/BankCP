@@ -23,6 +23,7 @@
 
 
 @{Html.RenderAction("_AllocateCounterServiceList", new { ViewBag.counterId });}
+@Html.ActionLink(LangText.backToBranches, "BranchesHome", "Branches", null, new { @class = "button4" })
 
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/bootstrap")
