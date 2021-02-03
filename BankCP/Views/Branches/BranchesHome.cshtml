@@ -4,12 +4,6 @@
 @{
     ViewBag.Title = LangText.branches;
 }
-
-@if (ViewBag.connectionMsg != null)
-{
-    @Html.Raw(ViewBag.loginMsg)
-    ViewBag.loginMsg = null;
-}
 <h1 class="title-custom">@LangText.branches</h1>
 <div class="row p-b-10">
     <div class="col-md-3 padding-lang">

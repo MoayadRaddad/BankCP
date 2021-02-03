@@ -62,7 +62,7 @@
                                 </td>
                                 <td class="cell100 column5">
                                     @Html.ActionLink(LangText.edit, "EditCounter", new { counterId = item.id, branchId = item.branchId }) |
-                                    @Html.ActionLink(LangText.services, "AllocateCounterServiceHome", "Allocate", new { counterId = item.id}, null) |
+                                    @Html.ActionLink(LangText.services, "AllocateCounterServiceHome", "Allocate", new { counterId = item.id }, null) |
                                     <input type="submit" value="@LangText.delete " class="buttonLink" onclick="return confirm('Are you sure you want to delete @item.enName');" />
                                 </td>
                             </tr>
