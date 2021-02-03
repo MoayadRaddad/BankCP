@@ -930,3 +930,12 @@ th, td {
     width: 24% !important;
     padding: 0px 20px !important;
 }
+
+.drop-down-list-height {
+    height: 30px;
+}
+
+.multi-drop-div {
+    display: flex;
+    padding: 25px 0px;
+}
