@@ -141,9 +141,10 @@ namespace BankCP.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
                     BusinessAccessLayer.BALBranches.BALBranches bALBranches = new BusinessAccessLayer.BALBranches.BALBranches();
                     branch = bALBranches.updateBranch(branch);
-                    if (branch == null)
+                    if (branch == null && bALCommon.checkExist("tblCounters", branch.id))
                     {
                         ViewBag.connectionMsg = LangText.itemDeleted;
                     }

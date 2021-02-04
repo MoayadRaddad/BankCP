@@ -141,9 +141,10 @@ namespace BankCP.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
                     BusinessAccessLayer.BALService.BALService bALServices = new BusinessAccessLayer.BALService.BALService();
                     Service = bALServices.updateService(Service);
-                    if (Service == null)
+                    if (Service == null && bALCommon.checkExist("tblService", Service.id))
                     {
                         ViewBag.connectionMsg = LangText.itemDeleted;
                     }
