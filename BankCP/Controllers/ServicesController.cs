@@ -20,9 +20,10 @@ namespace BankCP.Controllers
         {
             try
             {
+                BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
                 BusinessAccessLayer.BALService.BALService bALService = new BusinessAccessLayer.BALService.BALService();
                 List<BusinessObjects.Models.Service> lstServices = bALService.selectServicesByBankId(((BusinessObjects.Models.User)Session["UserObj"]).bankId);
-                if (lstServices != null)
+                if (lstServices != null && bALCommon.checkExist("tblBanks", ((BusinessObjects.Models.User)Session["UserObj"]).bankId))
                 {
                     return View(lstServices);
                 }

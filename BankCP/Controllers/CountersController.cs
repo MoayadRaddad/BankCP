@@ -20,9 +20,10 @@ namespace BankCP.Controllers
             try
             {
                 ViewBag.branchId = branchId;
+                BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
                 BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
                 List<BusinessObjects.Models.Counter> lstCounters = bALCounter.selectCountersByBranchId(branchId);
-                if (lstCounters != null)
+                if (lstCounters != null && bALCommon.checkExist("tblBranches", branchId))
                 {
                     return View(lstCounters);
                 }

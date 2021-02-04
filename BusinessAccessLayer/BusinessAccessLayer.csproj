@@ -46,6 +46,7 @@
     <Compile Include="BALBank\BALBank.cs" />
     <Compile Include="BALBranches\BALBranches.cs" />
     <Compile Include="BALButton\BALButton.cs" />
+    <Compile Include="BALCommon\BALCommon.cs" />
     <Compile Include="BALCounter\BALCounter.cs" />
     <Compile Include="BALLogin\BALLogin.cs" />
     <Compile Include="BALScreen\BALScreen.cs" />

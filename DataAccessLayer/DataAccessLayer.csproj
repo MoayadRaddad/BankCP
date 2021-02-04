@@ -46,6 +46,7 @@
     <Compile Include="DALBank\DALBank.cs" />
     <Compile Include="DALBranches\DALBranches.cs" />
     <Compile Include="DALButton\DALButton.cs" />
+    <Compile Include="DALCommon\DALCommon.cs" />
     <Compile Include="DALCounter\DALCounter.cs" />
     <Compile Include="DALDBHelper\DALDBHelper.cs" />
     <Compile Include="DALLogin\DALLogin.cs" />

@@ -146,11 +146,12 @@ namespace BankCP.Controllers
             try
             {
                 ViewBag.counterId = counterId;
+                BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
                 BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService bALAllocateCounterService = new BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService();
                 List<Models.ServiceAllocate> lstServiceAllocate = new List<ServiceAllocate>();
                 List<BusinessObjects.Models.Service> lstServices = bALAllocateCounterService.selectNotAllocateServicesByBankId((((BusinessObjects.Models.User)Session["UserObj"]).bankId));
                 List<BusinessObjects.Models.AllocateCounterService> lstAllocateCounterService = bALAllocateCounterService.selectAllocateCounterService(counterId);
-                if (lstAllocateCounterService != null)
+                if (lstAllocateCounterService != null && bALCommon.checkExist("tblCounters", counterId))
                 {
                     foreach (var item in lstServices)
                     {
