@@ -13,12 +13,12 @@
 {
     @Html.HiddenFor(model => model.id)
     <div class="multi-drop-div">
-        @Html.Label(LangText.services, LangText.services, new { @class = "labels" })
-        <div class="dropdown-mul-2" style="width: 100% !important;">
+        @Html.Label(LangText.services, LangText.services, new { @class = "labels label-forms" })
+        <div class="dropdown-mul-2">
             @Html.DropDownListFor(model => model.AllocateId, null, new { @class = "form-control col-md-12 drop-down-list-height", multiple = "multiple" })
         </div>
+        <input type="submit" value="@LangText.save " class="button4 revert-float" />
     </div>
-    <input type="submit" value="@LangText.save " class="button4 revert-float" />
 }
 
 

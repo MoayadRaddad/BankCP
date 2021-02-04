@@ -20,17 +20,24 @@ namespace BankCP.Controllers
         {
             try
             {
-                ViewBag.connectionMsg = errorMsg;
+                ViewBag.itemDeleted = errorMsg;
                 BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
                 BusinessAccessLayer.BALService.BALService bALService = new BusinessAccessLayer.BALService.BALService();
                 List<BusinessObjects.Models.Service> lstServices = bALService.selectServicesByBankId(((BusinessObjects.Models.User)Session["UserObj"]).bankId);
-                if (lstServices != null && bALCommon.checkExist("tblBanks", ((BusinessObjects.Models.User)Session["UserObj"]).bankId))
+                if (lstServices != null )
                 {
-                    return View(lstServices);
+                    if(bALCommon.checkExist("tblBanks", ((BusinessObjects.Models.User)Session["UserObj"]).bankId))
+                    {
+                        return View(lstServices);
+                    }
+                    else
+                    {
+                        return RedirectToAction("BranchesHome", "Branches", new { errorMsg = LangText.itemDeleted });
+                    }
                 }
                 else
                 {
-                    return RedirectToAction("BranchesHome", "Branches", new { errorMsg = LangText.itemDeleted });
+                    return View("Error");
                 }
             }
             catch (Exception ex)
@@ -69,11 +76,21 @@ namespace BankCP.Controllers
                     service.bankId = ((BusinessObjects.Models.User)Session["UserObj"]).bankId;
                     BusinessAccessLayer.BALService.BALService bALServices = new BusinessAccessLayer.BALService.BALService();
                     service = bALServices.insertService(service);
-                    if (service == null || service.id == 0)
+                    if (service != null)
                     {
-                        return RedirectToAction("ServiceHome", "Services", new { errorMsg = LangText.checkConnection });
+                        if(service.id != 0)
+                        {
+                            return RedirectToAction("ServiceHome", "Services");
+                        }
+                        else
+                        {
+                            return RedirectToAction("ServiceHome", "Services", new { errorMsg = LangText.itemDeleted });
+                        }
                     }
-                    return RedirectToAction("ServiceHome", "Services");
+                    else
+                    {
+                        return View("Error");
+                    }
                 }
                 else
                 {
@@ -143,11 +160,21 @@ namespace BankCP.Controllers
                     BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
                     BusinessAccessLayer.BALService.BALService bALServices = new BusinessAccessLayer.BALService.BALService();
                     Service = bALServices.updateService(Service);
-                    if (Service == null || !bALCommon.checkExist("tblService", Service.id))
+                    if (Service != null)
                     {
-                        return RedirectToAction("ServiceHome", "Services", new { errorMsg = LangText.itemDeleted });
+                        if(bALCommon.checkExist("tblService", Service.id))
+                        {
+                            return RedirectToAction("ServiceHome", "Services");
+                        }
+                        else
+                        {
+                            return RedirectToAction("ServiceHome", "Services", new { errorMsg = LangText.itemDeleted });
+                        }
                     }
-                    return RedirectToAction("ServiceHome", "Services");
+                    else
+                    {
+                        return View("Error");
+                    }
                 }
                 else
                 {

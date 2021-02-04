@@ -20,17 +20,24 @@ namespace BankCP.Controllers
             try
             {
                 ViewBag.branchId = branchId;
-                ViewBag.connectionMsg = errorMsg;
+                ViewBag.itemDeleted = errorMsg;
                 BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
                 BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
                 List<BusinessObjects.Models.Counter> lstCounters = bALCounter.selectCountersByBranchId(branchId);
-                if (lstCounters != null && bALCommon.checkExist("tblBranches", branchId))
+                if (lstCounters != null)
                 {
-                    return View(lstCounters);
+                    if(bALCommon.checkExist("tblBranches", branchId))
+                    {
+                        return View(lstCounters);
+                    }
+                    else
+                    {
+                        return RedirectToAction("BranchesHome", "Branches", new { errorMsg = LangText.itemDeleted });
+                    }
                 }
                 else
                 {
-                    return RedirectToAction("BranchesHome", "Branches", new { errorMsg = LangText.itemDeleted });
+                    return View("Error");
                 }
             }
             catch (Exception ex)
@@ -69,11 +76,21 @@ namespace BankCP.Controllers
                     BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
                     counter.branchId = branchId;
                     counter = bALCounter.insertCounter(counter);
-                    if (counter == null || counter.id == 0)
+                    if (counter != null)
                     {
-                        return RedirectToAction("CounterHome", "Counters", new { branchId = branchId, errorMsg = LangText.checkConnection });
+                        if(counter.id != 0)
+                        {
+                            return RedirectToAction("CounterHome", "Counters", new { branchId = branchId });
+                        }
+                        else
+                        {
+                            return RedirectToAction("CounterHome", "Counters", new { branchId = branchId, errorMsg = LangText.checkConnection });
+                        }
                     }
-                    return RedirectToAction("CounterHome", "Counters", new { branchId = branchId });
+                    else
+                    {
+                        return View("Error");
+                    }
                 }
                 else
                 {
@@ -143,11 +160,21 @@ namespace BankCP.Controllers
                     BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
                     BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
                     counter = bALCounter.updateCounter(counter);
-                    if (counter == null || !bALCommon.checkExist("tblCounters", counter.id))
+                    if (counter != null)
                     {
-                        return RedirectToAction("CounterHome", "Counters", new { branchId = counter.branchId, errorMsg = LangText.itemDeleted });
+                        if(bALCommon.checkExist("tblCounters", counter.id))
+                        {
+                            return RedirectToAction("CounterHome", "Counters", new { branchId = counter.branchId });
+                        }
+                        else
+                        {
+                            return RedirectToAction("CounterHome", "Counters", new { branchId = counter.branchId, errorMsg = LangText.itemDeleted });
+                        }
                     }
-                    return RedirectToAction("CounterHome", "Counters", new { branchId = counter.branchId });
+                    else
+                    {
+                        return View("Error");
+                    }
                 }
                 else
                 {

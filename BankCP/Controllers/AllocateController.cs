@@ -21,14 +21,22 @@ namespace BankCP.Controllers
         {
             try
             {
-                ViewBag.connectionMsg = errorMsg;
-                if (FillAllocateBag(counterId))
+                ViewBag.itemDeleted = errorMsg;
+                int check = FillAllocateBag(counterId);
+                if (check != 0)
                 {
-                    return View();
+                    if (check == 1)
+                    {
+                        return View();
+                    }
+                    else
+                    {
+                        return RedirectToAction("BranchesHome", "Branches", new { errorMsg = LangText.itemDeleted });
+                    }
                 }
                 else
                 {
-                    return RedirectToAction("BranchesHome", "Branches", new { errorMsg = LangText.itemDeleted });
+                    return View("Error");
                 }
             }
             catch (Exception ex)
@@ -51,14 +59,7 @@ namespace BankCP.Controllers
                     int insertedCheck = bALAllocateCounterService.insertAllocateCounterService(lstServiceAllocate.AllocateId, lstServiceAllocate.counterId);
                     if (insertedCheck == 1)
                     {
-                        if (FillAllocateBag(lstServiceAllocate.counterId))
-                        {
-                            return RedirectToAction("AllocateCounterServiceHome", new { counterId = lstServiceAllocate.counterId });
-                        }
-                        else
-                        {
-                            return RedirectToAction("BranchesHome", "Branches", new { errorMsg = LangText.checkConnection });
-                        }
+                        return RedirectToAction("AllocateCounterServiceHome", new { counterId = lstServiceAllocate.counterId });
                     }
                     else
                     {
@@ -92,7 +93,7 @@ namespace BankCP.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("BranchesHome", "Branches", new { errorMsg = LangText.checkConnection });
+                    return View("Error");
                 }
             }
             catch (Exception ex)
@@ -117,14 +118,7 @@ namespace BankCP.Controllers
                 }
                 else
                 {
-                    if (FillAllocateBag(allocateCounterService.counterId))
-                    {
-                        return RedirectToAction("AllocateCounterServiceHome", new { counterId = allocateCounterService.counterId });
-                    }
-                    else
-                    {
-                        return RedirectToAction("BranchesHome", "Branches", new { errorMsg = LangText.checkConnection });
-                    }
+                    return RedirectToAction("AllocateCounterServiceHome", new { counterId = allocateCounterService.counterId });
                 }
             }
             catch (Exception ex)
@@ -138,7 +132,7 @@ namespace BankCP.Controllers
         /// <summary>
         /// Get counters for services that are not allocated to current selected counter
         /// </summary>
-        public bool FillAllocateBag(int counterId)
+        public int FillAllocateBag(int counterId)
         {
             try
             {
@@ -148,31 +142,38 @@ namespace BankCP.Controllers
                 List<Models.ServiceAllocate> lstServiceAllocate = new List<ServiceAllocate>();
                 List<BusinessObjects.Models.Service> lstServices = bALAllocateCounterService.selectNotAllocateServicesByBankId((((BusinessObjects.Models.User)Session["UserObj"]).bankId));
                 List<BusinessObjects.Models.AllocateCounterService> lstAllocateCounterService = bALAllocateCounterService.selectAllocateCounterService(counterId);
-                if (lstAllocateCounterService != null && bALCommon.checkExist("tblCounters", counterId))
+                if (lstAllocateCounterService != null)
                 {
-                    foreach (var item in lstServices)
+                    if (bALCommon.checkExist("tblCounters", counterId))
                     {
-                        if (lstAllocateCounterService.Where(x => x.serviceId == item.id).FirstOrDefault() != null)
+                        foreach (var item in lstServices)
                         {
-                            item.isDeleted = true;
+                            if (lstAllocateCounterService.Where(x => x.serviceId == item.id).FirstOrDefault() != null)
+                            {
+                                item.isDeleted = true;
+                            }
+                            else
+                            {
+                                lstServiceAllocate.Add(new ServiceAllocate(item.id, item.enName, item.arName, counterId, null));
+                            }
                         }
-                        else
-                        {
-                            lstServiceAllocate.Add(new ServiceAllocate(item.id, item.enName, item.arName, counterId, null));
-                        }
+                        ViewBag.AllocateId = new SelectList(lstServiceAllocate, "id", System.Globalization.CultureInfo.CurrentCulture.ToString() == "en" ? "enName" : "arName");
+                        return 1;
                     }
-                    ViewBag.AllocateId = new SelectList(lstServiceAllocate, "id", System.Globalization.CultureInfo.CurrentCulture.ToString() == "en" ? "enName" : "arName");
-                    return true;
+                    else
+                    {
+                        return 2;
+                    }
                 }
                 else
                 {
-                    return false;
+                    return 0;
                 }
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return false;
+                return 0;
             }
         }
         #endregion

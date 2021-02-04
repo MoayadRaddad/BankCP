@@ -16,6 +16,7 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             <div class="col-md-4">
+                @Html.LabelFor(model => model.enName, new { @class = "center-block label-forms" })
                 <div class="wrap-input100">
                     @Html.EditorFor(model => model.enName, new { htmlAttributes = new { @class = "input100", placeholder = LangText.enName } })
                     <span class="focus-input100"></span>
@@ -26,6 +27,7 @@
 
         <div class="form-group">
             <div class="col-md-4">
+                @Html.LabelFor(model => model.arName, new { @class = "center-block label-forms" })
                 <div class="wrap-input100">
                     @Html.EditorFor(model => model.arName, new { htmlAttributes = new { @class = "input100", placeholder = LangText.arName } })
                     <span class="focus-input100"></span>
@@ -35,14 +37,14 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.type, LangText.type, htmlAttributes: new { @class = "control-label col-md-1 font-label" })
+            @Html.LabelFor(model => model.type, LangText.type, htmlAttributes: new { @class = "col-md-1 font-label-check" })
             <div class="col-md-3">
                 @Html.DropDownListFor(model => model.type, new SelectList(new List<string> { "Teller", "Customer Service" }), new { @class = "form-control" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.active, LangText.active, htmlAttributes: new { @class = "control-label col-md-1 font-label" })
+            @Html.LabelFor(model => model.active, LangText.active, htmlAttributes: new { @class = "col-md-1 font-label-check" })
             <div class="col-md-1">
                 <div class="checkbox">
                     @Html.EditorFor(model => model.active)

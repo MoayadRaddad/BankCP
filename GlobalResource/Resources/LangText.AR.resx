@@ -121,19 +121,19 @@
     <value>عن الموقع</value>
   </data>
   <data name="active" xml:space="preserve">
-    <value>فعال</value>
+    <value>مفعل</value>
   </data>
   <data name="add" xml:space="preserve">
-    <value>أضافة</value>
+    <value>إضافة</value>
   </data>
   <data name="addBranch" xml:space="preserve">
-    <value>أضافة فرع</value>
+    <value>إضافة فرع</value>
   </data>
   <data name="addCounter" xml:space="preserve">
-    <value>أضافة نافذة</value>
+    <value>إضافة نافذة</value>
   </data>
   <data name="addService" xml:space="preserve">
-    <value>أضافة خدمة</value>
+    <value>إضافة خدمة</value>
   </data>
   <data name="allocateCounterService" xml:space="preserve">
     <value>تحديد الخدمات للنوافذ</value>
@@ -142,7 +142,7 @@
     <value>بوابة تكوين البنك</value>
   </data>
   <data name="arName" xml:space="preserve">
-    <value>الأسم باللغة العربية</value>
+    <value>الإسم باللغة العربية</value>
   </data>
   <data name="backToBranches" xml:space="preserve">
     <value>الرجوع الى الفروع</value>
@@ -157,7 +157,7 @@
     <value>الرجوع الى صفحة تسجيل الدخول</value>
   </data>
   <data name="bankName" xml:space="preserve">
-    <value>اسم البنك</value>
+    <value>إسم البنك</value>
   </data>
   <data name="branch" xml:space="preserve">
     <value>فرع</value>
@@ -178,16 +178,16 @@
     <value>النوافذ</value>
   </data>
   <data name="create" xml:space="preserve">
-    <value>أنشاء</value>
+    <value>إنشاء</value>
   </data>
   <data name="createBranch" xml:space="preserve">
-    <value>أنشاء فرع جديد</value>
+    <value>إنشاء فرع جديد</value>
   </data>
   <data name="createCounter" xml:space="preserve">
-    <value>أنشاء نافذة جديدة</value>
+    <value>إنشاء نافذة جديدة</value>
   </data>
   <data name="createService" xml:space="preserve">
-    <value>أنشاء خدمة جديدة</value>
+    <value>إنشاء خدمة جديدة</value>
   </data>
   <data name="delete" xml:space="preserve">
     <value>حذف</value>
@@ -211,22 +211,22 @@
     <value>تعديل الخدمة</value>
   </data>
   <data name="enName" xml:space="preserve">
-    <value>الأسم باللغة الأنجليزية</value>
+    <value>الإسم باللغة الإنجليزية</value>
   </data>
   <data name="errorArName" xml:space="preserve">
-    <value>حقل الأسم باللغة العربية مطلوب</value>
+    <value>حقل الإسم باللغة العربية مطلوب</value>
   </data>
   <data name="errorBankName" xml:space="preserve">
-    <value>حقل اسم البنك مطلوب</value>
+    <value>حقل إسم البنك مطلوب</value>
   </data>
   <data name="errorDetail" xml:space="preserve">
     <value>حدث خطأ أثناء معالجة طلبك</value>
   </data>
   <data name="errorEnName" xml:space="preserve">
-    <value>حقل الأسم باللغة الأنجليزية مطلوب</value>
+    <value>حقل الإسم باللغة الإنجليزية مطلوب</value>
   </data>
   <data name="errorMax" xml:space="preserve">
-    <value>يجب ان لا يزيد حجم النص عن 100 حرف</value>
+    <value>يجب أن لا يزيد حجم النص عن 100 حرف</value>
   </data>
   <data name="errorMsg" xml:space="preserve">
     <value>خطأ</value>
@@ -235,7 +235,7 @@
     <value>حقل كلمة السر مطلوب</value>
   </data>
   <data name="errorRange" xml:space="preserve">
-    <value>يجب ان تكون القيمة ما بين 1 - 100</value>
+    <value>يجب أن تكون القيمة ما بين 1 - 100</value>
   </data>
   <data name="errorTickets" xml:space="preserve">
     <value>حقل التذاكر مطلوب</value>
@@ -244,13 +244,13 @@
     <value>حقل النوع مطلوب</value>
   </data>
   <data name="errorUserName" xml:space="preserve">
-    <value>حقل أسم المستخدم مطلوب</value>
+    <value>حقل إسم المستخدم مطلوب</value>
   </data>
   <data name="home" xml:space="preserve">
     <value>الرئيسية</value>
   </data>
   <data name="itemDeleted" xml:space="preserve">
-    <value>شخص ما بالفعل حذف هذا العنصر</value>
+    <value>شخص ما قام بالفعل بحذف هذا العنصر</value>
   </data>
   <data name="language" xml:space="preserve">
     <value>ar</value>
@@ -262,10 +262,10 @@
     <value>تسجيل الدخول</value>
   </data>
   <data name="loginMessage" xml:space="preserve">
-    <value>اسم البنك أو اسم المستخدم أو كلمة المرور غير صحيحة</value>
+    <value>إسم البنك أو إسم المستخدم أو كلمة المرور غير صحيحة</value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>الأسم</value>
+    <value>الإسم</value>
   </data>
   <data name="password" xml:space="preserve">
     <value>كلمة السر</value>
@@ -280,10 +280,10 @@
     <value>خدمة</value>
   </data>
   <data name="serviceArName" xml:space="preserve">
-    <value>أسم الخدمة باللغة العربية</value>
+    <value>إسم الخدمة باللغة العربية</value>
   </data>
   <data name="serviceEnName" xml:space="preserve">
-    <value> أسم الخدمة باللغة الأنجليزية</value>
+    <value> إسم الخدمة باللغة الإنجليزية</value>
   </data>
   <data name="services" xml:space="preserve">
     <value>الخدمات</value>
@@ -298,7 +298,7 @@
     <value>النوع</value>
   </data>
   <data name="userName" xml:space="preserve">
-    <value>اسم المستخدم</value>
+    <value>إسم المستخدم</value>
   </data>
   <data name="users" xml:space="preserve">
     <value>المستخدمين</value>

@@ -45,16 +45,23 @@ namespace BankCP.Controllers
                 {
                     BusinessAccessLayer.BALLogin.BALLogin bALLogin = new BusinessAccessLayer.BALLogin.BALLogin();
                     pUser = bALLogin.userLogin(pUser);
-                    if (pUser != null && pUser.id != 0)
+                    if (pUser != null)
                     {
-                        Session["UserObj"] = pUser;
-                        FormsAuthentication.SetAuthCookie(pUser.userName, false);
-                        return RedirectToAction("BranchesHome", "Branches", new { bankId = pUser.bankId });
+                        if (pUser.id != 0)
+                        {
+                            Session["UserObj"] = pUser;
+                            FormsAuthentication.SetAuthCookie(pUser.userName, false);
+                            return RedirectToAction("BranchesHome", "Branches", new { bankId = pUser.bankId });
+                        }
+                        else
+                        {
+                            ViewBag.loginMsg = GlobalResource.Resources.LangText.loginMessage;
+                            return View();
+                        }
                     }
                     else
                     {
-                        ViewBag.loginMsg = GlobalResource.Resources.LangText.loginMessage;
-                        return View();
+                        return View("Error");
                     }
                 }
                 else

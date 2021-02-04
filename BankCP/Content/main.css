@@ -583,7 +583,7 @@ th, td {
 }
 
 .table100-body {
-    max-height: 585px;
+    max-height: 400px;
     overflow: auto;
 }
 
@@ -887,7 +887,7 @@ th, td {
 
 .title-custom {
     text-align: center;
-    padding-top: 50px;
+    padding-top: 25px;
 }
 
 
@@ -938,4 +938,20 @@ th, td {
 .multi-drop-div {
     display: flex;
     padding: 25px 0px;
+}
+
+.label-forms {
+    font-size: 17px !important;
+    color: #403866;
+}
+
+.font-label-check {
+    padding-top: 5px;
+    font-size: 17px !important;
+    color: #403866;
+}
+
+.dropdown-mul-2 {
+    width: 90% !important;
+    padding: 0px 5px;
 }
