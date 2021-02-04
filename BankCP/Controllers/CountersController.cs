@@ -15,11 +15,12 @@ namespace BankCP.Controllers
         /// <summary>
         /// Get counters for selected branch from database and return counterHome view
         /// </summary>
-        public ActionResult CounterHome(int branchId)
+        public ActionResult CounterHome(int branchId, string errorMsg = null)
         {
             try
             {
                 ViewBag.branchId = branchId;
+                ViewBag.connectionMsg = errorMsg;
                 BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
                 BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
                 List<BusinessObjects.Models.Counter> lstCounters = bALCounter.selectCountersByBranchId(branchId);
@@ -29,8 +30,7 @@ namespace BankCP.Controllers
                 }
                 else
                 {
-                    ViewBag.connectionMsg = LangText.checkConnection;
-                    return RedirectToAction("BranchesHome", "Branches");
+                    return RedirectToAction("BranchesHome", "Branches", new { errorMsg = LangText.itemDeleted });
                 }
             }
             catch (Exception ex)
@@ -71,7 +71,7 @@ namespace BankCP.Controllers
                     counter = bALCounter.insertCounter(counter);
                     if (counter == null || counter.id == 0)
                     {
-                        ViewBag.connectionMsg = LangText.checkConnection;
+                        return RedirectToAction("CounterHome", "Counters", new { branchId = branchId, errorMsg = LangText.checkConnection });
                     }
                     return RedirectToAction("CounterHome", "Counters", new { branchId = branchId });
                 }
@@ -120,8 +120,7 @@ namespace BankCP.Controllers
                 }
                 else
                 {
-                    ViewBag.connectionMsg = LangText.checkConnection;
-                    return RedirectToAction("CounterHome", "Counters", new { branchId = branchId });
+                    return RedirectToAction("CounterHome", "Counters", new { branchId = branchId, errorMsg = LangText.checkConnection });
                 }
             }
             catch (Exception ex)
@@ -144,9 +143,9 @@ namespace BankCP.Controllers
                     BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
                     BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
                     counter = bALCounter.updateCounter(counter);
-                    if (counter == null && bALCommon.checkExist("tblCounters", counter.id))
+                    if (counter == null || !bALCommon.checkExist("tblCounters", counter.id))
                     {
-                        ViewBag.connectionMsg = LangText.itemDeleted;
+                        return RedirectToAction("CounterHome", "Counters", new { branchId = counter.branchId, errorMsg = LangText.itemDeleted });
                     }
                     return RedirectToAction("CounterHome", "Counters", new { branchId = counter.branchId });
                 }

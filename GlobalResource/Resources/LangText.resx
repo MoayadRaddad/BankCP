@@ -166,7 +166,7 @@
     <value>Branches</value>
   </data>
   <data name="checkConnection" xml:space="preserve">
-    <value>يرجى التحقق من اتصالك بقاعدة البيانات</value>
+    <value>Please check your connection to the database</value>
   </data>
   <data name="contact" xml:space="preserve">
     <value>Contact</value>

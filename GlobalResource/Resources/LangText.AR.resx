@@ -166,7 +166,7 @@
     <value>الفروع</value>
   </data>
   <data name="checkConnection" xml:space="preserve">
-    <value />
+    <value>يرجى التحقق من اتصالك بقاعدة البيانات</value>
   </data>
   <data name="contact" xml:space="preserve">
     <value>للتواصل</value>

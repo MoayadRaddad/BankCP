@@ -16,10 +16,11 @@ namespace BankCP.Controllers
         /// Get branches for current user bank from database and return brancheshome view
         /// </summary>
         [HttpGet]
-        public ActionResult BranchesHome()
+        public ActionResult BranchesHome(string errorMsg = null)
         {
             try
             {
+                ViewBag.connectionMsg = errorMsg;
                 BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
                 BusinessAccessLayer.BALBranches.BALBranches bALBranches = new BusinessAccessLayer.BALBranches.BALBranches();
                 List<BusinessObjects.Models.Branch> lstBranches = bALBranches.selectBranchesByBankId(((BusinessObjects.Models.User)Session["UserObj"]).bankId);
@@ -29,8 +30,7 @@ namespace BankCP.Controllers
                 }
                 else
                 {
-                    ViewBag.connectionMsg = LangText.checkConnection;
-                    return RedirectToAction("login", "Login");
+                    return RedirectToAction("login", "Login", new { errorMsg = LangText.itemDeleted });
                 }
             }
             catch (Exception ex)
@@ -71,7 +71,7 @@ namespace BankCP.Controllers
                     branch = bALBranches.insertBranch(branch);
                     if (branch == null || branch.id == 0)
                     {
-                        ViewBag.connectionMsg = LangText.checkConnection;
+                        return RedirectToAction("BranchesHome", "Branches", new { errorMsg = LangText.checkConnection });
                     }
                     return RedirectToAction("BranchesHome", "Branches");
                 }
@@ -120,8 +120,7 @@ namespace BankCP.Controllers
                 }
                 else
                 {
-                    ViewBag.connectionMsg = LangText.itemDeleted;
-                    return RedirectToAction("BranchesHome", "Branches");
+                    return RedirectToAction("BranchesHome", "Branches", new { errorMsg = LangText.itemDeleted });
                 }
             }
             catch (Exception ex)
@@ -144,9 +143,9 @@ namespace BankCP.Controllers
                     BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
                     BusinessAccessLayer.BALBranches.BALBranches bALBranches = new BusinessAccessLayer.BALBranches.BALBranches();
                     branch = bALBranches.updateBranch(branch);
-                    if (branch == null && bALCommon.checkExist("tblCounters", branch.id))
+                    if (branch == null || !bALCommon.checkExist("tblCounters", branch.id))
                     {
-                        ViewBag.connectionMsg = LangText.itemDeleted;
+                        return RedirectToAction("BranchesHome", "Branches", new { errorMsg = LangText.itemDeleted });
                     }
                     return RedirectToAction("BranchesHome", "Branches");
                 }

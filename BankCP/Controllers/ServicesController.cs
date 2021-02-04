@@ -16,10 +16,11 @@ namespace BankCP.Controllers
         /// Get services for current user bank from database and return ServiceHome view
         /// </summary>
         [HttpGet]
-        public ActionResult ServiceHome()
+        public ActionResult ServiceHome(string errorMsg = null)
         {
             try
             {
+                ViewBag.connectionMsg = errorMsg;
                 BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
                 BusinessAccessLayer.BALService.BALService bALService = new BusinessAccessLayer.BALService.BALService();
                 List<BusinessObjects.Models.Service> lstServices = bALService.selectServicesByBankId(((BusinessObjects.Models.User)Session["UserObj"]).bankId);
@@ -29,8 +30,7 @@ namespace BankCP.Controllers
                 }
                 else
                 {
-                    ViewBag.connectionMsg = LangText.checkConnection;
-                    return RedirectToAction("BranchesHome", "Branches");
+                    return RedirectToAction("BranchesHome", "Branches", new { errorMsg = LangText.itemDeleted });
                 }
             }
             catch (Exception ex)
@@ -71,7 +71,7 @@ namespace BankCP.Controllers
                     service = bALServices.insertService(service);
                     if (service == null || service.id == 0)
                     {
-                        ViewBag.connectionMsg = LangText.checkConnection;
+                        return RedirectToAction("ServiceHome", "Services", new { errorMsg = LangText.checkConnection });
                     }
                     return RedirectToAction("ServiceHome", "Services");
                 }
@@ -120,8 +120,7 @@ namespace BankCP.Controllers
                 }
                 else
                 {
-                    ViewBag.connectionMsg = LangText.itemDeleted;
-                    return RedirectToAction("ServiceHome", "Services");
+                    return RedirectToAction("ServiceHome", "Services", new { errorMsg = LangText.itemDeleted });
                 }
             }
             catch (Exception ex)
@@ -144,9 +143,9 @@ namespace BankCP.Controllers
                     BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
                     BusinessAccessLayer.BALService.BALService bALServices = new BusinessAccessLayer.BALService.BALService();
                     Service = bALServices.updateService(Service);
-                    if (Service == null && bALCommon.checkExist("tblService", Service.id))
+                    if (Service == null || !bALCommon.checkExist("tblService", Service.id))
                     {
-                        ViewBag.connectionMsg = LangText.itemDeleted;
+                        return RedirectToAction("ServiceHome", "Services", new { errorMsg = LangText.itemDeleted });
                     }
                     return RedirectToAction("ServiceHome", "Services");
                 }

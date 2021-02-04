@@ -205,7 +205,7 @@ namespace GlobalResource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to يرجى التحقق من اتصالك بقاعدة البيانات.
+        ///   Looks up a localized string similar to Please check your connection to the database.
         /// </summary>
         public static string checkConnection {
             get {

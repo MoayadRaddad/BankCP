@@ -17,18 +17,18 @@ namespace BankCP.Controllers
         /// Get counters for services that are not allocated to current selected counter from database and return AllocateCounterServiceHome view
         /// </summary>
         [HttpGet]
-        public ActionResult AllocateCounterServiceHome(int counterId)
+        public ActionResult AllocateCounterServiceHome(int counterId, string errorMsg = null)
         {
             try
             {
+                ViewBag.connectionMsg = errorMsg;
                 if (FillAllocateBag(counterId))
                 {
                     return View();
                 }
                 else
                 {
-                    ViewBag.connectionMsg = LangText.checkConnection;
-                    return RedirectToAction("BranchesHome", "Branches");
+                    return RedirectToAction("BranchesHome", "Branches", new { errorMsg = LangText.itemDeleted });
                 }
             }
             catch (Exception ex)
@@ -57,18 +57,17 @@ namespace BankCP.Controllers
                         }
                         else
                         {
-                            ViewBag.connectionMsg = LangText.checkConnection;
-                            return RedirectToAction("BranchesHome", "Branches");
+                            return RedirectToAction("BranchesHome", "Branches", new { errorMsg = LangText.checkConnection });
                         }
                     }
                     else
                     {
-                        return View();
+                        return RedirectToAction("AllocateCounterServiceHome", new { counterId = lstServiceAllocate.counterId, errorMsg = LangText.itemDeleted });
                     }
                 }
                 else
                 {
-                    return View();
+                    return RedirectToAction("AllocateCounterServiceHome", new { counterId = lstServiceAllocate.counterId });
                 }
             }
             catch (Exception ex)
@@ -93,8 +92,7 @@ namespace BankCP.Controllers
                 }
                 else
                 {
-                    ViewBag.connectionMsg = LangText.checkConnection;
-                    return RedirectToAction("BranchesHome", "Branches");
+                    return RedirectToAction("BranchesHome", "Branches", new { errorMsg = LangText.checkConnection });
                 }
             }
             catch (Exception ex)
@@ -125,8 +123,7 @@ namespace BankCP.Controllers
                     }
                     else
                     {
-                        ViewBag.connectionMsg = LangText.checkConnection;
-                        return RedirectToAction("BranchesHome", "Branches");
+                        return RedirectToAction("BranchesHome", "Branches", new { errorMsg = LangText.checkConnection });
                     }
                 }
             }
