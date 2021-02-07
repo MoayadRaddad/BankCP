@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessObjects", "Business
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLayer", "DataAccessLayer\DataAccessLayer.csproj", "{D3303827-6507-4DDC-B048-ABF77AEAE87B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankCP", "BankCP\BankCP.csproj", "{4DDE4D2C-E520-4A8C-8FC2-38487ADEA8A0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankConfigurationPortal", "BankCP\BankConfigurationPortal.csproj", "{4DDE4D2C-E520-4A8C-8FC2-38487ADEA8A0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalResource", "GlobalResource\GlobalResource.csproj", "{870E9BF0-8490-43CF-A3CC-2D88618A5F91}"
 EndProject

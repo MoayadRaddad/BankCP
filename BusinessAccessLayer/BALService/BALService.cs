@@ -60,23 +60,31 @@ namespace BusinessAccessLayer.BALService
                 return null;
             }
         }
-        public int deleteServiceById(int ServiceId)
+        public BusinessObjects.Models.ResultsEnum deleteServiceById(int ServiceId)
         {
             try
             {
                 using (TransactionScope scope = new TransactionScope())
                 {
                     DataAccessLayer.DALService.DALService dALServices = new DataAccessLayer.DALService.DALService();
-                    dALServices.deleteAllocateCounterServiceByServiceId(ServiceId);
-                    dALServices.deleteServiceById(ServiceId);
+                    BusinessObjects.Models.ResultsEnum checkDelete = dALServices.deleteAllocateCounterServiceByServiceId(ServiceId);
+                    if(checkDelete == BusinessObjects.Models.ResultsEnum.notDeleted)
+                    {
+                        return BusinessObjects.Models.ResultsEnum.notDeleted;
+                    }
+                    checkDelete = dALServices.deleteServiceById(ServiceId);
+                    if (checkDelete == BusinessObjects.Models.ResultsEnum.notDeleted)
+                    {
+                        return BusinessObjects.Models.ResultsEnum.notDeleted;
+                    }
                     scope.Complete();
                 }
-                return 1;
+                return BusinessObjects.Models.ResultsEnum.deleted;
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return 0;
+                return BusinessObjects.Models.ResultsEnum.notDeleted;
             }
         }
     }

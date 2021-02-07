@@ -23,7 +23,7 @@ namespace BusinessAccessLayer.BALAllocateCounterService
                 return null;
             }
         }
-        public int insertAllocateCounterService(List<int> lstService, int counterId)
+        public BusinessObjects.Models.ResultsEnum insertAllocateCounterService(List<int> lstService, int counterId)
         {
             try
             {
@@ -32,38 +32,34 @@ namespace BusinessAccessLayer.BALAllocateCounterService
                 {
                     foreach (int serviceId in lstService)
                     {
-                        int insertCheck = dALAllocateCounterService.insertAllocateCounterService(serviceId, counterId);
-                        if (insertCheck == 0)
+                        BusinessObjects.Models.ResultsEnum insertCheck = dALAllocateCounterService.insertAllocateCounterService(serviceId, counterId);
+                        if (insertCheck == BusinessObjects.Models.ResultsEnum.notInserted)
                         {
-                            return 0;
+                            return BusinessObjects.Models.ResultsEnum.notInserted;
                         }
                     }
                     scope.Complete();
                 }
-                return 1;
+                return BusinessObjects.Models.ResultsEnum.inserted;
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return 0;
+                return BusinessObjects.Models.ResultsEnum.notInserted;
             }
         }
-        public int deleteAllocateCounterService(int allocateId)
+        public BusinessObjects.Models.ResultsEnum deleteAllocateCounterService(int allocateId)
         {
             try
             {
                 DataAccessLayer.DALAllocateCounterService.DALAllocateCounterService dALAllocateCounterService = new DataAccessLayer.DALAllocateCounterService.DALAllocateCounterService();
-                int insertCheck = dALAllocateCounterService.deleteAllocateCounterService(allocateId);
-                if (insertCheck == 0)
-                {
-                    return 0;
-                }
-                return 1;
+                BusinessObjects.Models.ResultsEnum deleteCheck = dALAllocateCounterService.deleteAllocateCounterService(allocateId);
+                return deleteCheck;
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return 0;
+                return BusinessObjects.Models.ResultsEnum.notDeleted;
             }
         }
         public List<BusinessObjects.Models.Service> selectNotAllocateServicesByBankId(int pBankId)

@@ -292,7 +292,7 @@
     <value>تسجيل الخروج</value>
   </data>
   <data name="ticket" xml:space="preserve">
-    <value>تذكرة</value>
+    <value>العدد الأقصى للتذكرة</value>
   </data>
   <data name="type" xml:space="preserve">
     <value>النوع</value>

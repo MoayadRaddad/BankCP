@@ -22,7 +22,7 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        using (Html.BeginForm("DeleteAllocateCounterService", "Allocate", item))
+                        using (Html.BeginForm("Delete", "Allocate", item))
                         {
                             <tr class="row100 body">
                                 <td class="cell100 column1">

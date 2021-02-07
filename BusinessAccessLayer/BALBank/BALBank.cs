@@ -35,5 +35,29 @@ namespace BusinessAccessLayer.BALBank
                 return null;
             }
         }
+        ////sql transaction scope test
+        //public static int insertBankTestScope()
+        //{
+        //    try
+        //    {
+        //        using (TransactionScope scope = new TransactionScope())
+        //        {
+        //            DataAccessLayer.DALBank.DALBank dALbank = new DataAccessLayer.DALBank.DALBank();
+        //            BusinessObjects.Models.Bank bank = new BusinessObjects.Models.Bank();
+        //            bank.name = "s";
+        //            dALbank.insertBank(bank);
+        //            throw new IndexOutOfRangeException();
+        //            dALbank.insertBank(bank);
+        //            scope.Complete();
+        //        }
+        //        return 1;
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ExceptionsWriter.saveExceptionToLogFile(ex);
+        //        return 0;
+        //    }
+        //}
     }
 }

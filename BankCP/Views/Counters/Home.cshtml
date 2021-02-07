@@ -8,7 +8,7 @@
 <h1 class="title-custom">@LangText.counters</h1>
 
 <p>
-    @Html.ActionLink(LangText.createCounter, "AddCounter", new { branchId = ViewBag.branchId }, new { @class = "button4" })
+    @Html.ActionLink(LangText.createCounter, "Add", new { branchId = ViewBag.branchId }, new { @class = "button4" })
 </p>
 
 <div class="wrap-table100">
@@ -39,7 +39,7 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        using (Html.BeginForm("DeleteCounter", "Counters", new { counterId = item.id, branchId = item.branchId }))
+                        using (Html.BeginForm("Delete", "Counters", new { counterId = item.id, branchId = item.branchId }))
                         {
                             <tr class="row100 body">
                                 <td class="cell100 column1">
@@ -55,8 +55,8 @@
                                     @Html.DisplayFor(modelItem => item.type)
                                 </td>
                                 <td class="cell100 column5">
-                                    @Html.ActionLink(LangText.edit, "EditCounter", new { counterId = item.id, branchId = item.branchId }) |
-                                    @Html.ActionLink(LangText.services, "AllocateCounterServiceHome", "Allocate", new { counterId = item.id }, null) |
+                                    @Html.ActionLink(LangText.edit, "Edit", new { counterId = item.id, branchId = item.branchId }) |
+                                    @Html.ActionLink(LangText.services, "Home", "Allocate", new { counterId = item.id }, null) |
                                     <input type="submit" value="@LangText.delete " class="buttonLink" onclick="return confirm('Are you sure you want to delete @item.enName');" />
                                 </td>
                             </tr>
@@ -66,5 +66,5 @@
             </table>
         </div>
     </div>
-    @Html.ActionLink(LangText.backToBranches, "BranchesHome", "Branches", null, new { @class = "button4" })
+    @Html.ActionLink(LangText.backToBranches, "Home", "Branches", null, new { @class = "button4" })
 </div>

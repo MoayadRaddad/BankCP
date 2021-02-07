@@ -20,9 +20,8 @@ namespace BusinessObjects.Models
         [Required(ErrorMessageResourceName = "errorTickets", ErrorMessageResourceType = typeof(GlobalResource.Resources.LangText))]
         [Display(Name = "ticket", ResourceType = typeof(GlobalResource.Resources.LangText))]
         [Range(1, 100, ErrorMessageResourceName = "errorRange", ErrorMessageResourceType = typeof(GlobalResource.Resources.LangText))]
-        public int tickets { get; set; }
+        public int maxNumOfTickets { get; set; }
         public int bankId { get; set; }
         public bool isDeleted { get; set; }
-        public List<int> AllocateId { get; set; }
     }
 }

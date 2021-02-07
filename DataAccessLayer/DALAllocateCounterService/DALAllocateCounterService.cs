@@ -46,7 +46,7 @@ namespace DataAccessLayer.DALAllocateCounterService
                 return null;
             }
         }
-        public int insertAllocateCounterService(int serviceId, int counterId)
+        public BusinessObjects.Models.ResultsEnum insertAllocateCounterService(int serviceId, int counterId)
         {
             try
             {
@@ -57,17 +57,17 @@ namespace DataAccessLayer.DALAllocateCounterService
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
                 if(Convert.ToInt32(dBHelper.executeScalar(pquery, screenParams)) != 0)
                 {
-                    return 1;
+                    return BusinessObjects.Models.ResultsEnum.inserted;
                 }
                 else
                 {
-                    return 0;
+                    return BusinessObjects.Models.ResultsEnum.notInserted;
                 }
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return 0;
+                return BusinessObjects.Models.ResultsEnum.notInserted;
             }
         }
         public List<BusinessObjects.Models.Service> selectNotAllocateServicesByBankId(int pBankId)
@@ -89,7 +89,7 @@ namespace DataAccessLayer.DALAllocateCounterService
                         service.enName = dataRow["enName"].ToString();
                         service.arName = dataRow["arName"].ToString();
                         service.active = Convert.ToBoolean(dataRow["active"]);
-                        service.tickets = Convert.ToInt32(dataRow["tickets"]);
+                        service.maxNumOfTickets = Convert.ToInt32(dataRow["tickets"]);
                         service.bankId = Convert.ToInt32(dataRow["bankId"]);
                         lstServices.Add(service);
                     }
@@ -106,7 +106,7 @@ namespace DataAccessLayer.DALAllocateCounterService
                 return null;
             }
         }
-        public int deleteAllocateCounterService(int allocateId)
+        public BusinessObjects.Models.ResultsEnum deleteAllocateCounterService(int allocateId)
         {
             try
             {
@@ -116,12 +116,12 @@ namespace DataAccessLayer.DALAllocateCounterService
                 allocateParams.Add(new SqlParameter("@id", allocateId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
                 dBHelper.executeNonQuery(pquery, allocateParams);
-                return 1;
+                return BusinessObjects.Models.ResultsEnum.deleted;
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return 0;
+                return BusinessObjects.Models.ResultsEnum.notDeleted;
             }
         }
     }

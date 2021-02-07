@@ -15,7 +15,7 @@ namespace BusinessCommon.ExceptionsWriter
         {
             try
             {
-                string filePath = System.AppDomain.CurrentDomain.BaseDirectory + "Exceptions.json";
+                string filePath = System.AppDomain.CurrentDomain.BaseDirectory + "/App_Data/Exceptions.json";
                 using (StreamWriter writer = File.AppendText(filePath))
                 {
                     while (ex != null)

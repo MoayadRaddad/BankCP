@@ -5,12 +5,14 @@
     ViewBag.Title = LangText.branches;
 }
 <h1 class="title-custom">@LangText.branches</h1>
+<div class="row p-l-30 p-b-10 p-r-30">
+    @Html.ActionLink(LangText.createBranch, "Add", null, new { @class = "button4" })
+    @Html.ActionLink(LangText.services, "Home", "Services", null, new { @class = "button4 revert-float" })
+</div>
 <div class="row p-b-10">
     <div class="col-md-3 padding-lang">
-        @Html.ActionLink(LangText.createBranch, "AddBranch", null, new { @class = "button4" })
     </div>
     <div class="col-2 revert-float">
-        @Html.ActionLink(LangText.services, "ServiceHome", "Services", null, new { @class = "button4" })
     </div>
 </div>
 <div class="wrap-table100">
@@ -38,7 +40,7 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        using (Html.BeginForm("DeleteBranch", "Branches", new { branchId = item.id }))
+                        using (Html.BeginForm("Delete", "Branches", new { branchId = item.id }))
                         {
                             <tr class="row100 body">
                                 <td class="cell100 column1">
@@ -51,8 +53,8 @@
                                     @Html.DisplayFor(modelItem => item.active)
                                 </td>
                                 <td class="cell100 column4">
-                                    @Html.ActionLink(LangText.edit, "EditBranch", new { branchId = item.id }) |
-                                    @Html.ActionLink(LangText.counters, "CounterHome", "Counters", new { branchId = item.id }, null) |
+                                    @Html.ActionLink(LangText.edit, "Edit", new { branchId = item.id }) |
+                                    @Html.ActionLink(LangText.counters, "Home", "Counters", new { branchId = item.id }, null) |
                                     <input type="submit" value="@LangText.delete " class="buttonLink" onclick="return confirm('Are you sure you want to delete @item.enName');" />
                                 </td>
                             </tr>

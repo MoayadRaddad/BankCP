@@ -1,11 +1,11 @@
-﻿@model BusinessObjects.Models.Service
+﻿@model BusinessObjects.Models.Branch
 @using GlobalResource.Resources
 
 @{
-    ViewBag.Title = LangText.addService;
+    ViewBag.Title = LangText.addBranch;
 }
 
-<h2>@LangText.addService</h2>
+<h2>@LangText.addBranch</h2>
 
 @using (Html.BeginForm())
 {
@@ -37,19 +37,8 @@
         </div>
 
         <div class="form-group">
-            <div class="col-md-4">
-                @Html.LabelFor(model => model.tickets, new { @class = "center-block label-forms" })
-                <div class="wrap-input100">
-                    @Html.EditorFor(model => model.tickets, new { htmlAttributes = new { @class = "input100", placeholder = LangText.ticket } })
-                    <span class="focus-input100"></span>
-                    @Html.ValidationMessageFor(model => model.tickets, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.active, LangText.active, htmlAttributes: new { @class = "col-md-1 font-label-check" })
-            <div class="col-md-1">
+            @Html.LabelFor(model => model.active, LangText.active, htmlAttributes: new { @class = "col-md-1 col-sm-6 col-xs-6 font-label-check" })
+            <div class="col-md-1 col-sm-6 col-xs-6">
                 <div class="checkbox">
                     @Html.EditorFor(model => model.active)
                     @Html.ValidationMessageFor(model => model.active, "", new { @class = "text-danger" })
@@ -59,7 +48,7 @@
 
         <div class="form-group">
             <div class="col-md-4">
-                @Html.ActionLink(LangText.backToList, "ServiceHome", null, new { @class = "button4" })
+                @Html.ActionLink(LangText.backToList, "Home", null, new { @class = "button4" })
                 <input type="submit" value="@LangText.create " class="button4 revert-float" />
             </div>
         </div>

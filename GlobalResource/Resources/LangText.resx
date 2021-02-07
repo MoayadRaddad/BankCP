@@ -291,11 +291,8 @@
   <data name="signOut" xml:space="preserve">
     <value>Sign-Out</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
-  </data>
   <data name="ticket" xml:space="preserve">
-    <value>Ticket</value>
+    <value>Maximum number of ticket</value>
   </data>
   <data name="type" xml:space="preserve">
     <value>Type</value>

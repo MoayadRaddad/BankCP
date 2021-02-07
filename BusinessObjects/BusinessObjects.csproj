@@ -49,6 +49,7 @@
     <Compile Include="Models\Button.cs" />
     <Compile Include="Models\Counter.cs" />
     <Compile Include="Models\IssueTicketButton.cs" />
+    <Compile Include="Models\ResultsEnum.cs" />
     <Compile Include="Models\Screen.cs" />
     <Compile Include="Models\Service.cs" />
     <Compile Include="Models\ShowMessageButton.cs" />

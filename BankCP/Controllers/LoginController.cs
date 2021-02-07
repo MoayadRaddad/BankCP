@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 
-namespace BankCP.Controllers
+namespace BankConfigurationPortal.Controllers
 {
     [AllowAnonymous]
     public class LoginController : Controller
@@ -20,9 +20,11 @@ namespace BankCP.Controllers
         {
             try
             {
+                ////sql transaction scope test
+                //int s = BusinessAccessLayer.BALBank.BALBank.insertBankTestScope();
                 if (Session["UserObj"] != null)
                 {
-                    return RedirectToAction("BranchesHome", "Branches", new { bankId = ((BusinessObjects.Models.User)Session["UserObj"]).bankId });
+                    return RedirectToAction("Home", "Branches");
                 }
                 return View();
             }
@@ -51,7 +53,7 @@ namespace BankCP.Controllers
                         {
                             Session["UserObj"] = pUser;
                             FormsAuthentication.SetAuthCookie(pUser.userName, false);
-                            return RedirectToAction("BranchesHome", "Branches", new { bankId = pUser.bankId });
+                            return RedirectToAction("Home", "Branches");
                         }
                         else
                         {
@@ -78,13 +80,17 @@ namespace BankCP.Controllers
         /// <summary>
         /// Clear session and signout from form authentication
         /// </summary>
-        [HttpGet]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult logout()
         {
             try
             {
-                Session.Clear();
-                FormsAuthentication.SignOut();
+                if (ModelState.IsValid)
+                {
+                    Session.Clear();
+                    FormsAuthentication.SignOut();
+                }
                 return RedirectToAction("login");
             }
             catch (Exception ex)

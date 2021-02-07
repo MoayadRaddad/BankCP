@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 
 
-namespace BankCP.Controllers
+namespace BankConfigurationPortal.Controllers
 {
     [AllowAnonymous]
     public class LangController : Controller

@@ -10,12 +10,12 @@ namespace BusinessAccessLayer.BALBranches
 {
     public class BALBranches
     {
-        public BusinessObjects.Models.Branch selectBranchesById(int branchId)
+        public BusinessObjects.Models.Branch selectBranchById(int branchId)
         {
             try
             {
                 DataAccessLayer.DALBranches.DALBranches dALBranches = new DataAccessLayer.DALBranches.DALBranches();
-                return dALBranches.selectBranchesById(branchId);
+                return dALBranches.selectBranchById(branchId);
             }
             catch (Exception ex)
             {
@@ -62,23 +62,31 @@ namespace BusinessAccessLayer.BALBranches
                 return null;
             }
         }
-        public int deleteBranchById(int branchId)
+        public BusinessObjects.Models.ResultsEnum deleteBranchById(int branchId)
         {
             try
             {
                 using (TransactionScope scope = new TransactionScope())
                 {
                     DataAccessLayer.DALBranches.DALBranches dALBranches = new DataAccessLayer.DALBranches.DALBranches();
-                    dALBranches.deleteCountersByBranchId(branchId);
-                    dALBranches.deleteBranchById(branchId);
+                    BusinessObjects.Models.ResultsEnum checkDelete = dALBranches.deleteCountersByBranchId(branchId);
+                    if(checkDelete == BusinessObjects.Models.ResultsEnum.notDeleted)
+                    {
+                        return BusinessObjects.Models.ResultsEnum.notDeleted;
+                    }
+                    checkDelete = dALBranches.deleteBranchById(branchId);
+                    if (checkDelete == BusinessObjects.Models.ResultsEnum.notDeleted)
+                    {
+                        return BusinessObjects.Models.ResultsEnum.notDeleted;
+                    }
                     scope.Complete();
                 }
-                return 1;
+                return BusinessObjects.Models.ResultsEnum.deleted;
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return 0;
+                return BusinessObjects.Models.ResultsEnum.notDeleted;
             }
         }
     }

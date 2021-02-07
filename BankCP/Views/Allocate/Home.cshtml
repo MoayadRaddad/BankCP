@@ -1,8 +1,8 @@
-﻿@model BankCP.Models.ServiceAllocate
+﻿@model BankConfigurationPortal.Models.ServiceAllocate
 @using GlobalResource.Resources
 
 @{
-    ViewBag.Title = "AllocateCounterServiceHome";
+    ViewBag.Title = "Home";
 }
 
 <h1 class="title-custom">@LangText.allocateCounterService </h1>
@@ -23,7 +23,7 @@
 
 
 @{Html.RenderAction("_AllocateCounterServiceList", new { ViewBag.counterId });}
-@Html.ActionLink(LangText.backToBranches, "BranchesHome", "Branches", null, new { @class = "button4" })
+@Html.ActionLink(LangText.backToBranches, "Home", "Branches", null, new { @class = "button4" })
 
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/bootstrap")

@@ -38,23 +38,28 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink(LangText.applicationName, "BranchesHome", "Branches", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink(LangText.applicationName, "Home", "Branches", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    @{
-                        if (LangText.languageText == "English")
-                        {
-                            <li class="revert-float">@Html.ActionLink(LangText.languageText, "Change", "Lang", new { lang = "En" }, new { style = "font-size: 17px;" })</li>
-                        }
-                        else
-                        {
-                            <li class="revert-float">@Html.ActionLink(LangText.languageText, "Change", "Lang", new { lang = "Ar" }, new { style = "font-size: 18px;" })</li>
-                        }
+                    @if (LangText.languageText == "English")
+                    {
+                        <li class="revert-float">@Html.ActionLink(LangText.languageText, "Change", "Lang", new { lang = "En" }, new { style = "font-size: 17px;" })</li>
+                    }
+                    else
+                    {
+                        <li class="revert-float">@Html.ActionLink(LangText.languageText, "Change", "Lang", new { lang = "Ar" }, new { style = "font-size: 18px;" })</li>
+                    }
+                    @using (Html.BeginForm("logout", "Login", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
                         if (Session["UserObj"] != null)
                         {
-                            <li class="revert-float">@Html.ActionLink(LangText.signOut, "logout", "Login", null, new { style = "font-size: 18px;" })</li>
+                            <li class="revert-float">
+                                <input type="submit" value="@LangText.signOut" class="input-custom"/>
+                            </li>
                         }
+                    }
                     }
                 </ul>
             </div>

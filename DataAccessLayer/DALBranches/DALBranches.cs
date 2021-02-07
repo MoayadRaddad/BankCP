@@ -11,7 +11,7 @@ namespace DataAccessLayer.DALBranches
 {
     public class DALBranches
     {
-        public BusinessObjects.Models.Branch selectBranchesById(int branchId)
+        public BusinessObjects.Models.Branch selectBranchById(int branchId)
         {
             try
             {
@@ -117,7 +117,7 @@ namespace DataAccessLayer.DALBranches
                 return null;
             }
         }
-        public int deleteBranchById(int branchId)
+        public BusinessObjects.Models.ResultsEnum deleteBranchById(int branchId)
         {
             try
             {
@@ -127,15 +127,15 @@ namespace DataAccessLayer.DALBranches
                 screenParams.Add(new SqlParameter("@id", branchId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
                 dBHelper.executeNonQuery(pquery, screenParams);
-                return 1;
+                return BusinessObjects.Models.ResultsEnum.deleted;
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return 0;
+                return BusinessObjects.Models.ResultsEnum.notDeleted;
             }
         }
-        public int deleteCountersByBranchId(int branchId)
+        public BusinessObjects.Models.ResultsEnum deleteCountersByBranchId(int branchId)
         {
             try
             {
@@ -145,12 +145,12 @@ namespace DataAccessLayer.DALBranches
                 screenParams.Add(new SqlParameter("@branchId", branchId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
                 dBHelper.executeNonQueryProc(pquery, screenParams);
-                return 1;
+                return BusinessObjects.Models.ResultsEnum.deleted;
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return 0;
+                return BusinessObjects.Models.ResultsEnum.notDeleted;
             }
         }
     }

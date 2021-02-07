@@ -62,23 +62,31 @@ namespace BusinessAccessLayer.BALCounter
                 return null;
             }
         }
-        public int deleteCounterById(int counterId)
+        public BusinessObjects.Models.ResultsEnum deleteCounterById(int counterId)
         {
             try
             {
                 using (TransactionScope scope = new TransactionScope())
                 {
                     DataAccessLayer.DALCounter.DALCounter dALCounter = new DataAccessLayer.DALCounter.DALCounter();
-                    dALCounter.deleteAllocateCounterServiceByCounterId(counterId);
-                    dALCounter.deleteCounterById(counterId);
+                    BusinessObjects.Models.ResultsEnum checkDelete = dALCounter.deleteAllocateCounterServiceByCounterId(counterId);
+                    if (checkDelete == BusinessObjects.Models.ResultsEnum.notDeleted)
+                    {
+                        return BusinessObjects.Models.ResultsEnum.notDeleted;
+                    }
+                    checkDelete = dALCounter.deleteCounterById(counterId);
+                    if (checkDelete == BusinessObjects.Models.ResultsEnum.notDeleted)
+                    {
+                        return BusinessObjects.Models.ResultsEnum.notDeleted;
+                    }
                     scope.Complete();
                 }
-                return 1;
+                return BusinessObjects.Models.ResultsEnum.deleted;
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return 0;
+                return BusinessObjects.Models.ResultsEnum.notDeleted;
             }
         }
     }

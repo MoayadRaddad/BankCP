@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace BankCP.Models
+namespace BankConfigurationPortal.Models
 {
     public class ServiceAllocate
     {

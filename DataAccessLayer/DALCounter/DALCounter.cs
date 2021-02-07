@@ -121,7 +121,7 @@ namespace DataAccessLayer.DALCounter
                 return null;
             }
         }
-        public int deleteAllocateCounterServiceByCounterId(int counterId)
+        public BusinessObjects.Models.ResultsEnum deleteAllocateCounterServiceByCounterId(int counterId)
         {
             try
             {
@@ -131,15 +131,15 @@ namespace DataAccessLayer.DALCounter
                 screnParams.Add(new SqlParameter("@counterId", counterId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
                 dBHelper.executeNonQuery(pquery, screnParams);
-                return 1;
+                return BusinessObjects.Models.ResultsEnum.deleted;
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return 0;
+                return BusinessObjects.Models.ResultsEnum.notDeleted;
             }
         }
-        public int deleteCounterById(int counterId)
+        public BusinessObjects.Models.ResultsEnum deleteCounterById(int counterId)
         {
             try
             {
@@ -149,12 +149,12 @@ namespace DataAccessLayer.DALCounter
                 counterParams.Add(new SqlParameter("@id", counterId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
                 dBHelper.executeNonQuery(pquery, counterParams);
-                return 1;
+                return BusinessObjects.Models.ResultsEnum.deleted;
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return 0;
+                return BusinessObjects.Models.ResultsEnum.notDeleted;
             }
         }
     }

@@ -5,9 +5,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using GlobalResource.Resources;
-using BankCP.Models;
+using BankConfigurationPortal.Models;
 
-namespace BankCP.Controllers
+namespace BankConfigurationPortal.Controllers
 {
     [Authorize]
     public class AllocateController : Controller
@@ -17,21 +17,21 @@ namespace BankCP.Controllers
         /// Get counters for services that are not allocated to current selected counter from database and return AllocateCounterServiceHome view
         /// </summary>
         [HttpGet]
-        public ActionResult AllocateCounterServiceHome(int counterId, string errorMsg = null)
+        public ActionResult Home(int counterId, string errorMsg = null)
         {
             try
             {
                 ViewBag.itemDeleted = errorMsg;
-                int check = FillAllocateBag(counterId);
-                if (check != 0)
+                BusinessObjects.Models.ResultsEnum check = FillAllocateBag(counterId);
+                if (check != BusinessObjects.Models.ResultsEnum.error)
                 {
-                    if (check == 1)
+                    if (check == BusinessObjects.Models.ResultsEnum.filled)
                     {
                         return View();
                     }
                     else
                     {
-                        return RedirectToAction("BranchesHome", "Branches", new { errorMsg = LangText.itemDeleted });
+                        return RedirectToAction("Home", "Branches", new { errorMsg = LangText.itemDeleted });
                     }
                 }
                 else
@@ -49,26 +49,26 @@ namespace BankCP.Controllers
         /// Insert selected services and review new data changes
         /// </summary>
         [HttpPost]
-        public ActionResult AllocateCounterServiceHome(ServiceAllocate lstServiceAllocate)
+        public ActionResult Home(ServiceAllocate lstServiceAllocate)
         {
             try
             {
                 if (lstServiceAllocate.AllocateId != null && lstServiceAllocate.AllocateId.Count > 0)
                 {
                     BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService bALAllocateCounterService = new BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService();
-                    int insertedCheck = bALAllocateCounterService.insertAllocateCounterService(lstServiceAllocate.AllocateId, lstServiceAllocate.counterId);
-                    if (insertedCheck == 1)
+                    BusinessObjects.Models.ResultsEnum insertedCheck = bALAllocateCounterService.insertAllocateCounterService(lstServiceAllocate.AllocateId, lstServiceAllocate.counterId);
+                    if (insertedCheck == BusinessObjects.Models.ResultsEnum.inserted)
                     {
-                        return RedirectToAction("AllocateCounterServiceHome", new { counterId = lstServiceAllocate.counterId });
+                        return RedirectToAction("Home", new { counterId = lstServiceAllocate.counterId });
                     }
                     else
                     {
-                        return RedirectToAction("AllocateCounterServiceHome", new { counterId = lstServiceAllocate.counterId, errorMsg = LangText.itemDeleted });
+                        return RedirectToAction("Home", new { counterId = lstServiceAllocate.counterId, errorMsg = LangText.itemDeleted });
                     }
                 }
                 else
                 {
-                    return RedirectToAction("AllocateCounterServiceHome", new { counterId = lstServiceAllocate.counterId });
+                    return RedirectToAction("Home", new { counterId = lstServiceAllocate.counterId });
                 }
             }
             catch (Exception ex)
@@ -106,19 +106,19 @@ namespace BankCP.Controllers
         /// Delete allocated service for current selected counter
         /// </summary>
         [HttpPost]
-        public ActionResult DeleteAllocateCounterService(BusinessObjects.Models.AllocateCounterService allocateCounterService)
+        public ActionResult Delete(BusinessObjects.Models.AllocateCounterService allocateCounterService)
         {
             try
             {
                 BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService bALAllocateCounterService = new BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService();
-                int DeletedCheck = bALAllocateCounterService.deleteAllocateCounterService(allocateCounterService.id);
-                if (DeletedCheck == 0)
+                BusinessObjects.Models.ResultsEnum DeletedCheck = bALAllocateCounterService.deleteAllocateCounterService(allocateCounterService.id);
+                if (DeletedCheck == BusinessObjects.Models.ResultsEnum.notDeleted)
                 {
                     return View();
                 }
                 else
                 {
-                    return RedirectToAction("AllocateCounterServiceHome", new { counterId = allocateCounterService.counterId });
+                    return RedirectToAction("Home", new { counterId = allocateCounterService.counterId });
                 }
             }
             catch (Exception ex)
@@ -132,7 +132,7 @@ namespace BankCP.Controllers
         /// <summary>
         /// Get counters for services that are not allocated to current selected counter
         /// </summary>
-        public int FillAllocateBag(int counterId)
+        public BusinessObjects.Models.ResultsEnum FillAllocateBag(int counterId)
         {
             try
             {
@@ -158,22 +158,22 @@ namespace BankCP.Controllers
                             }
                         }
                         ViewBag.AllocateId = new SelectList(lstServiceAllocate, "id", System.Globalization.CultureInfo.CurrentCulture.ToString() == "en" ? "enName" : "arName");
-                        return 1;
+                        return BusinessObjects.Models.ResultsEnum.filled;
                     }
                     else
                     {
-                        return 2;
+                        return BusinessObjects.Models.ResultsEnum.notFilled;
                     }
                 }
                 else
                 {
-                    return 0;
+                    return BusinessObjects.Models.ResultsEnum.error;
                 }
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return 0;
+                return BusinessObjects.Models.ResultsEnum.error;
             }
         }
         #endregion

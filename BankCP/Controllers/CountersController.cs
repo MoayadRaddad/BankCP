@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using GlobalResource.Resources;
 
-namespace BankCP.Controllers
+namespace BankConfigurationPortal.Controllers
 {
     [Authorize]
     public class CountersController : Controller
@@ -15,7 +15,7 @@ namespace BankCP.Controllers
         /// <summary>
         /// Get counters for selected branch from database and return counterHome view
         /// </summary>
-        public ActionResult CounterHome(int branchId, string errorMsg = null)
+        public ActionResult Home(int branchId, string errorMsg = null)
         {
             try
             {
@@ -32,7 +32,7 @@ namespace BankCP.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("BranchesHome", "Branches", new { errorMsg = LangText.itemDeleted });
+                        return RedirectToAction("Home", "Branches", new { errorMsg = LangText.itemDeleted });
                     }
                 }
                 else
@@ -50,7 +50,7 @@ namespace BankCP.Controllers
         /// Return AddCounter view
         /// </summary>
         [HttpGet]
-        public ActionResult AddCounter(int branchId)
+        public ActionResult Add(int branchId)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace BankCP.Controllers
         /// insert counter to database
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddCounter(BusinessObjects.Models.Counter counter, int branchId)
+        public ActionResult Add(BusinessObjects.Models.Counter counter, int branchId)
         {
             try
             {
@@ -80,11 +80,11 @@ namespace BankCP.Controllers
                     {
                         if(counter.id != 0)
                         {
-                            return RedirectToAction("CounterHome", "Counters", new { branchId = branchId });
+                            return RedirectToAction("Home", "Counters", new { branchId = branchId });
                         }
                         else
                         {
-                            return RedirectToAction("CounterHome", "Counters", new { branchId = branchId, errorMsg = LangText.checkConnection });
+                            return RedirectToAction("Home", "Counters", new { branchId = branchId, errorMsg = LangText.checkConnection });
                         }
                     }
                     else
@@ -107,13 +107,13 @@ namespace BankCP.Controllers
         /// Delete counter from database
         /// </summary>
         [HttpPost]
-        public ActionResult DeleteCounter(int counterId, int branchId)
+        public ActionResult Delete(int counterId, int branchId)
         {
             try
             {
                 BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
                 bALCounter.deleteCounterById(counterId);
-                return RedirectToAction("CounterHome", "Counters", new { branchId = branchId });
+                return RedirectToAction("Home", "Counters", new { branchId = branchId });
             }
             catch (Exception ex)
             {
@@ -125,7 +125,7 @@ namespace BankCP.Controllers
         /// Return EditCounter view
         /// </summary>
         [HttpGet]
-        public ActionResult EditCounter(int counterId, int branchId)
+        public ActionResult Edit(int counterId, int branchId)
         {
             try
             {
@@ -137,7 +137,7 @@ namespace BankCP.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("CounterHome", "Counters", new { branchId = branchId, errorMsg = LangText.checkConnection });
+                    return RedirectToAction("Home", "Counters", new { branchId = branchId, errorMsg = LangText.checkConnection });
                 }
             }
             catch (Exception ex)
@@ -151,7 +151,7 @@ namespace BankCP.Controllers
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditCounter(BusinessObjects.Models.Counter counter)
+        public ActionResult Edit(BusinessObjects.Models.Counter counter)
         {
             try
             {
@@ -164,11 +164,11 @@ namespace BankCP.Controllers
                     {
                         if(bALCommon.checkExist("tblCounters", counter.id))
                         {
-                            return RedirectToAction("CounterHome", "Counters", new { branchId = counter.branchId });
+                            return RedirectToAction("Home", "Counters", new { branchId = counter.branchId });
                         }
                         else
                         {
-                            return RedirectToAction("CounterHome", "Counters", new { branchId = counter.branchId, errorMsg = LangText.itemDeleted });
+                            return RedirectToAction("Home", "Counters", new { branchId = counter.branchId, errorMsg = LangText.itemDeleted });
                         }
                     }
                     else

@@ -306,16 +306,16 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Login\login.cshtml" />
-    <Content Include="Views\Branches\BranchesHome.cshtml" />
-    <Content Include="Views\Branches\AddBranch.cshtml" />
-    <Content Include="Views\Branches\EditBranch.cshtml" />
-    <Content Include="Views\Services\ServiceHome.cshtml" />
-    <Content Include="Views\Services\AddService.cshtml" />
-    <Content Include="Views\Services\EditService.cshtml" />
-    <Content Include="Views\Counters\CounterHome.cshtml" />
-    <Content Include="Views\Counters\AddCounter.cshtml" />
-    <Content Include="Views\Counters\EditCounter.cshtml" />
-    <Content Include="Views\Allocate\AllocateCounterServiceHome.cshtml" />
+    <Content Include="Views\Branches\Home.cshtml" />
+    <Content Include="Views\Branches\Add.cshtml" />
+    <Content Include="Views\Branches\Edit.cshtml" />
+    <Content Include="Views\Services\Home.cshtml" />
+    <Content Include="Views\Services\Add.cshtml" />
+    <Content Include="Views\Services\Edit.cshtml" />
+    <Content Include="Views\Counters\Home.cshtml" />
+    <Content Include="Views\Counters\Add.cshtml" />
+    <Content Include="Views\Counters\Edit.cshtml" />
+    <Content Include="Views\Allocate\Home.cshtml" />
     <Content Include="Views\Allocate\_AllocateCounterServiceList.cshtml" />
   </ItemGroup>
   <ItemGroup>

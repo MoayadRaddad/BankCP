@@ -7,9 +7,9 @@
 
 <h1 class="title-custom">@LangText.services</h1>
 
-<div class="row p-l-30 p-b-10">
-    @Html.ActionLink(LangText.createService, "AddService", null, new { @class = "button4" })
-    @Html.ActionLink(LangText.branches, "BranchesHome", "Branches", null, new { @class = "button4 revert-float" })
+<div class="row p-l-30 p-b-10 p-r-30">
+    @Html.ActionLink(LangText.createService, "Add", null, new { @class = "button4" })
+    @Html.ActionLink(LangText.branches, "Home", "Branches", null, new { @class = "button4 revert-float" })
 </div>
 
 
@@ -41,7 +41,7 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        using (Html.BeginForm("DeleteService", "Services", new { serviceId = item.id }))
+                        using (Html.BeginForm("Delete", "Services", new { serviceId = item.id }))
                         {
                             <tr class="row100 body">
                                 <td class="cell100 column1">
@@ -54,12 +54,12 @@
                                     @Html.DisplayFor(modelItem => item.active)
                                 </td>
                                 <td class="cell100 column4">
-                                    @Html.DisplayFor(modelItem => item.tickets)
+                                    @Html.DisplayFor(modelItem => item.maxNumOfTickets)
                                 </td>
                                 <td>
                                 </td>
                                 <td class="cell100 column5">
-                                    @Html.ActionLink(LangText.edit, "EditService", new { serviceId = item.id }) |
+                                    @Html.ActionLink(LangText.edit, "Edit", new { serviceId = item.id }) |
                                     <input type="submit" value="@LangText.delete " class="buttonLink" onclick="return confirm('@GlobalResource.Resources.LangText.deleteMsg');" />
                                 </td>
                             </tr>

@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using GlobalResource.Resources;
 
-namespace BankCP.Controllers
+namespace BankConfigurationPortal.Controllers
 {
     [Authorize]
     public class ServicesController : Controller
@@ -16,7 +16,7 @@ namespace BankCP.Controllers
         /// Get services for current user bank from database and return ServiceHome view
         /// </summary>
         [HttpGet]
-        public ActionResult ServiceHome(string errorMsg = null)
+        public ActionResult Home(string errorMsg = null)
         {
             try
             {
@@ -32,7 +32,7 @@ namespace BankCP.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("BranchesHome", "Branches", new { errorMsg = LangText.itemDeleted });
+                        return RedirectToAction("Home", "Branches", new { errorMsg = LangText.itemDeleted });
                     }
                 }
                 else
@@ -50,7 +50,7 @@ namespace BankCP.Controllers
         /// Return AddService view
         /// </summary>
         [HttpGet]
-        public ActionResult AddService()
+        public ActionResult Add()
         {
             try
             {
@@ -67,7 +67,7 @@ namespace BankCP.Controllers
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddService(BusinessObjects.Models.Service service)
+        public ActionResult Add(BusinessObjects.Models.Service service)
         {
             try
             {
@@ -80,11 +80,11 @@ namespace BankCP.Controllers
                     {
                         if(service.id != 0)
                         {
-                            return RedirectToAction("ServiceHome", "Services");
+                            return RedirectToAction("Home", "Services");
                         }
                         else
                         {
-                            return RedirectToAction("ServiceHome", "Services", new { errorMsg = LangText.itemDeleted });
+                            return RedirectToAction("Home", "Services", new { errorMsg = LangText.itemDeleted });
                         }
                     }
                     else
@@ -107,13 +107,13 @@ namespace BankCP.Controllers
         /// Delete service from database
         /// </summary>
         [HttpPost]
-        public ActionResult DeleteService(int serviceId)
+        public ActionResult Delete(int serviceId)
         {
             try
             {
                 BusinessAccessLayer.BALService.BALService bALServices = new BusinessAccessLayer.BALService.BALService();
                 bALServices.deleteServiceById(serviceId);
-                return RedirectToAction("ServiceHome", "Services");
+                return RedirectToAction("Home", "Services");
             }
             catch (Exception ex)
             {
@@ -125,7 +125,7 @@ namespace BankCP.Controllers
         /// Return EditService view
         /// </summary>
         [HttpGet]
-        public ActionResult EditService(int serviceId)
+        public ActionResult Edit(int serviceId)
         {
             try
             {
@@ -137,7 +137,7 @@ namespace BankCP.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("ServiceHome", "Services", new { errorMsg = LangText.itemDeleted });
+                    return RedirectToAction("Home", "Services", new { errorMsg = LangText.itemDeleted });
                 }
             }
             catch (Exception ex)
@@ -151,7 +151,7 @@ namespace BankCP.Controllers
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditService(BusinessObjects.Models.Service Service)
+        public ActionResult Edit(BusinessObjects.Models.Service Service)
         {
             try
             {
@@ -164,11 +164,11 @@ namespace BankCP.Controllers
                     {
                         if(bALCommon.checkExist("tblService", Service.id))
                         {
-                            return RedirectToAction("ServiceHome", "Services");
+                            return RedirectToAction("Home", "Services");
                         }
                         else
                         {
-                            return RedirectToAction("ServiceHome", "Services", new { errorMsg = LangText.itemDeleted });
+                            return RedirectToAction("Home", "Services", new { errorMsg = LangText.itemDeleted });
                         }
                     }
                     else

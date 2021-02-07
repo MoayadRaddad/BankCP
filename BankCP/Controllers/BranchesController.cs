@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using GlobalResource.Resources;
 
-namespace BankCP.Controllers
+namespace BankConfigurationPortal.Controllers
 {
     [Authorize]
     public class BranchesController : Controller
@@ -16,7 +16,7 @@ namespace BankCP.Controllers
         /// Get branches for current user bank from database and return brancheshome view
         /// </summary>
         [HttpGet]
-        public ActionResult BranchesHome(string errorMsg = null)
+        public ActionResult Home(string errorMsg = null)
         {
             try
             {
@@ -50,7 +50,7 @@ namespace BankCP.Controllers
         /// Return addbranch view
         /// </summary>
         [HttpGet]
-        public ActionResult AddBranch()
+        public ActionResult Add()
         {
             try
             {
@@ -67,7 +67,7 @@ namespace BankCP.Controllers
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddBranch(BusinessObjects.Models.Branch branch)
+        public ActionResult Add(BusinessObjects.Models.Branch branch)
         {
             try
             {
@@ -80,11 +80,11 @@ namespace BankCP.Controllers
                     {
                         if (branch.id != 0)
                         {
-                            return RedirectToAction("BranchesHome", "Branches");
+                            return RedirectToAction("Home", "Branches");
                         }
                         else
                         {
-                            return RedirectToAction("BranchesHome", "Branches", new { errorMsg = LangText.itemDeleted });
+                            return RedirectToAction("Home", "Branches", new { errorMsg = LangText.itemDeleted });
                         }
                     }
                     else
@@ -107,13 +107,13 @@ namespace BankCP.Controllers
         /// Delete branch from database
         /// </summary>
         [HttpPost]
-        public ActionResult DeleteBranch(int branchId)
+        public ActionResult Delete(int branchId)
         {
             try
             {
                 BusinessAccessLayer.BALBranches.BALBranches bALBranches = new BusinessAccessLayer.BALBranches.BALBranches();
-                bALBranches.deleteBranchById(branchId);
-                return RedirectToAction("BranchesHome", "Branches");
+                BusinessObjects.Models.ResultsEnum checkDeleted = bALBranches.deleteBranchById(branchId);
+                return RedirectToAction("Home", "Branches");
             }
             catch (Exception ex)
             {
@@ -125,19 +125,19 @@ namespace BankCP.Controllers
         /// Return editbranch view
         /// </summary>
         [HttpGet]
-        public ActionResult EditBranch(int branchId)
+        public ActionResult Edit(int branchId)
         {
             try
             {
                 BusinessAccessLayer.BALBranches.BALBranches bALBranches = new BusinessAccessLayer.BALBranches.BALBranches();
-                BusinessObjects.Models.Branch branch = bALBranches.selectBranchesById(branchId);
+                BusinessObjects.Models.Branch branch = bALBranches.selectBranchById(branchId);
                 if (branch != null)
                 {
                     return View(branch);
                 }
                 else
                 {
-                    return RedirectToAction("BranchesHome", "Branches", new { errorMsg = LangText.itemDeleted });
+                    return RedirectToAction("Home", "Branches", new { errorMsg = LangText.itemDeleted });
                 }
             }
             catch (Exception ex)
@@ -151,7 +151,7 @@ namespace BankCP.Controllers
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditBranch(BusinessObjects.Models.Branch branch)
+        public ActionResult Edit(BusinessObjects.Models.Branch branch)
         {
             try
             {
@@ -164,11 +164,11 @@ namespace BankCP.Controllers
                     {
                         if(bALCommon.checkExist("tblBranches", branch.id))
                         {
-                            return RedirectToAction("BranchesHome", "Branches");
+                            return RedirectToAction("Home", "Branches");
                         }
                         else
                         {
-                            return RedirectToAction("BranchesHome", "Branches", new { errorMsg = LangText.itemDeleted });
+                            return RedirectToAction("Home", "Branches", new { errorMsg = LangText.itemDeleted });
                         }
                     }
                     else
