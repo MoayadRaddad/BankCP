@@ -1,10 +1,11 @@
-USE [TSDApp]
-GO
+BEGIN TRANSACTION;  
+  
+BEGIN TRY  
+    -- Generate a constraint violation error.  
+USE [TSDApp2]
 /****** Object:  Table [dbo].[tblAllocateCounterService]    Script Date: 03/02/2021 09:33:08 ******/
 SET ANSI_NULLS ON
-GO
 SET QUOTED_IDENTIFIER ON
-GO
 CREATE TABLE [dbo].[tblAllocateCounterService](
 	[id] [int] IDENTITY(1,1) NOT NULL,
 	[counterId] [int] NULL,
@@ -14,12 +15,9 @@ CREATE TABLE [dbo].[tblAllocateCounterService](
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
-GO
 /****** Object:  Table [dbo].[tblBranches]    Script Date: 03/02/2021 09:33:08 ******/
 SET ANSI_NULLS ON
-GO
 SET QUOTED_IDENTIFIER ON
-GO
 CREATE TABLE [dbo].[tblBranches](
 	[id] [int] IDENTITY(1,1) NOT NULL,
 	[enName] [nvarchar](100) NULL,
@@ -31,12 +29,12 @@ CREATE TABLE [dbo].[tblBranches](
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
-GO
+
 /****** Object:  Table [dbo].[tblCounters]    Script Date: 03/02/2021 09:33:08 ******/
 SET ANSI_NULLS ON
-GO
+
 SET QUOTED_IDENTIFIER ON
-GO
+
 CREATE TABLE [dbo].[tblCounters](
 	[id] [int] IDENTITY(1,1) NOT NULL,
 	[enName] [nvarchar](100) NULL,
@@ -49,14 +47,14 @@ CREATE TABLE [dbo].[tblCounters](
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
-GO
+
 ALTER TABLE [dbo].[tblService]
 ADD arName [nvarchar](max), bankId [int], active [bit], tickets [int];
-go
+
 SET ANSI_NULLS ON
-GO
+
 SET QUOTED_IDENTIFIER ON
-GO
+
 CREATE TABLE [dbo].[tblUsers](
 	[id] [int] IDENTITY(1,1) NOT NULL,
 	[userName] [nvarchar](100) NULL,
@@ -67,53 +65,70 @@ CREATE TABLE [dbo].[tblUsers](
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
-GO
+
 ALTER TABLE [dbo].[tblAllocateCounterService]  WITH CHECK ADD  CONSTRAINT [FK_tblAllocate_Counter_Service_tblCounters] FOREIGN KEY([counterId])
 REFERENCES [dbo].[tblCounters] ([id])
-GO
+
 ALTER TABLE [dbo].[tblAllocateCounterService] CHECK CONSTRAINT [FK_tblAllocate_Counter_Service_tblCounters]
-GO
+
 ALTER TABLE [dbo].[tblAllocateCounterService]  WITH CHECK ADD  CONSTRAINT [FK_tblAllocate_Counter_Service_tblService] FOREIGN KEY([serviceId])
 REFERENCES [dbo].[tblService] ([id])
-GO
+
 ALTER TABLE [dbo].[tblAllocateCounterService] CHECK CONSTRAINT [FK_tblAllocate_Counter_Service_tblService]
-GO
+
 ALTER TABLE [dbo].[tblBranches]  WITH CHECK ADD  CONSTRAINT [FK_tblBranches_tblBanks] FOREIGN KEY([bankId])
 REFERENCES [dbo].[tblBanks] ([id])
-GO
+
 ALTER TABLE [dbo].[tblBranches] CHECK CONSTRAINT [FK_tblBranches_tblBanks]
-GO
+
 ALTER TABLE [dbo].[tblCounters]  WITH CHECK ADD  CONSTRAINT [FK_tblCounters_tblBranches] FOREIGN KEY([branchId])
 REFERENCES [dbo].[tblBranches] ([id])
-GO
+
 ALTER TABLE [dbo].[tblCounters] CHECK CONSTRAINT [FK_tblCounters_tblBranches]
-GO
+
 ALTER TABLE [dbo].[tblService]  WITH CHECK ADD  CONSTRAINT [FK_tblService_tblBanks] FOREIGN KEY([bankId])
 REFERENCES [dbo].[tblBanks] ([id])
-GO
+
 ALTER TABLE [dbo].[tblService] CHECK CONSTRAINT [FK_tblService_tblBanks]
-GO
+
 ALTER TABLE [dbo].[tblUsers]  WITH CHECK ADD  CONSTRAINT [FK_tblUsers_tblBanks] FOREIGN KEY([bankId])
 REFERENCES [dbo].[tblBanks] ([id])
-GO
+
 ALTER TABLE [dbo].[tblUsers] CHECK CONSTRAINT [FK_tblUsers_tblBanks]
-GO
+
 /****** Object:  StoredProcedure [dbo].[sp_Delete_Allocate_Counter]    Script Date: 03/02/2021 09:33:09 ******/
 SET ANSI_NULLS ON
-GO
+
 SET QUOTED_IDENTIFIER ON
-GO
-create proc [dbo].[sp_Delete_Allocate_Counter] 
+
+exec('create proc [dbo].[sp_Delete_Allocate_Counter] 
 @branchId int
-as
+AS
 begin
 delete from tblAllocateCounterService where tblAllocateCounterService.counterId in (select id from tblCounters where branchId = @branchId);
 delete from tblCounters where branchId = @branchId;
-end
-GO
+end')
+
 USE [master]
-GO
-ALTER DATABASE [TSDApp] SET  READ_WRITE 
-USE [TSDApp]
-GO
-sp_rename 'dbo.tblService.name', 'enName', 'COLUMN';
+
+USE [TSDApp2]
+
+exec sp_rename 'dbo.tblService.name', 'enName', 'COLUMN';
+
+END TRY  
+BEGIN CATCH  
+    SELECT   
+        ERROR_NUMBER() AS ErrorNumber  
+        ,ERROR_SEVERITY() AS ErrorSeverity  
+        ,ERROR_STATE() AS ErrorState  
+        ,ERROR_PROCEDURE() AS ErrorProcedure  
+        ,ERROR_LINE() AS ErrorLine  
+        ,ERROR_MESSAGE() AS ErrorMessage;  
+  
+    IF @@TRANCOUNT > 0  
+        ROLLBACK TRANSACTION;  
+END CATCH;  
+  
+IF @@TRANCOUNT > 0  
+    COMMIT TRANSACTION;  
+  
