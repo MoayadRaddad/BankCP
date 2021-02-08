@@ -15,29 +15,42 @@ namespace BankConfigurationPortal.Controllers
         /// <summary>
         /// Get counters for selected branch from database and return counterHome view
         /// </summary>
-        public ActionResult Home(int branchId, string errorMsg = null)
+        public ActionResult Home(int branchId)
         {
             try
             {
+                if (TempData["errorMsg"] != null)
+                {
+                    ViewBag.errorMsg = TempData["errorMsg"];
+                    TempData["errorMsg"] = null;
+                }
                 ViewBag.branchId = branchId;
-                ViewBag.itemDeleted = errorMsg;
                 BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
                 BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
-                List<BusinessObjects.Models.Counter> lstCounters = bALCounter.selectCountersByBranchId(branchId);
+                List<BusinessObjects.Models.Counter> lstCounters = bALCounter.selectCountersByBranchId(branchId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
                 if (lstCounters != null)
                 {
-                    if(bALCommon.checkExist("tblBranches", branchId))
+                    if (lstCounters.Count > 0)
                     {
-                        return View(lstCounters);
+                        if (lstCounters.FirstOrDefault() != null && lstCounters.FirstOrDefault().id != -1)
+                        {
+                            return View(lstCounters);
+                        }
+                        else
+                        {
+                            ViewBag.errorMsg = LangText.notAuthorized;
+                            return View();
+                        }
                     }
                     else
                     {
-                        return RedirectToAction("Home", "Branches", new { errorMsg = LangText.itemDeleted });
+                        return View();
                     }
                 }
                 else
                 {
-                    return View("Error");
+                    ViewBag.errorMsg = LangText.checkConnection;
+                    return View();
                 }
             }
             catch (Exception ex)
@@ -78,18 +91,20 @@ namespace BankConfigurationPortal.Controllers
                     counter = bALCounter.insertCounter(counter);
                     if (counter != null)
                     {
-                        if(counter.id != 0)
+                        if (counter.id != 0)
                         {
                             return RedirectToAction("Home", "Counters", new { branchId = branchId });
                         }
                         else
                         {
-                            return RedirectToAction("Home", "Counters", new { branchId = branchId, errorMsg = LangText.checkConnection });
+                            ViewBag.errorMsg = LangText.notAuthorized;
+                            return View();
                         }
                     }
                     else
                     {
-                        return View("Error");
+                        ViewBag.errorMsg = LangText.checkConnection;
+                        return View();
                     }
                 }
                 else
@@ -112,8 +127,21 @@ namespace BankConfigurationPortal.Controllers
             try
             {
                 BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
-                bALCounter.deleteCounterById(counterId);
-                return RedirectToAction("Home", "Counters", new { branchId = branchId });
+                BusinessObjects.Models.ResultsEnum checkDeleted = bALCounter.deleteCounterById(counterId, branchId);
+                if (checkDeleted == BusinessObjects.Models.ResultsEnum.deleted)
+                {
+                    return RedirectToAction("Home", new { branchId = branchId });
+                }
+                else if (checkDeleted == BusinessObjects.Models.ResultsEnum.notAuthorize)
+                {
+                    TempData["errorMsg"] = LangText.notAuthorized;
+                    return RedirectToAction("Home", new { branchId = branchId });
+                }
+                else
+                {
+                    TempData["errorMsg"] = LangText.itemDeleted;
+                    return RedirectToAction("Home", new { branchId = branchId });
+                }
             }
             catch (Exception ex)
             {
@@ -130,14 +158,31 @@ namespace BankConfigurationPortal.Controllers
             try
             {
                 BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
-                BusinessObjects.Models.Counter counter = bALCounter.selectCountersById(counterId);
+                BusinessObjects.Models.Counter counter = bALCounter.selectCounterById(counterId);
                 if (counter != null)
                 {
-                    return View(counter);
+                    if (counter.id != -1)
+                    {
+                        if (counter.branchId == branchId)
+                        {
+                            return View(counter);
+                        }
+                        else
+                        {
+                            ViewBag.errorMsg = LangText.notAuthorized;
+                            return View();
+                        }
+                    }
+                    else
+                    {
+                        ViewBag.errorMsg = LangText.itemDeleted;
+                        return View();
+                    }
                 }
                 else
                 {
-                    return RedirectToAction("Home", "Counters", new { branchId = branchId, errorMsg = LangText.checkConnection });
+                    ViewBag.errorMsg = LangText.checkConnection;
+                    return View();
                 }
             }
             catch (Exception ex)
@@ -162,18 +207,20 @@ namespace BankConfigurationPortal.Controllers
                     counter = bALCounter.updateCounter(counter);
                     if (counter != null)
                     {
-                        if(bALCommon.checkExist("tblCounters", counter.id))
+                        if (counter.id != 0)
                         {
                             return RedirectToAction("Home", "Counters", new { branchId = counter.branchId });
                         }
                         else
                         {
-                            return RedirectToAction("Home", "Counters", new { branchId = counter.branchId, errorMsg = LangText.itemDeleted });
+                            ViewBag.errorMsg = LangText.itemDeleted;
+                            return View();
                         }
                     }
                     else
                     {
-                        return View("Error");
+                        ViewBag.errorMsg = LangText.checkConnection;
+                        return View();
                     }
                 }
                 else

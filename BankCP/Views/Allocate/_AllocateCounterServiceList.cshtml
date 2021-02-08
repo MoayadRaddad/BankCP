@@ -20,21 +20,24 @@
         <div class="table100-body js-pscroll">
             <table>
                 <tbody>
-                    @foreach (var item in Model)
+                    @if (Model != null)
                     {
-                        using (Html.BeginForm("Delete", "Allocate", item))
+                        foreach (var item in Model)
                         {
-                            <tr class="row100 body">
-                                <td class="cell100 column1">
-                                    @Html.DisplayFor(modelItem => item.serviceEnName)
-                                </td>
-                                <td class="cell100 column2">
-                                    @Html.DisplayFor(modelItem => item.serviceArName)
-                                </td>
-                                <td class="cell100 column3">
-                                    <input type="submit" value="@LangText.delete " class="buttonLink" />
-                                </td>
-                            </tr>
+                            using (Html.BeginForm("Delete", "Allocate", new { id = item.id, counterId = item.counterId }, FormMethod.Post, new { @class = "formAlert" }))
+                            {
+                                <tr class="row100 body">
+                                    <td class="cell100 column1">
+                                        @Html.DisplayFor(modelItem => item.serviceEnName)
+                                    </td>
+                                    <td class="cell100 column2">
+                                        @Html.DisplayFor(modelItem => item.serviceArName)
+                                    </td>
+                                    <td class="cell100 column3">
+                                        <input type="submit" value="@LangText.delete " class="buttonLink" />
+                                    </td>
+                                </tr>
+                            }
                         }
                     }
                 </tbody>

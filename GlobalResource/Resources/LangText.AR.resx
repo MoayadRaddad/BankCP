@@ -267,6 +267,9 @@
   <data name="name" xml:space="preserve">
     <value>الإسم</value>
   </data>
+  <data name="notAuthorized" xml:space="preserve">
+    <value>أنت غير مخول للوصول إلى هذا العنصر</value>
+  </data>
   <data name="password" xml:space="preserve">
     <value>كلمة السر</value>
   </data>

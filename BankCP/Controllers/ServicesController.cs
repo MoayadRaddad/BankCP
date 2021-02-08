@@ -16,28 +16,41 @@ namespace BankConfigurationPortal.Controllers
         /// Get services for current user bank from database and return ServiceHome view
         /// </summary>
         [HttpGet]
-        public ActionResult Home(string errorMsg = null)
+        public ActionResult Home()
         {
             try
             {
-                ViewBag.itemDeleted = errorMsg;
+                if (TempData["errorMsg"] != null)
+                {
+                    ViewBag.errorMsg = TempData["errorMsg"];
+                    TempData["errorMsg"] = null;
+                }
                 BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
                 BusinessAccessLayer.BALService.BALService bALService = new BusinessAccessLayer.BALService.BALService();
                 List<BusinessObjects.Models.Service> lstServices = bALService.selectServicesByBankId(((BusinessObjects.Models.User)Session["UserObj"]).bankId);
-                if (lstServices != null )
+                if (lstServices != null)
                 {
-                    if(bALCommon.checkExist("tblBanks", ((BusinessObjects.Models.User)Session["UserObj"]).bankId))
+                    if (lstServices.Count > 0)
                     {
-                        return View(lstServices);
+                        if (lstServices.FirstOrDefault() != null && lstServices.FirstOrDefault().id != -1)
+                        {
+                            return View(lstServices);
+                        }
+                        else
+                        {
+                            ViewBag.errorMsg = LangText.notAuthorized;
+                            return View();
+                        }
                     }
                     else
                     {
-                        return RedirectToAction("Home", "Branches", new { errorMsg = LangText.itemDeleted });
+                        return View();
                     }
                 }
                 else
                 {
-                    return View("Error");
+                    ViewBag.errorMsg = LangText.checkConnection;
+                    return View();
                 }
             }
             catch (Exception ex)
@@ -78,18 +91,20 @@ namespace BankConfigurationPortal.Controllers
                     service = bALServices.insertService(service);
                     if (service != null)
                     {
-                        if(service.id != 0)
+                        if (service.id != 0)
                         {
                             return RedirectToAction("Home", "Services");
                         }
                         else
                         {
-                            return RedirectToAction("Home", "Services", new { errorMsg = LangText.itemDeleted });
+                            ViewBag.errorMsg = LangText.notAuthorized;
+                            return View();
                         }
                     }
                     else
                     {
-                        return View("Error");
+                        ViewBag.errorMsg = LangText.checkConnection;
+                        return View();
                     }
                 }
                 else
@@ -112,8 +127,21 @@ namespace BankConfigurationPortal.Controllers
             try
             {
                 BusinessAccessLayer.BALService.BALService bALServices = new BusinessAccessLayer.BALService.BALService();
-                bALServices.deleteServiceById(serviceId);
-                return RedirectToAction("Home", "Services");
+                BusinessObjects.Models.ResultsEnum checkDeleted = bALServices.deleteServiceById(serviceId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
+                if (checkDeleted == BusinessObjects.Models.ResultsEnum.deleted)
+                {
+                    return RedirectToAction("Home");
+                }
+                else if (checkDeleted == BusinessObjects.Models.ResultsEnum.notAuthorize)
+                {
+                    TempData["errorMsg"] = LangText.notAuthorized;
+                    return RedirectToAction("Home");
+                }
+                else
+                {
+                    TempData["errorMsg"] = LangText.itemDeleted;
+                    return RedirectToAction("Home");
+                }
             }
             catch (Exception ex)
             {
@@ -130,14 +158,31 @@ namespace BankConfigurationPortal.Controllers
             try
             {
                 BusinessAccessLayer.BALService.BALService bALServices = new BusinessAccessLayer.BALService.BALService();
-                BusinessObjects.Models.Service service = bALServices.selectServicesById(serviceId);
+                BusinessObjects.Models.Service service = bALServices.selectServiceById(serviceId);
                 if (service != null)
                 {
-                    return View(service);
+                    if (service.id != -1)
+                    {
+                        if (service.bankId == ((BusinessObjects.Models.User)Session["UserObj"]).bankId)
+                        {
+                            return View(service);
+                        }
+                        else
+                        {
+                            ViewBag.errorMsg = LangText.notAuthorized;
+                            return View();
+                        }
+                    }
+                    else
+                    {
+                        ViewBag.errorMsg = LangText.itemDeleted;
+                        return View();
+                    }
                 }
                 else
                 {
-                    return RedirectToAction("Home", "Services", new { errorMsg = LangText.itemDeleted });
+                    ViewBag.errorMsg = LangText.checkConnection;
+                    return View();
                 }
             }
             catch (Exception ex)
@@ -151,7 +196,7 @@ namespace BankConfigurationPortal.Controllers
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(BusinessObjects.Models.Service Service)
+        public ActionResult Edit(BusinessObjects.Models.Service service)
         {
             try
             {
@@ -159,21 +204,23 @@ namespace BankConfigurationPortal.Controllers
                 {
                     BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
                     BusinessAccessLayer.BALService.BALService bALServices = new BusinessAccessLayer.BALService.BALService();
-                    Service = bALServices.updateService(Service);
-                    if (Service != null)
+                    service = bALServices.updateService(service);
+                    if (service != null)
                     {
-                        if(bALCommon.checkExist("tblService", Service.id))
+                        if (service.id != 0)
                         {
                             return RedirectToAction("Home", "Services");
                         }
                         else
                         {
-                            return RedirectToAction("Home", "Services", new { errorMsg = LangText.itemDeleted });
+                            ViewBag.errorMsg = LangText.itemDeleted;
+                            return View();
                         }
                     }
                     else
                     {
-                        return View("Error");
+                        ViewBag.errorMsg = LangText.checkConnection;
+                        return View();
                     }
                 }
                 else

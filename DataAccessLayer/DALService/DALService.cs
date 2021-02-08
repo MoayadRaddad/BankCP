@@ -9,7 +9,7 @@ namespace DataAccessLayer.DALService
 {
     public class DALService
     {
-        public BusinessObjects.Models.Service selectServicesById(int serviceId)
+        public BusinessObjects.Models.Service selectServiceById(int serviceId)
         {
             try
             {
@@ -20,15 +20,23 @@ namespace DataAccessLayer.DALService
                 DataSet dataSet = dBHelper.executeAdapter(pquery, serviceParams);
                 if (dataSet != null)
                 {
-                    DataRow dataRow = dataSet.Tables[0].Rows[0];
                     BusinessObjects.Models.Service service = new BusinessObjects.Models.Service();
-                    service.id = Convert.ToInt32(dataRow["id"]);
-                    service.enName = dataRow["enName"].ToString();
-                    service.arName = dataRow["arName"].ToString();
-                    service.active = Convert.ToBoolean(dataRow["active"]);
-                    service.maxNumOfTickets = Convert.ToInt32(dataRow["maxNumOfTickets"]);
-                    service.bankId = Convert.ToInt32(dataRow["bankId"]);
-                    return service;
+                    if (dataSet.Tables[0].Rows.Count != 0)
+                    {
+                        DataRow dataRow = dataSet.Tables[0].Rows[0];
+                        service.id = Convert.ToInt32(dataRow["id"]);
+                        service.enName = dataRow["enName"].ToString();
+                        service.arName = dataRow["arName"].ToString();
+                        service.active = Convert.ToBoolean(dataRow["active"]);
+                        service.maxNumOfTickets = Convert.ToInt32(dataRow["maxNumOfTickets"]);
+                        service.bankId = Convert.ToInt32(dataRow["bankId"]);
+                        return service;
+                    }
+                    else
+                    {
+                        service.id = -1;
+                        return service;
+                    }
                 }
                 else
                 {
@@ -46,23 +54,36 @@ namespace DataAccessLayer.DALService
             try
             {
                 List<BusinessObjects.Models.Service> lstServices = new List<BusinessObjects.Models.Service>();
-                string pquery = "SELECT * FROM tblService where bankId = @bankId";
+                string pquery = "sp_selectServicesByBankId";
                 List<SqlParameter> ServiceParams = new List<SqlParameter>();
                 ServiceParams.Add(new SqlParameter("@bankId", pBankId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
-                DataSet dataSet = dBHelper.executeAdapter(pquery, ServiceParams);
+                DataSet dataSet = dBHelper.executeAdapterProc(pquery, ServiceParams);
                 if (dataSet != null)
                 {
-                    foreach (DataRow dataRow in dataSet.Tables[0].Rows)
+                    if (dataSet.Tables[0].Rows.Count != 0)
                     {
-                        BusinessObjects.Models.Service service = new BusinessObjects.Models.Service();
-                        service.id = Convert.ToInt32(dataRow["id"]);
-                        service.enName = dataRow["enName"].ToString();
-                        service.arName = dataRow["arName"].ToString();
-                        service.active = Convert.ToBoolean(dataRow["active"]);
-                        service.maxNumOfTickets = Convert.ToInt32(dataRow["maxNumOfTickets"]);
-                        service.bankId = Convert.ToInt32(dataRow["bankId"]);
-                        lstServices.Add(service);
+                        if (Convert.ToInt32((dataSet.Tables[0].Rows[0])["id"]) != 0)
+                        {
+                            foreach (DataRow dataRow in dataSet.Tables[0].Rows)
+                            {
+                                BusinessObjects.Models.Service service = new BusinessObjects.Models.Service();
+                                service.id = Convert.ToInt32(dataRow["id"]);
+                                service.enName = dataRow["enName"].ToString();
+                                service.arName = dataRow["arName"].ToString();
+                                service.active = Convert.ToBoolean(dataRow["active"]);
+                                service.maxNumOfTickets = Convert.ToInt32(dataRow["maxNumOfTickets"]);
+                                service.bankId = Convert.ToInt32(dataRow["bankId"]);
+                                lstServices.Add(service);
+                            }
+                        }
+                        else
+                        {
+                            BusinessObjects.Models.Service service = new BusinessObjects.Models.Service();
+                            service.id = -1;
+                            lstServices.Add(service);
+                            return lstServices;
+                        }
                     }
                     return lstServices;
                 }
@@ -81,7 +102,7 @@ namespace DataAccessLayer.DALService
         {
             try
             {
-                string pquery = "insert into tblService OUTPUT INSERTED.IDENTITYCOL  values (@enName,@arName,@bankId,@active,@maxNumOfTickets)";
+                string pquery = "sp_insertService";
                 List<SqlParameter> serviceParams = new List<SqlParameter>();
                 serviceParams.Add(new SqlParameter("@enName", service.enName));
                 serviceParams.Add(new SqlParameter("@arName", service.arName));
@@ -89,7 +110,7 @@ namespace DataAccessLayer.DALService
                 serviceParams.Add(new SqlParameter("@active", service.active));
                 serviceParams.Add(new SqlParameter("@maxNumOfTickets", service.maxNumOfTickets));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
-                service.id = Convert.ToInt32(dBHelper.executeScalar(pquery, serviceParams));
+                service.id = Convert.ToInt32(dBHelper.executeScalarProc(pquery, serviceParams));
                 return service;
             }
             catch (Exception ex)
@@ -102,15 +123,16 @@ namespace DataAccessLayer.DALService
         {
             try
             {
-                string pquery = "update tblservice set enName = @enName,arName = @arName,active = @active,maxNumOfTickets = @maxNumOfTickets where id = @id";
-                List<SqlParameter> screnParams = new List<SqlParameter>();
-                screnParams.Add(new SqlParameter("@id", service.id));
-                screnParams.Add(new SqlParameter("@enName", service.enName));
-                screnParams.Add(new SqlParameter("@arName", service.arName));
-                screnParams.Add(new SqlParameter("@active", service.active));
-                screnParams.Add(new SqlParameter("@maxNumOfTickets", service.maxNumOfTickets));
+                string storedProc = "sp_updateService";
+                List<SqlParameter> serviceParams = new List<SqlParameter>();
+                serviceParams.Add(new SqlParameter("@id", service.id));
+                serviceParams.Add(new SqlParameter("@enName", service.enName));
+                serviceParams.Add(new SqlParameter("@arName", service.arName));
+                serviceParams.Add(new SqlParameter("@active", service.active));
+                serviceParams.Add(new SqlParameter("@maxNumOfTickets", service.maxNumOfTickets));
+                serviceParams.Add(new SqlParameter("@bankId", service.bankId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
-                dBHelper.executeNonQuery(pquery, screnParams);
+                service.id = Convert.ToInt32(dBHelper.executeScalarProc(storedProc, serviceParams));
                 return service;
             }
             catch (Exception ex)
@@ -119,17 +141,32 @@ namespace DataAccessLayer.DALService
                 return null;
             }
         }
-        public BusinessObjects.Models.ResultsEnum deleteAllocateCounterServiceByServiceId(int serviceId)
+        public BusinessObjects.Models.ResultsEnum deleteAllocateCounterServiceByServiceId(int serviceId, int bankId)
         {
             try
             {
-                string pquery = string.Empty;
-                pquery = "delete from tblAllocateCounterService where serviceId = @serviceId";
-                List<SqlParameter> screnParams = new List<SqlParameter>();
-                screnParams.Add(new SqlParameter("@serviceId", serviceId));
+                string storedProc = string.Empty;
+                storedProc = "sp_deleteAllocateCounterServiceByServiceId";
+                List<SqlParameter> serviceParams = new List<SqlParameter>();
+                serviceParams.Add(new SqlParameter("@serviceId", serviceId));
+                serviceParams.Add(new SqlParameter("@bankId", bankId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
-                dBHelper.executeNonQuery(pquery, screnParams);
-                return BusinessObjects.Models.ResultsEnum.deleted;
+                int check = Convert.ToInt32(dBHelper.executeScalarProc(storedProc, serviceParams));
+                if (check != -1)
+                {
+                    if (check != 0)
+                    {
+                        return BusinessObjects.Models.ResultsEnum.deleted;
+                    }
+                    else
+                    {
+                        return BusinessObjects.Models.ResultsEnum.notDeleted;
+                    }
+                }
+                else
+                {
+                    return BusinessObjects.Models.ResultsEnum.notAuthorize;
+                }
             }
             catch (Exception ex)
             {
@@ -137,17 +174,32 @@ namespace DataAccessLayer.DALService
                 return BusinessObjects.Models.ResultsEnum.notDeleted;
             }
         }
-        public BusinessObjects.Models.ResultsEnum deleteServiceById(int serviceId)
+        public BusinessObjects.Models.ResultsEnum deleteServiceById(int serviceId, int bankId)
         {
             try
             {
-                string pquery = string.Empty;
-                pquery = "delete from tblservice where id = @id";
-                List<SqlParameter> screnParams = new List<SqlParameter>();
-                screnParams.Add(new SqlParameter("@id", serviceId));
+                string storedProc = string.Empty;
+                storedProc = "sp_deleteService";
+                List<SqlParameter> serviceParams = new List<SqlParameter>();
+                serviceParams.Add(new SqlParameter("@id", serviceId));
+                serviceParams.Add(new SqlParameter("@bankId", bankId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
-                dBHelper.executeNonQuery(pquery, screnParams);
-                return BusinessObjects.Models.ResultsEnum.deleted;
+                int check = Convert.ToInt32(dBHelper.executeScalarProc(storedProc, serviceParams));
+                if (check != -1)
+                {
+                    if (check != 0)
+                    {
+                        return BusinessObjects.Models.ResultsEnum.deleted;
+                    }
+                    else
+                    {
+                        return BusinessObjects.Models.ResultsEnum.notDeleted;
+                    }
+                }
+                else
+                {
+                    return BusinessObjects.Models.ResultsEnum.notAuthorize;
+                }
             }
             catch (Exception ex)
             {

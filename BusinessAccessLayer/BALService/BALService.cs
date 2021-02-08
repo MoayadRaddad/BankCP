@@ -8,12 +8,12 @@ namespace BusinessAccessLayer.BALService
 {
     public class BALService
     {
-        public BusinessObjects.Models.Service selectServicesById(int ServiceId)
+        public BusinessObjects.Models.Service selectServiceById(int ServiceId)
         {
             try
             {
                 DataAccessLayer.DALService.DALService dALServices = new DataAccessLayer.DALService.DALService();
-                return dALServices.selectServicesById(ServiceId);
+                return dALServices.selectServiceById(ServiceId);
             }
             catch (Exception ex)
             {
@@ -60,26 +60,25 @@ namespace BusinessAccessLayer.BALService
                 return null;
             }
         }
-        public BusinessObjects.Models.ResultsEnum deleteServiceById(int ServiceId)
+        public BusinessObjects.Models.ResultsEnum deleteServiceById(int serviceId, int bankId)
         {
             try
             {
+                BusinessObjects.Models.ResultsEnum checkDelete;
                 using (TransactionScope scope = new TransactionScope())
                 {
                     DataAccessLayer.DALService.DALService dALServices = new DataAccessLayer.DALService.DALService();
-                    BusinessObjects.Models.ResultsEnum checkDelete = dALServices.deleteAllocateCounterServiceByServiceId(ServiceId);
-                    if(checkDelete == BusinessObjects.Models.ResultsEnum.notDeleted)
+                    checkDelete = dALServices.deleteAllocateCounterServiceByServiceId(serviceId, bankId);
+                    if (checkDelete == BusinessObjects.Models.ResultsEnum.deleted)
                     {
-                        return BusinessObjects.Models.ResultsEnum.notDeleted;
+                        checkDelete = dALServices.deleteServiceById(serviceId, bankId);
+                        if (checkDelete == BusinessObjects.Models.ResultsEnum.deleted)
+                        {
+                            scope.Complete();
+                        }
                     }
-                    checkDelete = dALServices.deleteServiceById(ServiceId);
-                    if (checkDelete == BusinessObjects.Models.ResultsEnum.notDeleted)
-                    {
-                        return BusinessObjects.Models.ResultsEnum.notDeleted;
-                    }
-                    scope.Complete();
                 }
-                return BusinessObjects.Models.ResultsEnum.deleted;
+                return checkDelete;
             }
             catch (Exception ex)
             {

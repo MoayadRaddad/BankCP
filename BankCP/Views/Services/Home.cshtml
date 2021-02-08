@@ -39,30 +39,33 @@
         <div class="table100-body js-pscroll">
             <table>
                 <tbody>
-                    @foreach (var item in Model)
+                    @if (Model != null)
                     {
-                        using (Html.BeginForm("Delete", "Services", new { serviceId = item.id }))
+                        foreach (var item in Model)
                         {
-                            <tr class="row100 body">
-                                <td class="cell100 column1">
-                                    @Html.DisplayFor(modelItem => item.enName)
-                                </td>
-                                <td class="cell100 column2">
-                                    @Html.DisplayFor(modelItem => item.arName)
-                                </td>
-                                <td class="cell100 column3">
-                                    @Html.DisplayFor(modelItem => item.active)
-                                </td>
-                                <td class="cell100 column4">
-                                    @Html.DisplayFor(modelItem => item.maxNumOfTickets)
-                                </td>
-                                <td>
-                                </td>
-                                <td class="cell100 column5">
-                                    @Html.ActionLink(LangText.edit, "Edit", new { serviceId = item.id }) |
-                                    <input type="submit" value="@LangText.delete " class="buttonLink" onclick="return confirm('@GlobalResource.Resources.LangText.deleteMsg');" />
-                                </td>
-                            </tr>
+                            using (Html.BeginForm("Delete", "Services", new { serviceId = item.id }, FormMethod.Post, new { @class = "formAlert" }))
+                            {
+                                <tr class="row100 body">
+                                    <td class="cell100 column1">
+                                        @Html.DisplayFor(modelItem => item.enName)
+                                    </td>
+                                    <td class="cell100 column2">
+                                        @Html.DisplayFor(modelItem => item.arName)
+                                    </td>
+                                    <td class="cell100 column3">
+                                        @Html.DisplayFor(modelItem => item.active)
+                                    </td>
+                                    <td class="cell100 column4">
+                                        @Html.DisplayFor(modelItem => item.maxNumOfTickets)
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td class="cell100 column5">
+                                        @Html.ActionLink(LangText.edit, "Edit", new { serviceId = item.id }) |
+                                        <input type="submit" value="@LangText.delete " class="buttonLink" />
+                                    </td>
+                                </tr>
+                            }
                         }
                     }
                 </tbody>

@@ -17,22 +17,27 @@ namespace BankConfigurationPortal.Controllers
         /// Get counters for services that are not allocated to current selected counter from database and return AllocateCounterServiceHome view
         /// </summary>
         [HttpGet]
-        public ActionResult Home(int counterId, string errorMsg = null)
+        public ActionResult Home(int counterId)
         {
             try
             {
-                ViewBag.itemDeleted = errorMsg;
+                if (TempData["errorMsg"] != null)
+                {
+                    ViewBag.errorMsg = TempData["errorMsg"];
+                    TempData["errorMsg"] = null;
+                }
                 BusinessObjects.Models.ResultsEnum check = FillAllocateBag(counterId);
                 if (check != BusinessObjects.Models.ResultsEnum.error)
                 {
-                    if (check == BusinessObjects.Models.ResultsEnum.filled)
+                    if (check == BusinessObjects.Models.ResultsEnum.notAuthorize)
                     {
-                        return View();
+                        ViewBag.errorMsg = LangText.notAuthorized;
                     }
-                    else
+                    else if (check != BusinessObjects.Models.ResultsEnum.filled)
                     {
-                        return RedirectToAction("Home", "Branches", new { errorMsg = LangText.itemDeleted });
+                        ViewBag.errorMsg = LangText.itemDeleted;
                     }
+                    return View();
                 }
                 else
                 {
@@ -56,14 +61,15 @@ namespace BankConfigurationPortal.Controllers
                 if (lstServiceAllocate.AllocateId != null && lstServiceAllocate.AllocateId.Count > 0)
                 {
                     BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService bALAllocateCounterService = new BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService();
-                    BusinessObjects.Models.ResultsEnum insertedCheck = bALAllocateCounterService.insertAllocateCounterService(lstServiceAllocate.AllocateId, lstServiceAllocate.counterId);
+                    BusinessObjects.Models.ResultsEnum insertedCheck = bALAllocateCounterService.insertAllocateCounterService(lstServiceAllocate.AllocateId, lstServiceAllocate.counterId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
                     if (insertedCheck == BusinessObjects.Models.ResultsEnum.inserted)
                     {
                         return RedirectToAction("Home", new { counterId = lstServiceAllocate.counterId });
                     }
                     else
                     {
-                        return RedirectToAction("Home", new { counterId = lstServiceAllocate.counterId, errorMsg = LangText.itemDeleted });
+                        ViewBag.errorMsg = LangText.itemDeleted;
+                        return View();
                     }
                 }
                 else
@@ -86,14 +92,30 @@ namespace BankConfigurationPortal.Controllers
             try
             {
                 BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService bALAllocateCounterService = new BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService();
-                var lstAllocate = bALAllocateCounterService.selectAllocateCounterService(counterId);
+                var lstAllocate = bALAllocateCounterService.selectAllocateCounterService(counterId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
                 if (lstAllocate != null)
                 {
-                    return View(lstAllocate);
+                    if (lstAllocate.Count > 0)
+                    {
+                        if (lstAllocate.FirstOrDefault() != null && lstAllocate.FirstOrDefault().id != -1)
+                        {
+                            return View(lstAllocate);
+                        }
+                        else
+                        {
+                            ViewBag.errorMsg = LangText.notAuthorized;
+                            return View();
+                        }
+                    }
+                    else
+                    {
+                        return View();
+                    }
                 }
                 else
                 {
-                    return View("Error");
+                    ViewBag.errorMsg = LangText.checkConnection;
+                    return View();
                 }
             }
             catch (Exception ex)
@@ -106,19 +128,25 @@ namespace BankConfigurationPortal.Controllers
         /// Delete allocated service for current selected counter
         /// </summary>
         [HttpPost]
-        public ActionResult Delete(BusinessObjects.Models.AllocateCounterService allocateCounterService)
+        public ActionResult Delete(int id, int counterId)
         {
             try
             {
                 BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService bALAllocateCounterService = new BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService();
-                BusinessObjects.Models.ResultsEnum DeletedCheck = bALAllocateCounterService.deleteAllocateCounterService(allocateCounterService.id);
-                if (DeletedCheck == BusinessObjects.Models.ResultsEnum.notDeleted)
+                BusinessObjects.Models.ResultsEnum DeletedCheck = bALAllocateCounterService.deleteAllocateCounterService(id, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
+                if (DeletedCheck == BusinessObjects.Models.ResultsEnum.deleted)
                 {
-                    return View();
+                    return RedirectToAction("Home", new { counterId = counterId });
+                }
+                else if (DeletedCheck == BusinessObjects.Models.ResultsEnum.notAuthorize)
+                {
+                    TempData["errorMsg"] = LangText.notAuthorized;
+                    return RedirectToAction("Home", new { counterId = counterId });
                 }
                 else
                 {
-                    return RedirectToAction("Home", new { counterId = allocateCounterService.counterId });
+                    TempData["errorMsg"] = LangText.itemDeleted;
+                    return RedirectToAction("Home", new { counterId = counterId });
                 }
             }
             catch (Exception ex)
@@ -139,12 +167,13 @@ namespace BankConfigurationPortal.Controllers
                 ViewBag.counterId = counterId;
                 BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
                 BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService bALAllocateCounterService = new BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService();
+                BusinessAccessLayer.BALService.BALService bALService = new BusinessAccessLayer.BALService.BALService();
                 List<Models.ServiceAllocate> lstServiceAllocate = new List<ServiceAllocate>();
-                List<BusinessObjects.Models.Service> lstServices = bALAllocateCounterService.selectNotAllocateServicesByBankId((((BusinessObjects.Models.User)Session["UserObj"]).bankId));
-                List<BusinessObjects.Models.AllocateCounterService> lstAllocateCounterService = bALAllocateCounterService.selectAllocateCounterService(counterId);
+                List<BusinessObjects.Models.Service> lstServices = bALService.selectServicesByBankId(((BusinessObjects.Models.User)Session["UserObj"]).bankId);
+                List<BusinessObjects.Models.AllocateCounterService> lstAllocateCounterService = bALAllocateCounterService.selectAllocateCounterService(counterId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
                 if (lstAllocateCounterService != null)
                 {
-                    if (bALCommon.checkExist("tblCounters", counterId))
+                    if (lstAllocateCounterService.FirstOrDefault() != null && lstAllocateCounterService.FirstOrDefault().id != -1)
                     {
                         foreach (var item in lstServices)
                         {
@@ -162,11 +191,13 @@ namespace BankConfigurationPortal.Controllers
                     }
                     else
                     {
-                        return BusinessObjects.Models.ResultsEnum.notFilled;
+                        ViewBag.AllocateId = new SelectList(lstServiceAllocate, "id", System.Globalization.CultureInfo.CurrentCulture.ToString() == "en" ? "enName" : "arName");
+                        return BusinessObjects.Models.ResultsEnum.notAuthorize;
                     }
                 }
                 else
                 {
+                    ViewBag.AllocateId = new SelectList(lstServiceAllocate, "id", System.Globalization.CultureInfo.CurrentCulture.ToString() == "en" ? "enName" : "arName");
                     return BusinessObjects.Models.ResultsEnum.error;
                 }
             }

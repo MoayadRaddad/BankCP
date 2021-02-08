@@ -11,27 +11,41 @@ namespace DataAccessLayer.DALAllocateCounterService
 {
     public class DALAllocateCounterService
     {
-        public List<BusinessObjects.Models.AllocateCounterService> selectAllocateCounterService(int counterId)
+        public List<BusinessObjects.Models.AllocateCounterService> selectAllocateCounterService(int counterId, int bankId)
         {
             try
             {
                 List<BusinessObjects.Models.AllocateCounterService> lstAllocateCounterService = new List<BusinessObjects.Models.AllocateCounterService>();
-                string pquery = "SELECT tblAllocateCounterService.*,tblService.enName as serviceEnName,tblService.arName as serviceArName FROM tblAllocateCounterService inner join tblService on tblAllocateCounterService.serviceId = tblService.id where tblAllocateCounterService.counterId = @counterId";
+                string pquery = "sp_selectAllocateCounterService";
                 List<SqlParameter> AllocateCounterServiceParams = new List<SqlParameter>();
                 AllocateCounterServiceParams.Add(new SqlParameter("@counterId", counterId));
+                AllocateCounterServiceParams.Add(new SqlParameter("@bankId", bankId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
-                DataSet dataSet = dBHelper.executeAdapter(pquery, AllocateCounterServiceParams);
+                DataSet dataSet = dBHelper.executeAdapterProc(pquery, AllocateCounterServiceParams);
                 if (dataSet != null)
                 {
-                    foreach (DataRow dataRow in dataSet.Tables[0].Rows)
+                    if (dataSet.Tables[0].Rows.Count != 0)
                     {
-                        BusinessObjects.Models.AllocateCounterService allocateCounterService = new BusinessObjects.Models.AllocateCounterService();
-                        allocateCounterService.id = Convert.ToInt32(dataRow["id"]);
-                        allocateCounterService.counterId = Convert.ToInt32(dataRow["counterId"]);
-                        allocateCounterService.serviceId = Convert.ToInt32(dataRow["serviceId"]);
-                        allocateCounterService.serviceEnName = dataRow["serviceEnName"].ToString();
-                        allocateCounterService.serviceArName = dataRow["serviceArName"].ToString();
-                        lstAllocateCounterService.Add(allocateCounterService);
+                        if (Convert.ToInt32((dataSet.Tables[0].Rows[0])["id"]) != 0)
+                        {
+                            foreach (DataRow dataRow in dataSet.Tables[0].Rows)
+                            {
+                                BusinessObjects.Models.AllocateCounterService allocateCounterService = new BusinessObjects.Models.AllocateCounterService();
+                                allocateCounterService.id = Convert.ToInt32(dataRow["id"]);
+                                allocateCounterService.counterId = Convert.ToInt32(dataRow["counterId"]);
+                                allocateCounterService.serviceId = Convert.ToInt32(dataRow["serviceId"]);
+                                allocateCounterService.serviceEnName = dataRow["serviceEnName"].ToString();
+                                allocateCounterService.serviceArName = dataRow["serviceArName"].ToString();
+                                lstAllocateCounterService.Add(allocateCounterService);
+                            }
+                        }
+                        else
+                        {
+                            BusinessObjects.Models.AllocateCounterService allocateCounterService = new BusinessObjects.Models.AllocateCounterService();
+                            allocateCounterService.id = -1;
+                            lstAllocateCounterService.Add(allocateCounterService);
+                            return lstAllocateCounterService;
+                        }
                     }
                     return lstAllocateCounterService;
                 }
@@ -46,16 +60,17 @@ namespace DataAccessLayer.DALAllocateCounterService
                 return null;
             }
         }
-        public BusinessObjects.Models.ResultsEnum insertAllocateCounterService(int serviceId, int counterId)
+        public BusinessObjects.Models.ResultsEnum insertAllocateCounterService(int serviceId, int counterId, int bankId)
         {
             try
             {
-                string pquery = "insert into tblAllocateCounterService OUTPUT INSERTED.IDENTITYCOL  values (@counterId,@serviceId)";
-                List<SqlParameter> screenParams = new List<SqlParameter>();
-                screenParams.Add(new SqlParameter("@counterId", counterId));
-                screenParams.Add(new SqlParameter("@serviceId", serviceId));
+                string pquery = "sp_insertAllocateCounterService";
+                List<SqlParameter> allocateParams = new List<SqlParameter>();
+                allocateParams.Add(new SqlParameter("@counterId", counterId));
+                allocateParams.Add(new SqlParameter("@serviceId", serviceId));
+                allocateParams.Add(new SqlParameter("@bankId", bankId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
-                if(Convert.ToInt32(dBHelper.executeScalar(pquery, screenParams)) != 0)
+                if (Convert.ToInt32(dBHelper.executeScalarProc(pquery, allocateParams)) != 0)
                 {
                     return BusinessObjects.Models.ResultsEnum.inserted;
                 }
@@ -70,53 +85,32 @@ namespace DataAccessLayer.DALAllocateCounterService
                 return BusinessObjects.Models.ResultsEnum.notInserted;
             }
         }
-        public List<BusinessObjects.Models.Service> selectNotAllocateServicesByBankId(int pBankId)
+        public BusinessObjects.Models.ResultsEnum deleteAllocateCounterService(int allocateId, int bankId)
         {
             try
             {
-                List<BusinessObjects.Models.Service> lstServices = new List<BusinessObjects.Models.Service>();
-                string pquery = "SELECT * FROM tblService where bankId = @bankId";
-                List<SqlParameter> ServiceParams = new List<SqlParameter>();
-                ServiceParams.Add(new SqlParameter("@bankId", pBankId));
+                string storedProc = string.Empty;
+                storedProc = "sp_deleteAllocateCounterService";
+                List<SqlParameter> allocateParams = new List<SqlParameter>();
+                allocateParams.Add(new SqlParameter("@id", allocateId));
+                allocateParams.Add(new SqlParameter("@bankId", bankId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
-                DataSet dataSet = dBHelper.executeAdapter(pquery, ServiceParams);
-                if (dataSet != null)
+                int check = Convert.ToInt32(dBHelper.executeScalarProc(storedProc, allocateParams));
+                if (check != -1)
                 {
-                    foreach (DataRow dataRow in dataSet.Tables[0].Rows)
+                    if (check != 0)
                     {
-                        BusinessObjects.Models.Service service = new BusinessObjects.Models.Service();
-                        service.id = Convert.ToInt32(dataRow["id"]);
-                        service.enName = dataRow["enName"].ToString();
-                        service.arName = dataRow["arName"].ToString();
-                        service.active = Convert.ToBoolean(dataRow["active"]);
-                        service.maxNumOfTickets = Convert.ToInt32(dataRow["tickets"]);
-                        service.bankId = Convert.ToInt32(dataRow["bankId"]);
-                        lstServices.Add(service);
+                        return BusinessObjects.Models.ResultsEnum.deleted;
                     }
-                    return lstServices;
+                    else
+                    {
+                        return BusinessObjects.Models.ResultsEnum.notDeleted;
+                    }
                 }
                 else
                 {
-                    return null;
+                    return BusinessObjects.Models.ResultsEnum.notAuthorize;
                 }
-            }
-            catch (Exception ex)
-            {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
-                return null;
-            }
-        }
-        public BusinessObjects.Models.ResultsEnum deleteAllocateCounterService(int allocateId)
-        {
-            try
-            {
-                string pquery = string.Empty;
-                pquery = "delete from tblAllocateCounterService where id = @id";
-                List<SqlParameter> allocateParams = new List<SqlParameter>();
-                allocateParams.Add(new SqlParameter("@id", allocateId));
-                DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
-                dBHelper.executeNonQuery(pquery, allocateParams);
-                return BusinessObjects.Models.ResultsEnum.deleted;
             }
             catch (Exception ex)
             {

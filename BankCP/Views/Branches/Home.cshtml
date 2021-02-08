@@ -38,26 +38,29 @@
         <div class="table100-body js-pscroll">
             <table>
                 <tbody>
-                    @foreach (var item in Model)
+                    @if (Model != null)
                     {
-                        using (Html.BeginForm("Delete", "Branches", new { branchId = item.id }))
+                        foreach (var item in Model)
                         {
-                            <tr class="row100 body">
-                                <td class="cell100 column1">
-                                    @Html.DisplayFor(modelItem => item.enName)
-                                </td>
-                                <td class="cell100 column2">
-                                    @Html.DisplayFor(modelItem => item.arName)
-                                </td>
-                                <td class="cell100 column3">
-                                    @Html.DisplayFor(modelItem => item.active)
-                                </td>
-                                <td class="cell100 column4">
-                                    @Html.ActionLink(LangText.edit, "Edit", new { branchId = item.id }) |
-                                    @Html.ActionLink(LangText.counters, "Home", "Counters", new { branchId = item.id }, null) |
-                                    <input type="submit" value="@LangText.delete " class="buttonLink" onclick="return confirm('Are you sure you want to delete @item.enName');" />
-                                </td>
-                            </tr>
+                            using (Html.BeginForm("Delete", "Branches", new { branchId = item.id }, FormMethod.Post, new { @class = "formAlert" }))
+                            {
+                                <tr class="row100 body">
+                                    <td class="cell100 column1">
+                                        @Html.DisplayFor(modelItem => item.enName)
+                                    </td>
+                                    <td class="cell100 column2">
+                                        @Html.DisplayFor(modelItem => item.arName)
+                                    </td>
+                                    <td class="cell100 column3">
+                                        @Html.DisplayFor(modelItem => item.active)
+                                    </td>
+                                    <td class="cell100 column4">
+                                        @Html.ActionLink(LangText.edit, "Edit", new { branchId = item.id }) |
+                                        @Html.ActionLink(LangText.counters, "Home", "Counters", new { branchId = item.id }, null) |
+                                        <input type="submit" value="@LangText.delete " class="buttonLink" />
+                                    </td>
+                                </tr>
+                            }
                         }
                     }
                 </tbody>

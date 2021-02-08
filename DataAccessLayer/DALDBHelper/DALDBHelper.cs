@@ -55,6 +55,18 @@ namespace DataAccessLayer.DALDBHelper
                 return null;
             }
         }
+        public object executeScalarProc(string storedProc, List<SqlParameter> parametros)
+        {
+            try
+            {
+                return scalarProc(storedProc, parametros);
+            }
+            catch (Exception ex)
+            {
+                ExceptionsWriter.saveExceptionToLogFile(ex);
+                return null;
+            }
+        }
         public DataSet executeAdapter( string commandText, List<SqlParameter> commandParameters)
         {
             try
@@ -63,6 +75,30 @@ namespace DataAccessLayer.DALDBHelper
                 SqlConnection con = new SqlConnection(connectionString);
                 cmd.Connection = con;
                 cmd.CommandText = commandText;
+                foreach (SqlParameter param in commandParameters)
+                {
+                    cmd.Parameters.Add(param);
+                }
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                DataSet dataSet = new DataSet();
+                adapter.Fill(dataSet);
+                return dataSet;
+            }
+            catch (Exception ex)
+            {
+                ExceptionsWriter.saveExceptionToLogFile(ex);
+                return null;
+            }
+        }
+        public DataSet executeAdapterProc(string procName, List<SqlParameter> commandParameters)
+        {
+            try
+            {
+                var cmd = new SqlCommand();
+                SqlConnection con = new SqlConnection(connectionString);
+                cmd.Connection = con;
+                cmd.CommandText = procName;
+                cmd.CommandType = CommandType.StoredProcedure;
                 foreach (SqlParameter param in commandParameters)
                 {
                     cmd.Parameters.Add(param);
@@ -150,6 +186,36 @@ namespace DataAccessLayer.DALDBHelper
                     connection.Open();
                     command.Connection = connection;
                     command.CommandText = query;
+                    command.Parameters.AddRange(parametros.ToArray());
+                    return command.ExecuteScalar();
+
+                }
+                finally
+                {
+                    if (connection != null)
+                        connection.Close();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                ExceptionsWriter.saveExceptionToLogFile(ex);
+                return null;
+            }
+        }
+        private object scalarProc(string storedProc, List<SqlParameter> parametros)
+        {
+            try
+            {
+                SqlConnection connection = new SqlConnection(connectionString);
+                SqlCommand command = new SqlCommand();
+
+                try
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.CommandText = storedProc;
+                    command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddRange(parametros.ToArray());
                     return command.ExecuteScalar();
 

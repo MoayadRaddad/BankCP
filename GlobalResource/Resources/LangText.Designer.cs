@@ -511,6 +511,15 @@ namespace GlobalResource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You are not authorized to access this item.
+        /// </summary>
+        public static string notAuthorized {
+            get {
+                return ResourceManager.GetString("notAuthorized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
         public static string password {

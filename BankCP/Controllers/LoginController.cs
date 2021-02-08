@@ -20,7 +20,7 @@ namespace BankConfigurationPortal.Controllers
         {
             try
             {
-                ////sql transaction scope test
+                //sql transaction scope test
                 //int s = BusinessAccessLayer.BALBank.BALBank.insertBankTestScope();
                 if (Session["UserObj"] != null)
                 {
@@ -45,6 +45,14 @@ namespace BankConfigurationPortal.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    ////Create
+                    //Random generator = new Random();
+                    //String password = generator.Next(0, 1000000).ToString("D6");
+                    //BusinessCommon.Security.PassPhrase passPhrase = BusinessCommon.Security.PasswordHasher.CreatePassPhrase(password);
+
+                    ////Login
+                    //bool checkPass = BusinessCommon.Security.PasswordHasher.ValidatePassword(password, Hash, Salt);
+
                     BusinessAccessLayer.BALLogin.BALLogin bALLogin = new BusinessAccessLayer.BALLogin.BALLogin();
                     pUser = bALLogin.userLogin(pUser);
                     if (pUser != null)

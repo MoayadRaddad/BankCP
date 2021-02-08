@@ -10,12 +10,12 @@ namespace BusinessAccessLayer.BALCounter
 {
     public class BALCounter
     {
-        public BusinessObjects.Models.Counter selectCountersById(int counterId)
+        public BusinessObjects.Models.Counter selectCounterById(int counterId)
         {
             try
             {
                 DataAccessLayer.DALCounter.DALCounter dALCounter = new DataAccessLayer.DALCounter.DALCounter();
-                return dALCounter.selectCountersById(counterId);
+                return dALCounter.selectCounterById(counterId);
             }
             catch (Exception ex)
             {
@@ -23,12 +23,12 @@ namespace BusinessAccessLayer.BALCounter
                 return null;
             }
         }
-        public List<BusinessObjects.Models.Counter> selectCountersByBranchId(int pBranchId)
+        public List<BusinessObjects.Models.Counter> selectCountersByBranchId(int pBranchId, int pBankId)
         {
             try
             {
                 DataAccessLayer.DALCounter.DALCounter dALCounter = new DataAccessLayer.DALCounter.DALCounter();
-                return dALCounter.selectCountersByBranchId(pBranchId);
+                return dALCounter.selectCountersByBranchId(pBranchId, pBankId);
             }
             catch (Exception ex)
             {
@@ -62,26 +62,25 @@ namespace BusinessAccessLayer.BALCounter
                 return null;
             }
         }
-        public BusinessObjects.Models.ResultsEnum deleteCounterById(int counterId)
+        public BusinessObjects.Models.ResultsEnum deleteCounterById(int counterId, int branchId)
         {
             try
             {
+                BusinessObjects.Models.ResultsEnum checkDelete;
                 using (TransactionScope scope = new TransactionScope())
                 {
                     DataAccessLayer.DALCounter.DALCounter dALCounter = new DataAccessLayer.DALCounter.DALCounter();
-                    BusinessObjects.Models.ResultsEnum checkDelete = dALCounter.deleteAllocateCounterServiceByCounterId(counterId);
-                    if (checkDelete == BusinessObjects.Models.ResultsEnum.notDeleted)
+                    checkDelete = dALCounter.deleteAllocateCounterServiceByCounterId(counterId, branchId);
+                    if (checkDelete == BusinessObjects.Models.ResultsEnum.deleted)
                     {
-                        return BusinessObjects.Models.ResultsEnum.notDeleted;
+                        checkDelete = dALCounter.deleteCounterById(counterId, branchId);
+                        if (checkDelete == BusinessObjects.Models.ResultsEnum.deleted)
+                        {
+                            scope.Complete();
+                        }
                     }
-                    checkDelete = dALCounter.deleteCounterById(counterId);
-                    if (checkDelete == BusinessObjects.Models.ResultsEnum.notDeleted)
-                    {
-                        return BusinessObjects.Models.ResultsEnum.notDeleted;
-                    }
-                    scope.Complete();
                 }
-                return BusinessObjects.Models.ResultsEnum.deleted;
+                return checkDelete;
             }
             catch (Exception ex)
             {
