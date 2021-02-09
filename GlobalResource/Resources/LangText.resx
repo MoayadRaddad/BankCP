@@ -165,8 +165,14 @@
   <data name="branches" xml:space="preserve">
     <value>Branches</value>
   </data>
+  <data name="cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="checkConnection" xml:space="preserve">
     <value>Please check your connection to the database</value>
+  </data>
+  <data name="checkSure" xml:space="preserve">
+    <value>Are you sure ?</value>
   </data>
   <data name="contact" xml:space="preserve">
     <value>Contact</value>
@@ -270,8 +276,14 @@
   <data name="notAuthorized" xml:space="preserve">
     <value>You are not authorized to access this item</value>
   </data>
+  <data name="ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
   <data name="password" xml:space="preserve">
     <value>Password</value>
+  </data>
+  <data name="revert" xml:space="preserve">
+    <value>You wont be able to revert this !</value>
   </data>
   <data name="save" xml:space="preserve">
     <value>Save</value>
@@ -294,6 +306,9 @@
   <data name="signOut" xml:space="preserve">
     <value>Sign-Out</value>
   </data>
+  <data name="somethingWentWrong" xml:space="preserve">
+    <value>Something went wrong, please call support team.</value>
+  </data>
   <data name="ticket" xml:space="preserve">
     <value>Maximum number of ticket</value>
   </data>
@@ -305,5 +320,8 @@
   </data>
   <data name="users" xml:space="preserve">
     <value>Users</value>
+  </data>
+  <data name="yesDelete" xml:space="preserve">
+    <value>Yes, delete it!</value>
   </data>
 </root>

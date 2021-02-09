@@ -98,7 +98,7 @@ namespace DataAccessLayer.DALBranches
                 return null;
             }
         }
-        public BusinessObjects.Models.Branch insertBranch(BusinessObjects.Models.Branch branch)
+        public BusinessObjects.Models.ResultsEnum insertBranch(BusinessObjects.Models.Branch branch)
         {
             try
             {
@@ -109,16 +109,23 @@ namespace DataAccessLayer.DALBranches
                 branchParams.Add(new SqlParameter("@active", branch.active));
                 branchParams.Add(new SqlParameter("@bankId", branch.bankId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
-                branch.id = Convert.ToInt32(dBHelper.executeScalarProc(storedProc, branchParams ));
-                return branch;
+                int returnValue = Convert.ToInt32(dBHelper.executeScalarProc(storedProc, branchParams));
+                if (returnValue != 0)
+                {
+                    return BusinessObjects.Models.ResultsEnum.inserted;
+                }
+                else
+                {
+                    return BusinessObjects.Models.ResultsEnum.deleted;
+                }
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return null;
+                return BusinessObjects.Models.ResultsEnum.notInserted;
             }
         }
-        public BusinessObjects.Models.Branch updateBranch(BusinessObjects.Models.Branch branch)
+        public BusinessObjects.Models.ResultsEnum updateBranch(BusinessObjects.Models.Branch branch)
         {
             try
             {
@@ -130,13 +137,27 @@ namespace DataAccessLayer.DALBranches
                 branchParams.Add(new SqlParameter("@active", branch.active));
                 branchParams.Add(new SqlParameter("@bankId", branch.bankId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
-                branch.id = Convert.ToInt32(dBHelper.executeScalarProc(storedProc, branchParams));
-                return branch;
+                int returnValue = Convert.ToInt32(dBHelper.executeScalarProc(storedProc, branchParams));
+                if(returnValue != 0)
+                {
+                    if(returnValue != -1)
+                    {
+                        return BusinessObjects.Models.ResultsEnum.updated;
+                    }
+                    else
+                    {
+                        return BusinessObjects.Models.ResultsEnum.notAuthorize;
+                    }
+                }
+                else
+                {
+                    return BusinessObjects.Models.ResultsEnum.deleted;
+                }
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return null;
+                    return BusinessObjects.Models.ResultsEnum.notUpdated;
             }
         }
         public BusinessObjects.Models.ResultsEnum deleteBranchById(int branchId, int bankId)

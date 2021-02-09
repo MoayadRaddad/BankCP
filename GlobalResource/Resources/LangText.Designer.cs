@@ -205,11 +205,29 @@ namespace GlobalResource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string cancel {
+            get {
+                return ResourceManager.GetString("cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please check your connection to the database.
         /// </summary>
         public static string checkConnection {
             get {
                 return ResourceManager.GetString("checkConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure ?.
+        /// </summary>
+        public static string checkSure {
+            get {
+                return ResourceManager.GetString("checkSure", resourceCulture);
             }
         }
         
@@ -520,11 +538,29 @@ namespace GlobalResource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        public static string ok {
+            get {
+                return ResourceManager.GetString("ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
         public static string password {
             get {
                 return ResourceManager.GetString("password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You wont be able to revert this !.
+        /// </summary>
+        public static string revert {
+            get {
+                return ResourceManager.GetString("revert", resourceCulture);
             }
         }
         
@@ -592,6 +628,15 @@ namespace GlobalResource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Something went wrong, please call support team..
+        /// </summary>
+        public static string somethingWentWrong {
+            get {
+                return ResourceManager.GetString("somethingWentWrong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Maximum number of ticket.
         /// </summary>
         public static string ticket {
@@ -624,6 +669,15 @@ namespace GlobalResource.Resources {
         public static string users {
             get {
                 return ResourceManager.GetString("users", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes, delete it!.
+        /// </summary>
+        public static string yesDelete {
+            get {
+                return ResourceManager.GetString("yesDelete", resourceCulture);
             }
         }
     }

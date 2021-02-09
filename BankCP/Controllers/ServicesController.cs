@@ -88,16 +88,16 @@ namespace BankConfigurationPortal.Controllers
                 {
                     service.bankId = ((BusinessObjects.Models.User)Session["UserObj"]).bankId;
                     BusinessAccessLayer.BALService.BALService bALServices = new BusinessAccessLayer.BALService.BALService();
-                    service = bALServices.insertService(service);
-                    if (service != null)
+                    BusinessObjects.Models.ResultsEnum checkInserted = bALServices.insertService(service);
+                    if (checkInserted != BusinessObjects.Models.ResultsEnum.notInserted)
                     {
-                        if (service.id != 0)
+                        if (checkInserted == BusinessObjects.Models.ResultsEnum.inserted)
                         {
                             return RedirectToAction("Home", "Services");
                         }
                         else
                         {
-                            ViewBag.errorMsg = LangText.notAuthorized;
+                            ViewBag.errorMsg = LangText.delete;
                             return View();
                         }
                     }
@@ -202,14 +202,23 @@ namespace BankConfigurationPortal.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    service.bankId = ((BusinessObjects.Models.User)Session["UserObj"]).bankId;
                     BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
                     BusinessAccessLayer.BALService.BALService bALServices = new BusinessAccessLayer.BALService.BALService();
-                    service = bALServices.updateService(service);
-                    if (service != null)
+                    BusinessObjects.Models.ResultsEnum checkUpdated = bALServices.updateService(service);
+                    if (checkUpdated != BusinessObjects.Models.ResultsEnum.notUpdated)
                     {
-                        if (service.id != 0)
+                        if (checkUpdated != BusinessObjects.Models.ResultsEnum.deleted)
                         {
-                            return RedirectToAction("Home", "Services");
+                            if (checkUpdated == BusinessObjects.Models.ResultsEnum.updated)
+                            {
+                                return RedirectToAction("Home", "Services");
+                            }
+                            else
+                            {
+                                ViewBag.errorMsg = LangText.notAuthorized;
+                                return View();
+                            }
                         }
                         else
                         {

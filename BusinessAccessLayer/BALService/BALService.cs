@@ -34,7 +34,7 @@ namespace BusinessAccessLayer.BALService
                 return null;
             }
         }
-        public BusinessObjects.Models.Service insertService(BusinessObjects.Models.Service service)
+        public BusinessObjects.Models.ResultsEnum insertService(BusinessObjects.Models.Service service)
         {
             try
             {
@@ -44,10 +44,10 @@ namespace BusinessAccessLayer.BALService
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return null;
+                return BusinessObjects.Models.ResultsEnum.notInserted;
             }
         }
-        public BusinessObjects.Models.Service updateService(BusinessObjects.Models.Service Service)
+        public BusinessObjects.Models.ResultsEnum updateService(BusinessObjects.Models.Service Service)
         {
             try
             {
@@ -57,7 +57,7 @@ namespace BusinessAccessLayer.BALService
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return null;
+                return BusinessObjects.Models.ResultsEnum.notUpdated;
             }
         }
         public BusinessObjects.Models.ResultsEnum deleteServiceById(int serviceId, int bankId)

@@ -20,7 +20,7 @@ namespace BankConfigurationPortal.Controllers
         {
             try
             {
-                if(TempData["errorMsg"] != null)
+                if (TempData["errorMsg"] != null)
                 {
                     ViewBag.errorMsg = TempData["errorMsg"];
                     TempData["errorMsg"] = null;
@@ -30,7 +30,7 @@ namespace BankConfigurationPortal.Controllers
                 List<BusinessObjects.Models.Branch> lstBranches = bALBranches.selectBranchesByBankId(((BusinessObjects.Models.User)Session["UserObj"]).bankId);
                 if (lstBranches != null)
                 {
-                    if(lstBranches.Count > 0)
+                    if (lstBranches.Count > 0)
                     {
                         if (lstBranches.FirstOrDefault() != null && lstBranches.FirstOrDefault().id != -1)
                         {
@@ -88,16 +88,16 @@ namespace BankConfigurationPortal.Controllers
                 {
                     branch.bankId = ((BusinessObjects.Models.User)Session["UserObj"]).bankId;
                     BusinessAccessLayer.BALBranches.BALBranches bALBranches = new BusinessAccessLayer.BALBranches.BALBranches();
-                    branch = bALBranches.insertBranch(branch);
-                    if (branch != null)
+                    BusinessObjects.Models.ResultsEnum checkInserted = bALBranches.insertBranch(branch);
+                    if (checkInserted != BusinessObjects.Models.ResultsEnum.notInserted)
                     {
-                        if (branch.id != 0)
+                        if (checkInserted == BusinessObjects.Models.ResultsEnum.inserted)
                         {
                             return RedirectToAction("Home", "Branches");
                         }
                         else
                         {
-                            ViewBag.errorMsg = LangText.notAuthorized;
+                            ViewBag.errorMsg = LangText.delete;
                             return View();
                         }
                     }
@@ -161,9 +161,9 @@ namespace BankConfigurationPortal.Controllers
                 BusinessObjects.Models.Branch branch = bALBranches.selectBranchById(branchId);
                 if (branch != null)
                 {
-                    if(branch.id != -1)
+                    if (branch.id != -1)
                     {
-                        if(branch.bankId == ((BusinessObjects.Models.User)Session["UserObj"]).bankId)
+                        if (branch.bankId == ((BusinessObjects.Models.User)Session["UserObj"]).bankId)
                         {
                             return View(branch);
                         }
@@ -202,14 +202,23 @@ namespace BankConfigurationPortal.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    branch.bankId = ((BusinessObjects.Models.User)Session["UserObj"]).bankId;
                     BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
                     BusinessAccessLayer.BALBranches.BALBranches bALBranches = new BusinessAccessLayer.BALBranches.BALBranches();
-                    branch = bALBranches.updateBranch(branch);
-                    if (branch != null)
+                    BusinessObjects.Models.ResultsEnum checkUpdated = bALBranches.updateBranch(branch);
+                    if (checkUpdated != BusinessObjects.Models.ResultsEnum.notUpdated)
                     {
-                        if(branch.id != 0)
+                        if (checkUpdated != BusinessObjects.Models.ResultsEnum.deleted)
                         {
-                            return RedirectToAction("Home", "Branches");
+                            if (checkUpdated == BusinessObjects.Models.ResultsEnum.updated)
+                            {
+                                return RedirectToAction("Home", "Branches");
+                            }
+                            else
+                            {
+                                ViewBag.errorMsg = LangText.notAuthorized;
+                                return View();
+                            }
                         }
                         else
                         {

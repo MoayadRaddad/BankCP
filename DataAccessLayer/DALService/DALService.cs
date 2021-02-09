@@ -98,7 +98,7 @@ namespace DataAccessLayer.DALService
                 return null;
             }
         }
-        public BusinessObjects.Models.Service insertService(BusinessObjects.Models.Service service)
+        public BusinessObjects.Models.ResultsEnum insertService(BusinessObjects.Models.Service service)
         {
             try
             {
@@ -110,16 +110,23 @@ namespace DataAccessLayer.DALService
                 serviceParams.Add(new SqlParameter("@active", service.active));
                 serviceParams.Add(new SqlParameter("@maxNumOfTickets", service.maxNumOfTickets));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
-                service.id = Convert.ToInt32(dBHelper.executeScalarProc(pquery, serviceParams));
-                return service;
+                int returnValue = Convert.ToInt32(dBHelper.executeScalarProc(pquery, serviceParams));
+                if (returnValue != 0)
+                {
+                    return BusinessObjects.Models.ResultsEnum.inserted;
+                }
+                else
+                {
+                    return BusinessObjects.Models.ResultsEnum.deleted;
+                }
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return null;
+                return BusinessObjects.Models.ResultsEnum.notInserted;
             }
         }
-        public BusinessObjects.Models.Service updateService(BusinessObjects.Models.Service service)
+        public BusinessObjects.Models.ResultsEnum updateService(BusinessObjects.Models.Service service)
         {
             try
             {
@@ -132,13 +139,27 @@ namespace DataAccessLayer.DALService
                 serviceParams.Add(new SqlParameter("@maxNumOfTickets", service.maxNumOfTickets));
                 serviceParams.Add(new SqlParameter("@bankId", service.bankId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
-                service.id = Convert.ToInt32(dBHelper.executeScalarProc(storedProc, serviceParams));
-                return service;
+                int returnValue = Convert.ToInt32(dBHelper.executeScalarProc(storedProc, serviceParams));
+                if (returnValue != 0)
+                {
+                    if (returnValue != -1)
+                    {
+                        return BusinessObjects.Models.ResultsEnum.updated;
+                    }
+                    else
+                    {
+                        return BusinessObjects.Models.ResultsEnum.notAuthorize;
+                    }
+                }
+                else
+                {
+                    return BusinessObjects.Models.ResultsEnum.deleted;
+                }
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return null;
+                return BusinessObjects.Models.ResultsEnum.notUpdated;
             }
         }
         public BusinessObjects.Models.ResultsEnum deleteAllocateCounterServiceByServiceId(int serviceId, int bankId)

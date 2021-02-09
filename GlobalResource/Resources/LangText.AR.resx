@@ -165,8 +165,14 @@
   <data name="branches" xml:space="preserve">
     <value>الفروع</value>
   </data>
+  <data name="cancel" xml:space="preserve">
+    <value>إلغاء</value>
+  </data>
   <data name="checkConnection" xml:space="preserve">
     <value>يرجى التحقق من اتصالك بقاعدة البيانات</value>
+  </data>
+  <data name="checkSure" xml:space="preserve">
+    <value>هل أنت واثق ؟</value>
   </data>
   <data name="contact" xml:space="preserve">
     <value>للتواصل</value>
@@ -270,8 +276,14 @@
   <data name="notAuthorized" xml:space="preserve">
     <value>أنت غير مخول للوصول إلى هذا العنصر</value>
   </data>
+  <data name="ok" xml:space="preserve">
+    <value>موافق</value>
+  </data>
   <data name="password" xml:space="preserve">
     <value>كلمة السر</value>
+  </data>
+  <data name="revert" xml:space="preserve">
+    <value>لن تتمكن من التراجع عن هذا!</value>
   </data>
   <data name="save" xml:space="preserve">
     <value>حفظ</value>
@@ -294,6 +306,9 @@
   <data name="signOut" xml:space="preserve">
     <value>تسجيل الخروج</value>
   </data>
+  <data name="somethingWentWrong" xml:space="preserve">
+    <value>حدث خطأ ما ، يرجى الاتصال بفريق الدعم.</value>
+  </data>
   <data name="ticket" xml:space="preserve">
     <value>العدد الأقصى للتذكرة</value>
   </data>
@@ -305,5 +320,8 @@
   </data>
   <data name="users" xml:space="preserve">
     <value>المستخدمين</value>
+  </data>
+  <data name="yesDelete" xml:space="preserve">
+    <value>نعم ، احذفها!</value>
   </data>
 </root>

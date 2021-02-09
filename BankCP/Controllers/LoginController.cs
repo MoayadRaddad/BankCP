@@ -20,8 +20,6 @@ namespace BankConfigurationPortal.Controllers
         {
             try
             {
-                //sql transaction scope test
-                //int s = BusinessAccessLayer.BALBank.BALBank.insertBankTestScope();
                 if (Session["UserObj"] != null)
                 {
                     return RedirectToAction("Home", "Branches");

@@ -88,16 +88,24 @@ namespace BankConfigurationPortal.Controllers
                 {
                     BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
                     counter.branchId = branchId;
-                    counter = bALCounter.insertCounter(counter);
-                    if (counter != null)
+                    BusinessObjects.Models.ResultsEnum checkInserted = bALCounter.insertCounter(counter, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
+                    if (checkInserted != BusinessObjects.Models.ResultsEnum.notInserted)
                     {
-                        if (counter.id != 0)
+                        if (checkInserted != BusinessObjects.Models.ResultsEnum.deleted)
                         {
-                            return RedirectToAction("Home", "Counters", new { branchId = branchId });
+                            if (checkInserted == BusinessObjects.Models.ResultsEnum.inserted)
+                            {
+                                return RedirectToAction("Home", "Counters", new { branchId = branchId });
+                            }
+                            else
+                            {
+                                ViewBag.errorMsg = LangText.notAuthorized;
+                                return View();
+                            }
                         }
                         else
                         {
-                            ViewBag.errorMsg = LangText.notAuthorized;
+                            ViewBag.errorMsg = LangText.itemDeleted;
                             return View();
                         }
                     }
@@ -205,12 +213,20 @@ namespace BankConfigurationPortal.Controllers
                 {
                     BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
                     BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
-                    counter = bALCounter.updateCounter(counter);
-                    if (counter != null)
+                    BusinessObjects.Models.ResultsEnum checkUpdated = bALCounter.updateCounter(counter, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
+                    if (checkUpdated != BusinessObjects.Models.ResultsEnum.notUpdated)
                     {
-                        if (counter.id != 0)
+                        if (checkUpdated != BusinessObjects.Models.ResultsEnum.deleted)
                         {
-                            return RedirectToAction("Home", "Counters", new { branchId = counter.branchId });
+                            if (checkUpdated == BusinessObjects.Models.ResultsEnum.updated)
+                            {
+                                return RedirectToAction("Home", "Counters", new { branchId = counter.branchId });
+                            }
+                            else
+                            {
+                                ViewBag.errorMsg = LangText.notAuthorized;
+                                return View();
+                            }
                         }
                         else
                         {

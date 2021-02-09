@@ -8,10 +8,16 @@
 <body class="text-center">
     <hgroup>
         <h2>@LangText.errorMsg </h2>
-        <h4>@LangText.checkConnection </h4>
+        <h4>@LangText.somethingWentWrong  </h4>
     </hgroup>
     <div>
-        @Html.ActionLink(LangText.backToLogin, "logout", "Login", null, new { @class = "button4" })
+        @using (Html.BeginForm("logout", "Login", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <li class="center-block">
+                <input type="submit" value="@LangText.backToLogin " class="button4" />
+            </li>
+        }
     </div>
 </body>
 </html>

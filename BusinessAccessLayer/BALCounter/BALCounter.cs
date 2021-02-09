@@ -36,30 +36,30 @@ namespace BusinessAccessLayer.BALCounter
                 return null;
             }
         }
-        public BusinessObjects.Models.Counter insertCounter(BusinessObjects.Models.Counter counter)
+        public BusinessObjects.Models.ResultsEnum insertCounter(BusinessObjects.Models.Counter counter, int bankId)
         {
             try
             {
                 DataAccessLayer.DALCounter.DALCounter dALCounter = new DataAccessLayer.DALCounter.DALCounter();
-                return dALCounter.insertCounter(counter);
+                return dALCounter.insertCounter(counter, bankId);
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return null;
+                return BusinessObjects.Models.ResultsEnum.notInserted;
             }
         }
-        public BusinessObjects.Models.Counter updateCounter(BusinessObjects.Models.Counter counter)
+        public BusinessObjects.Models.ResultsEnum updateCounter(BusinessObjects.Models.Counter counter, int bankId)
         {
             try
             {
                 DataAccessLayer.DALCounter.DALCounter dALCounter = new DataAccessLayer.DALCounter.DALCounter();
-                return dALCounter.updateCounter(counter);
+                return dALCounter.updateCounter(counter, bankId);
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return null;
+                return BusinessObjects.Models.ResultsEnum.notUpdated;
             }
         }
         public BusinessObjects.Models.ResultsEnum deleteCounterById(int counterId, int branchId)

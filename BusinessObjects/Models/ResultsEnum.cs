@@ -15,6 +15,8 @@ namespace BusinessObjects.Models
         filled,
         notFilled,
         error,
-        notAuthorize
+        notAuthorize,
+        updated,
+        notUpdated
     }
 }

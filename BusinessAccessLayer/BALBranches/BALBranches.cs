@@ -36,7 +36,7 @@ namespace BusinessAccessLayer.BALBranches
                 return null;
             }
         }
-        public BusinessObjects.Models.Branch insertBranch(BusinessObjects.Models.Branch branch)
+        public BusinessObjects.Models.ResultsEnum insertBranch(BusinessObjects.Models.Branch branch)
         {
             try
             {
@@ -46,10 +46,10 @@ namespace BusinessAccessLayer.BALBranches
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return null;
+                return BusinessObjects.Models.ResultsEnum.notInserted;
             }
         }
-        public BusinessObjects.Models.Branch updateBranch(BusinessObjects.Models.Branch branch)
+        public BusinessObjects.Models.ResultsEnum updateBranch(BusinessObjects.Models.Branch branch)
         {
             try
             {
@@ -59,7 +59,7 @@ namespace BusinessAccessLayer.BALBranches
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return null;
+                return BusinessObjects.Models.ResultsEnum.notUpdated;
             }
         }
         public BusinessObjects.Models.ResultsEnum deleteBranchById(int branchId, int bankId)
