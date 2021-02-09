@@ -5,23 +5,23 @@
     ViewBag.Title = "login";
 }
 <h2 class="login100-form-title p-b-51 text-center p-t-150">@LangText.login </h2>
-@using (Html.BeginForm())
+@using (Html.BeginForm("login", "Login", FormMethod.Post, new { @class = "form11" }))
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
+    <div class="form-horizontal" id="form11">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="form-group">
-                <div class="col-12 col-md-4 col-xs-12 col-sm-12 center-block">
-                    @Html.LabelFor(model => model.bankName, new { @class = "center-block label-forms" })
-                    <div class="wrap-input100">
-                        @Html.EditorFor(model => model.bankName, new { htmlAttributes = new { @class = "input100", placeholder = LangText.bankName } })
-                        <span class="focus-input100"></span>
-                        @Html.ValidationMessageFor(model => model.bankName, "", new { @class = "text-danger" })
-                    </div>
+        <div class="form-group">
+            <div class="col-12 col-md-4 col-xs-12 col-sm-12 center-block">
+                @Html.LabelFor(model => model.bankName, new { @class = "center-block label-forms" })
+                <div class="wrap-input100">
+                    @Html.EditorFor(model => model.bankName, new { htmlAttributes = new { @class = "input100", placeholder = LangText.bankName } })
+                    <span class="focus-input100"></span>
+                    @Html.ValidationMessageFor(model => model.bankName, "", new { @class = "text-danger" })
                 </div>
             </div>
+        </div>
 
         <div class="form-group">
             <div class="col-md-4 center-block">

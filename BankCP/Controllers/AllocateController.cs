@@ -21,6 +21,7 @@ namespace BankConfigurationPortal.Controllers
         {
             try
             {
+                ViewBag.counteId = counterId;
                 if (TempData["errorMsg"] != null)
                 {
                     ViewBag.errorMsg = TempData["errorMsg"];
@@ -173,7 +174,7 @@ namespace BankConfigurationPortal.Controllers
                 List<BusinessObjects.Models.AllocateCounterService> lstAllocateCounterService = bALAllocateCounterService.selectAllocateCounterService(counterId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
                 if (lstAllocateCounterService != null)
                 {
-                    if (lstAllocateCounterService.FirstOrDefault() != null && lstAllocateCounterService.FirstOrDefault().id != -1)
+                    if (lstAllocateCounterService.Count == 0 || lstAllocateCounterService.FirstOrDefault().id > 0)
                     {
                         foreach (var item in lstServices)
                         {
@@ -191,8 +192,16 @@ namespace BankConfigurationPortal.Controllers
                     }
                     else
                     {
-                        ViewBag.AllocateId = new SelectList(lstServiceAllocate, "id", System.Globalization.CultureInfo.CurrentCulture.ToString() == "en" ? "enName" : "arName");
-                        return BusinessObjects.Models.ResultsEnum.notAuthorize;
+                        if(lstAllocateCounterService.FirstOrDefault().id == 0)
+                        {
+                            ViewBag.AllocateId = new SelectList(lstServiceAllocate, "id", System.Globalization.CultureInfo.CurrentCulture.ToString() == "en" ? "enName" : "arName");
+                            return BusinessObjects.Models.ResultsEnum.deleted;
+                        }
+                        else
+                        {
+                            ViewBag.AllocateId = new SelectList(lstServiceAllocate, "id", System.Globalization.CultureInfo.CurrentCulture.ToString() == "en" ? "enName" : "arName");
+                            return BusinessObjects.Models.ResultsEnum.notAuthorize;
+                        }
                     }
                 }
                 else

@@ -2,7 +2,7 @@ BEGIN TRANSACTION;
   
 BEGIN TRY  
     -- Generate a constraint violation error.  
-USE [TSDApp2]
+USE [TSDApp]
 /****** Object:  Table [dbo].[tblAllocateCounterService]    Script Date: 03/02/2021 09:33:08 ******/
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
@@ -49,7 +49,7 @@ CREATE TABLE [dbo].[tblCounters](
 ) ON [PRIMARY]
 
 ALTER TABLE [dbo].[tblService]
-ADD arName [nvarchar](max), bankId [int], active [bit], tickets [int];
+ADD arName [nvarchar](max), bankId [int], active [bit], maxNumOfTickets [int];
 
 SET ANSI_NULLS ON
 
@@ -101,19 +101,413 @@ SET ANSI_NULLS ON
 
 SET QUOTED_IDENTIFIER ON
 
-exec('create proc [dbo].[sp_Delete_Allocate_Counter] 
-@branchId int
-AS
+exec sp_rename 'dbo.tblService.name', 'enName', 'COLUMN';
+
+exec('CREATE proc [dbo].[sp_Delete_Allocate_Counter]
+@branchId int,
+@bankId int
+as
+begin
+BEGIN TRY 
+IF (EXISTS (SELECT * FROM tblBranches where id = @branchId))
+begin
+IF (EXISTS (SELECT * FROM tblBranches where bankId = @bankId and id = @branchId))
 begin
 delete from tblAllocateCounterService where tblAllocateCounterService.counterId in (select id from tblCounters where branchId = @branchId);
 delete from tblCounters where branchId = @branchId;
+select 1
+end
+else
+select -1;
+end
+else
+select 0
+END TRY  
+BEGIN CATCH  
+     THROW; 
+END CATCH 
+END')
+
+exec('CREATE proc [dbo].[sp_deleteAllocateCounterService]
+@id int,
+@bankId int
+as
+begin
+BEGIN TRY 
+IF (EXISTS (SELECT * FROM tblAllocateCounterService where id = @id))
+begin
+IF (EXISTS (SELECT * FROM tblAllocateCounterService inner join tblService on tblAllocateCounterService.serviceId = tblService.id inner join tblBanks on tblService.bankId = tblBanks.id where tblBanks.id = @bankId and tblAllocateCounterService.id = @id))
+delete from tblAllocateCounterService OUTPUT DELETED.IDENTITYCOL where id = @id;
+else
+select -1;
+end
+else
+select 0;
+END TRY  
+BEGIN CATCH  
+     THROW; 
+END CATCH 
+END')
+
+exec('CREATE proc [dbo].[sp_deleteAllocateCounterServiceByCounterId]
+@counterId int,
+@branchId int
+as
+begin
+BEGIN TRY 
+IF (EXISTS (SELECT * FROM tblCounters where id = @counterId))
+begin
+IF (EXISTS (SELECT * FROM tblCounters where id = @counterId and branchId = @branchId))
+delete from tblAllocateCounterService OUTPUT DELETED.IDENTITYCOL where counterId = @counterId
+else
+select -1;
+end
+else
+select 0;
+END TRY  
+BEGIN CATCH  
+     THROW; 
+END CATCH 
+END')
+
+
+exec('CREATE proc [dbo].[sp_deleteAllocateCounterServiceByServiceId]
+@serviceId int,
+@bankId int
+as
+begin
+BEGIN TRY 
+IF (EXISTS (SELECT * FROM tblService where id = @serviceId))
+begin
+IF (EXISTS (SELECT * FROM tblService where bankId = @bankId and id = @serviceId))
+delete from tblAllocateCounterService OUTPUT DELETED.IDENTITYCOL where serviceId = @serviceId
+else
+select -1;
+end
+else
+select 0;
+END TRY  
+BEGIN CATCH  
+     THROW; 
+END CATCH 
+END')
+
+
+
+exec('CREATE proc [dbo].[sp_deleteBranch]
+@id int,
+@bankId int
+as
+begin
+BEGIN TRY 
+IF (EXISTS (SELECT * FROM tblBranches where id = @id))
+begin
+IF (EXISTS (SELECT * FROM tblBranches where bankId = @bankId and id = @id))
+delete from tblBranches OUTPUT DELETED.IDENTITYCOL where id = @id;
+else
+select -1;
+end
+else
+select 0;
+END TRY  
+BEGIN CATCH  
+     THROW; 
+END CATCH 
+END')
+
+
+
+exec('CREATE proc [dbo].[sp_deleteCounter]
+@id int,
+@branchId int
+as
+begin
+BEGIN TRY 
+IF (EXISTS (SELECT * FROM tblCounters where id = @id))
+begin
+IF (EXISTS (SELECT * FROM tblCounters where branchId = @branchId and id = @id))
+delete from tblCounters OUTPUT DELETED.IDENTITYCOL where id = @id
+else
+select -1;
+end
+else
+select 0;
+END TRY  
+BEGIN CATCH  
+     THROW; 
+END CATCH 
+END')
+
+
+
+exec('CREATE proc [dbo].[sp_deleteService]
+@id int,
+@bankId int
+as
+begin
+BEGIN TRY 
+IF (EXISTS (SELECT * FROM tblService where id = @id))
+begin
+IF (EXISTS (SELECT * FROM tblService where bankId = @bankId and id = @id))
+delete from tblservice OUTPUT DELETED.IDENTITYCOL where id = @id
+else
+select -1;
+end
+else
+select 0;
+END TRY  
+BEGIN CATCH  
+     THROW; 
+END CATCH 
+END')
+
+
+
+exec('CREATE proc [dbo].[sp_insertAllocateCounterService]
+@counterId int,
+@serviceId int,
+@bankId int
+as
+begin
+BEGIN TRY 
+IF (EXISTS (SELECT * FROM tblCounters inner join tblBranches on tblCounters.branchId = tblBranches.id inner join tblBanks on tblBranches.bankId = tblBanks.id where tblCounters.id = @counterId))
+insert into tblAllocateCounterService OUTPUT INSERTED.IDENTITYCOL  values (@counterId,@serviceId)
+else
+select 0;
+END TRY  
+BEGIN CATCH  
+     THROW; 
+END CATCH 
+END')
+
+
+
+exec('CREATE proc [dbo].[sp_insertBranch]
+@enName nvarchar(100),
+@arName nvarchar(100),
+@active bit,
+@bankId int
+as
+begin
+BEGIN TRY 
+IF (EXISTS (SELECT * FROM tblBanks where id = @bankId))
+insert into tblBranches OUTPUT INSERTED.IDENTITYCOL  values (@enName,@arName,@active,@bankId)
+else
+select 0;
+END TRY  
+BEGIN CATCH  
+     THROW; 
+END CATCH 
+END')
+
+
+
+exec('CREATE proc [dbo].[sp_insertCounter]
+@enName nvarchar(100),
+@arName nvarchar(100),
+@active bit,
+@type nvarchar(100),
+@branchId int
+as
+begin
+BEGIN TRY 
+IF (EXISTS (SELECT * FROM tblBranches where id = @branchId))
+insert into tblCounters OUTPUT INSERTED.IDENTITYCOL  values (@enName,@arName,@active,@type,@branchId)
+else
+select 0;
+END TRY  
+BEGIN CATCH  
+     THROW; 
+END CATCH 
+END')
+
+
+
+exec('CREATE proc [dbo].[sp_insertService]
+@enName nvarchar(100),
+@arName nvarchar(100),
+@active bit,
+@bankId int,
+@maxNumOfTickets int
+as
+begin
+BEGIN TRY 
+IF (EXISTS (SELECT * FROM tblBanks where id = @bankId))
+insert into tblService OUTPUT INSERTED.IDENTITYCOL  values (@enName,@arName,@bankId,@active,@maxNumOfTickets)
+else
+select 0;
+END TRY  
+BEGIN CATCH  
+     THROW; 
+END CATCH 
+END')
+
+
+
+exec('CREATE proc [dbo].[sp_selectAllocateCounterService]
+@counterId int,
+@bankId int
+as
+begin
+BEGIN TRY 
+IF (EXISTS (SELECT * FROM tblCounters where tblcounters.id = @counterId))
+begin
+IF (EXISTS (SELECT * FROM tblCounters inner join tblBranches on tblCounters.branchId = tblBranches.id where tblcounters.id = @counterId and tblBranches.bankId = @bankId))
+SELECT tblAllocateCounterService.*,tblService.enName as serviceEnName,tblService.arName as serviceArName FROM tblAllocateCounterService inner join tblService on tblAllocateCounterService.serviceId = tblService.id inner join tblBanks on tblService.bankId = tblBanks.id where tblBanks.id = @bankId and tblAllocateCounterService.counterId = @counterId
+else
+select -1 as id;
+end
+else
+select 0 as id;
+END TRY  
+BEGIN CATCH  
+     THROW; 
+END CATCH 
+END')
+
+
+
+exec('CREATE proc [dbo].[sp_selectBranchById]
+@branchId int
+as
+begin
+IF (EXISTS (SELECT * FROM tblBranches))
+BEGIN
+SELECT * FROM tblBranches where id = @branchId
+END
 end')
 
-USE [master]
 
-USE [TSDApp2]
 
-exec sp_rename 'dbo.tblService.name', 'enName', 'COLUMN';
+exec('CREATE proc [dbo].[sp_selectBranchesByBankId]
+@bankId int
+as
+begin
+BEGIN TRY 
+IF (EXISTS (SELECT * FROM tblBanks where id = @bankId))
+SELECT * FROM tblBranches where bankId = @bankId;
+else
+select 0 as id;
+END TRY  
+BEGIN CATCH  
+     THROW; 
+END CATCH 
+END')
+
+
+
+exec('CREATE proc [dbo].[sp_selectCountersByBranchId]
+@branchId int,
+@bankId int
+as
+begin
+BEGIN TRY 
+IF (EXISTS (SELECT * FROM tblBranches where id = @branchId and bankId = @bankId))
+SELECT * FROM tblCounters where branchId = @branchId
+else
+select 0 as id;
+END TRY  
+BEGIN CATCH  
+     THROW; 
+END CATCH 
+END')
+
+
+
+exec('CREATE proc [dbo].[sp_selectServicesByBankId]
+@bankId int
+as
+begin
+BEGIN TRY 
+IF (EXISTS (SELECT * FROM tblBanks where id = @bankId))
+SELECT * FROM tblService where bankId = @bankId;
+else
+select 0 as id;
+END TRY  
+BEGIN CATCH  
+     THROW; 
+END CATCH 
+END')
+
+
+
+exec('CREATE proc [dbo].[sp_updateBranch]
+@id int,
+@enName nvarchar(100),
+@arName nvarchar(100),
+@active bit,
+@bankId int
+as
+begin
+BEGIN TRY 
+IF (EXISTS (SELECT * FROM tblBranches where bankId = @bankId))
+update tblBranches set enName = @enName,arName = @arName,active = @active OUTPUT INSERTED.IDENTITYCOL where id = @id;
+else
+select 0;
+END TRY  
+BEGIN CATCH  
+     THROW; 
+END CATCH 
+END')
+
+
+
+exec('CREATE proc [dbo].[sp_updateCounter]
+@id int,
+@enName nvarchar(100),
+@arName nvarchar(100),
+@active bit,
+@type nvarchar(100),
+@branchId int
+as
+begin
+BEGIN TRY 
+IF (EXISTS (SELECT * FROM tblBranches where id = @branchId))
+update tblCounters set enName = @enName,arName = @arName,active = @active,type = @type OUTPUT INSERTED.IDENTITYCOL where id = @id
+else
+select 0;
+END TRY  
+BEGIN CATCH  
+     THROW; 
+END CATCH 
+END')
+
+
+
+exec('CREATE proc [dbo].[sp_updateService]
+@id int,
+@enName nvarchar(100),
+@arName nvarchar(100),
+@active bit,
+@maxNumOfTickets int,
+@bankId int
+as
+begin
+BEGIN TRY 
+IF (EXISTS (SELECT * FROM tblService where bankId = @bankId))
+update tblservice set enName = @enName,arName = @arName,active = @active,maxNumOfTickets = @maxNumOfTickets OUTPUT INSERTED.IDENTITYCOL where id = @id
+else
+select 0;
+END TRY  
+BEGIN CATCH  
+     THROW; 
+END CATCH 
+END')
+
+
+
+exec('CREATE PROCEDURE [dbo].[usp_GetErrorInfo]  
+AS  
+SELECT  
+    ERROR_NUMBER() AS ErrorNumber  
+    ,ERROR_SEVERITY() AS ErrorSeverity  
+    ,ERROR_STATE() AS ErrorState  
+    ,ERROR_PROCEDURE() AS ErrorProcedure  
+    ,ERROR_LINE() AS ErrorLine  
+    ,ERROR_MESSAGE() AS ErrorMessage;')
+
+USE [TSDApp]
+
 
 END TRY  
 BEGIN CATCH  

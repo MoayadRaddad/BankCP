@@ -25,13 +25,13 @@
                         <th class="cell100 column2">
                             @Html.DisplayName(LangText.arName)
                         </th>
-                        <th class="cell100 column3">
+                        <th class="cell100 column3-Service">
                             @Html.DisplayName(LangText.active)
                         </th>
-                        <th class="cell100 column4">
+                        <th class="cell100 column4-Service">
                             @Html.DisplayName(LangText.ticket)
                         </th>
-                        <th class="cell100 column5"></th>
+                        <th class="cell100 column5-Service"></th>
                     </tr>
                 </thead>
             </table>
@@ -52,15 +52,15 @@
                                     <td class="cell100 column2">
                                         @Html.DisplayFor(modelItem => item.arName)
                                     </td>
-                                    <td class="cell100 column3">
+                                    <td class="cell100 column3-Service">
                                         @Html.DisplayFor(modelItem => item.active)
                                     </td>
-                                    <td class="cell100 column4">
+                                    <td class="cell100 column4-Service">
                                         @Html.DisplayFor(modelItem => item.maxNumOfTickets)
                                     </td>
                                     <td>
                                     </td>
-                                    <td class="cell100 column5">
+                                    <td class="cell100 column5-Service">
                                         @Html.ActionLink(LangText.edit, "Edit", new { serviceId = item.id }) |
                                         <input type="submit" value="@LangText.delete " class="buttonLink" />
                                     </td>

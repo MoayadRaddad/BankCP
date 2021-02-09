@@ -157,6 +157,7 @@ namespace BankConfigurationPortal.Controllers
         {
             try
             {
+                ViewBag.branchId = branchId;
                 BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
                 BusinessObjects.Models.Counter counter = bALCounter.selectCounterById(counterId);
                 if (counter != null)

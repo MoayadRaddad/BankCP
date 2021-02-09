@@ -26,7 +26,7 @@ namespace DataAccessLayer.DALAllocateCounterService
                 {
                     if (dataSet.Tables[0].Rows.Count != 0)
                     {
-                        if (Convert.ToInt32((dataSet.Tables[0].Rows[0])["id"]) != 0)
+                        if (Convert.ToInt32((dataSet.Tables[0].Rows[0])["id"]) > 0)
                         {
                             foreach (DataRow dataRow in dataSet.Tables[0].Rows)
                             {
@@ -42,7 +42,7 @@ namespace DataAccessLayer.DALAllocateCounterService
                         else
                         {
                             BusinessObjects.Models.AllocateCounterService allocateCounterService = new BusinessObjects.Models.AllocateCounterService();
-                            allocateCounterService.id = -1;
+                            allocateCounterService.id = Convert.ToInt32((dataSet.Tables[0].Rows[0])["id"]);
                             lstAllocateCounterService.Add(allocateCounterService);
                             return lstAllocateCounterService;
                         }

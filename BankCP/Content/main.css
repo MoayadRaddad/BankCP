@@ -554,6 +554,18 @@ th, td {
     width: 16%;
 }
 
+.column3-Service {
+    width: 16%;
+}
+
+.column4-Service {
+    width: 26%;
+}
+
+.column5-Service {
+    width: 12%;
+}
+
 .table100-head th {
     padding-top: 18px;
     padding-bottom: 18px;
