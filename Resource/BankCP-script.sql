@@ -51,6 +51,7 @@ CREATE TABLE [dbo].[tblAllocateCounterService](
 	[id] [int] IDENTITY(1,1) NOT NULL,
 	[counterId] [int] NULL,
 	[serviceId] [int] NULL,
+	[bankId] [int] NULL,
  CONSTRAINT [PK_tblAllocate_Counter_Service] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
@@ -110,6 +111,7 @@ CREATE TABLE [dbo].[tblCounters](
 	[active] [bit] NULL,
 	[type] [nvarchar](100) NULL,
 	[branchId] [int] NULL,
+	[bankId] [int] NULL,
  CONSTRAINT [PK_tblCounters] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
@@ -246,6 +248,13 @@ REFERENCES [dbo].[tblService] ([id])
 ALTER TABLE [dbo].[tblAllocateCounterService] CHECK CONSTRAINT [FK_tblAllocate_Counter_Service_tblService]
 end
 GO
+IF (not EXISTS (SELECT * FROM INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE WHERE TABLE_SCHEMA = N'dbo' AND TABLE_NAME = N'tblAllocateCounterService' AND CONSTRAINT_NAME = N'FK_tblAllocateCounterService_tblBanks'))
+BEGIN
+ALTER TABLE [dbo].[tblAllocateCounterService]  WITH CHECK ADD  CONSTRAINT [FK_tblAllocateCounterService_tblBanks] FOREIGN KEY([bankId])
+REFERENCES [dbo].[tblBanks] ([id])
+ALTER TABLE [dbo].[tblAllocateCounterService] CHECK CONSTRAINT [FK_tblAllocateCounterService_tblBanks]
+end
+GO
 IF (not EXISTS (SELECT * FROM INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE WHERE TABLE_SCHEMA = N'dbo' AND TABLE_NAME = N'tblBranches' AND CONSTRAINT_NAME = N'FK_tblBranches_tblBanks'))
 BEGIN
 ALTER TABLE [dbo].[tblBranches]  WITH CHECK ADD  CONSTRAINT [FK_tblBranches_tblBanks] FOREIGN KEY([bankId])
@@ -258,6 +267,13 @@ BEGIN
 ALTER TABLE [dbo].[tblCounters]  WITH CHECK ADD  CONSTRAINT [FK_tblCounters_tblBranches] FOREIGN KEY([branchId])
 REFERENCES [dbo].[tblBranches] ([id])
 ALTER TABLE [dbo].[tblCounters] CHECK CONSTRAINT [FK_tblCounters_tblBranches]
+end
+GO
+IF (not EXISTS (SELECT * FROM INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE WHERE TABLE_SCHEMA = N'dbo' AND TABLE_NAME = N'tblCounters' AND CONSTRAINT_NAME = N'FK_tblCounters_tblBanks'))
+BEGIN
+ALTER TABLE [dbo].[tblCounters]  WITH CHECK ADD  CONSTRAINT [FK_tblCounters_tblBanks] FOREIGN KEY([bankId])
+REFERENCES [dbo].[tblBanks] ([id])
+ALTER TABLE [dbo].[tblCounters] CHECK CONSTRAINT [FK_tblCounters_tblBanks]
 end
 GO
 IF (not EXISTS (SELECT * FROM INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE WHERE TABLE_SCHEMA = N'dbo' AND TABLE_NAME = N'tblIssueTicketButton' AND CONSTRAINT_NAME = N'FK_tblIssueTicket_tblScreens'))
