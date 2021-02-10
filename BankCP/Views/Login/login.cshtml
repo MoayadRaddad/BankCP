@@ -16,7 +16,7 @@
             <div class="col-12 col-md-4 col-xs-7 col-sm-6 center-block">
                 @Html.LabelFor(model => model.bankName, new { @class = "center-block label-forms" })
                 <div class="wrap-input100">
-                    @Html.EditorFor(model => model.bankName, new { htmlAttributes = new { @class = "input100", placeholder = LangText.bankName } })
+                    @Html.EditorFor(model => model.bankName, new { htmlAttributes = new { @class = "input100", placeholder = LangText.bankName  } })
                     <span class="focus-input100"></span>
                     @Html.ValidationMessageFor(model => model.bankName, "", new { @class = "text-danger" })
                 </div>

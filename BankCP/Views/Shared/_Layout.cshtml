@@ -21,13 +21,13 @@
 <body>
     @if (ViewBag.errorMsg != null)
     {
-    <script>Swal.fire({ title: '@LangText.errorMsg', text: '@ViewBag.errorMsg', icon: 'error', confirmButtonText: '@LangText.ok' })</script>
+        <script>Swal.fire({ title: '@LangText.errorMsg', text: '@ViewBag.errorMsg', icon: 'error', confirmButtonText: '@LangText.ok' })</script>
         ViewBag.errorMsg = null;
     }
 
     @if (ViewBag.loginMsg != null)
     {
-<script>Swal.fire({ title: '@LangText.errorMsg', text: '@ViewBag.loginMsg', icon: 'error', confirmButtonText: '@LangText.ok' })</script>
+        <script>Swal.fire({ title: '@LangText.errorMsg', text: '@ViewBag.loginMsg', icon: 'error', confirmButtonText: '@LangText.ok' })</script>
         ViewBag.loginMsg = null;
     }
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -72,9 +72,10 @@
         </footer>
     </div>
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
-<script>
+    <script>
         $(".formAlert").submit(function (e) {
             e.preventDefault();
             var form = this;
@@ -97,6 +98,10 @@
                 }
             })
         });
-</script>
+
+        $('.input100').on('blur', function (evt) {
+            $(this).valid();
+        });
+    </script>
 </body>
 </html>
