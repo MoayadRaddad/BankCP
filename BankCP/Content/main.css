@@ -974,3 +974,13 @@ th, td {
     .input-custom:hover {
         color: white;
     }
+
+@media only screen and (max-width: 1000px) {
+    .table100-head {
+        top: -15px;
+    }
+
+    .table100 {
+        padding-top: 90px;
+    }
+}

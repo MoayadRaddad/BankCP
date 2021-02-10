@@ -11,53 +11,51 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            <div class="col-md-4">
-                @Html.LabelFor(model => model.enName, new { @class = "center-block label-forms" })
-                <div class="wrap-input100">
-                    @Html.EditorFor(model => model.enName, new { htmlAttributes = new { @class = "input100", placeholder = LangText.enName } })
-                    <span class="focus-input100"></span>
-                    @Html.ValidationMessageFor(model => model.enName, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-4">
-                @Html.LabelFor(model => model.arName, new { @class = "center-block label-forms" })
-                <div class="wrap-input100">
-                    @Html.EditorFor(model => model.arName, new { htmlAttributes = new { @class = "input100", placeholder = LangText.arName } })
-                    <span class="focus-input100"></span>
-                    @Html.ValidationMessageFor(model => model.arName, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.type, LangText.type, htmlAttributes: new { @class = "col-md-1 font-label-check" })
-            <div class="col-md-3">
-                @Html.DropDownListFor(model => model.type, new SelectList(new List<string> { "Teller", "Customer Service" }), new { @class = "form-control" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.active, LangText.active, htmlAttributes: new { @class = "col-md-1 col-sm-6 col-xs-6 font-label-check" })
-            <div class="col-md-1 col-sm-6 col-xs-6">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.active)
-                    @Html.ValidationMessageFor(model => model.active, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-4">
-                @Html.ActionLink(LangText.backToList, "Home", new { branchId = ViewBag.branchId }, new { @class = "button4" })
-                <input type="submit" value="@LangText.create " class="button4 revert-float" />
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        <div class="col-12 col-md-4 col-xs-7 col-sm-6">
+            @Html.LabelFor(model => model.enName, new { @class = "center-block label-forms" })
+            <div class="wrap-input100">
+                @Html.EditorFor(model => model.enName, new { htmlAttributes = new { @class = "input100", placeholder = LangText.enName } })
+                <span class="focus-input100"></span>
+                @Html.ValidationMessageFor(model => model.enName, "", new { @class = "text-danger" })
             </div>
         </div>
     </div>
+
+    <div class="form-group">
+        <div class="col-12 col-md-4 col-xs-7 col-sm-6">
+            @Html.LabelFor(model => model.arName, new { @class = "center-block label-forms" })
+            <div class="wrap-input100">
+                @Html.EditorFor(model => model.arName, new { htmlAttributes = new { @class = "input100", placeholder = LangText.arName } })
+                <span class="focus-input100"></span>
+                @Html.ValidationMessageFor(model => model.arName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.type, LangText.type, htmlAttributes: new { @class = "col-md-1 font-label-check" })
+        <div class="col-12 col-md-4 col-xs-7 col-sm-6">
+            @Html.DropDownListFor(model => model.type, new SelectList(new List<string> { "Teller", "Customer Service" }), new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-12 col-md-4 col-sm-6 col-xs-6">
+            @Html.LabelFor(model => model.active, LangText.active, htmlAttributes: new { @class = "col-md-4 col-sm-6 col-xs-6 font-label-check" })
+            @Html.EditorFor(model => model.active)
+            @Html.ValidationMessageFor(model => model.active, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-12 col-md-4 col-xs-7 col-sm-6">
+            @Html.ActionLink(LangText.backToList, "Home", new { branchId = ViewBag.branchId }, new { @class = "button4" })
+            <input type="submit" value="@LangText.create " class="button4 revert-float" />
+        </div>
+    </div>
+</div>
 }
