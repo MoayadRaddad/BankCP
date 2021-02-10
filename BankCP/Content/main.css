@@ -924,7 +924,7 @@ th, td {
     }
 
 @media all and (max-width:30em) {
-     .button4 {
+      .button4 {
         display: block;
         margin: 0.2em auto;
     }
@@ -957,6 +957,7 @@ th, td {
     padding-top: 5px;
     font-size: 17px !important;
     color: #403866;
+    padding-right: 10px;
 }
 
 .dropdown-mul-2 {
@@ -976,11 +977,45 @@ th, td {
     }
 
 @media only screen and (max-width: 1000px) {
-    .table100-head {
+    /*    .table100-head {
         top: -15px;
     }
 
     .table100 {
         padding-top: 90px;
+    }*/
+}
+
+.center-block {
+    float: none !important;
+}
+
+@media only screen and (max-width: 1200px) and (min-width: 992px) {
+    .col-md-5 {
+        width: 50% !important;
     }
+}
+
+.wrap-table100 {
+    min-width: 800px;
+}
+
+.custom-row {
+    min-width: 830px;
+}
+
+.custom-allocate {
+    min-width: 800px;
+}
+
+.wrap-table100-custom {
+    min-width: 890px;
+}
+
+.wrap-table100-row {
+    min-width: 920px;
+}
+
+.custom-back {
+    padding-left: 15px;
 }

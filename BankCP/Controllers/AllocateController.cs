@@ -6,10 +6,12 @@ using System.Web;
 using System.Web.Mvc;
 using GlobalResource.Resources;
 using BankConfigurationPortal.Models;
+using BankCP.Models;
 
 namespace BankConfigurationPortal.Controllers
 {
     [Authorize]
+    [SessionAuthorize]
     public class AllocateController : Controller
     {
         #region ActionMethods
@@ -69,7 +71,7 @@ namespace BankConfigurationPortal.Controllers
                     }
                     else
                     {
-                        ViewBag.errorMsg = LangText.itemDeleted;
+                        ViewBag.errorMsg = LangText.somethingWentWrongAlert;
                         return View();
                     }
                 }
@@ -94,28 +96,18 @@ namespace BankConfigurationPortal.Controllers
             {
                 BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService bALAllocateCounterService = new BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService();
                 var lstAllocate = bALAllocateCounterService.selectAllocateCounterService(counterId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
-                if (lstAllocate != null)
+                if (lstAllocate == null)
                 {
-                    if (lstAllocate.Count > 0)
-                    {
-                        if (lstAllocate.FirstOrDefault() != null && lstAllocate.FirstOrDefault().id != -1)
-                        {
-                            return View(lstAllocate);
-                        }
-                        else
-                        {
-                            ViewBag.errorMsg = LangText.notAuthorized;
-                            return View();
-                        }
-                    }
-                    else
-                    {
-                        return View();
-                    }
+                    ViewBag.errorMsg = LangText.checkConnection;
+                    return View();
+                }
+                else if (lstAllocate.Count > 0 && lstAllocate.FirstOrDefault().id != 0)
+                {
+                    return View(lstAllocate);
                 }
                 else
                 {
-                    ViewBag.errorMsg = LangText.checkConnection;
+                    ViewBag.errorMsg = LangText.somethingWentWrongAlert;
                     return View();
                 }
             }
@@ -139,14 +131,9 @@ namespace BankConfigurationPortal.Controllers
                 {
                     return RedirectToAction("Home", new { counterId = counterId });
                 }
-                else if (DeletedCheck == BusinessObjects.Models.ResultsEnum.notAuthorize)
-                {
-                    TempData["errorMsg"] = LangText.notAuthorized;
-                    return RedirectToAction("Home", new { counterId = counterId });
-                }
                 else
                 {
-                    TempData["errorMsg"] = LangText.itemDeleted;
+                    TempData["errorMsg"] = LangText.somethingWentWrongAlert;
                     return RedirectToAction("Home", new { counterId = counterId });
                 }
             }
@@ -172,42 +159,39 @@ namespace BankConfigurationPortal.Controllers
                 List<Models.ServiceAllocate> lstServiceAllocate = new List<ServiceAllocate>();
                 List<BusinessObjects.Models.Service> lstServices = bALService.selectServicesByBankId(((BusinessObjects.Models.User)Session["UserObj"]).bankId);
                 List<BusinessObjects.Models.AllocateCounterService> lstAllocateCounterService = bALAllocateCounterService.selectAllocateCounterService(counterId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
-                if (lstAllocateCounterService != null)
-                {
-                    if (lstAllocateCounterService.Count == 0 || lstAllocateCounterService.FirstOrDefault().id > 0)
-                    {
-                        foreach (var item in lstServices)
-                        {
-                            if (lstAllocateCounterService.Where(x => x.serviceId == item.id).FirstOrDefault() != null)
-                            {
-                                item.isDeleted = true;
-                            }
-                            else
-                            {
-                                lstServiceAllocate.Add(new ServiceAllocate(item.id, item.enName, item.arName, counterId, null));
-                            }
-                        }
-                        ViewBag.AllocateId = new SelectList(lstServiceAllocate, "id", System.Globalization.CultureInfo.CurrentCulture.ToString() == "en" ? "enName" : "arName");
-                        return BusinessObjects.Models.ResultsEnum.filled;
-                    }
-                    else
-                    {
-                        if(lstAllocateCounterService.FirstOrDefault().id == 0)
-                        {
-                            ViewBag.AllocateId = new SelectList(lstServiceAllocate, "id", System.Globalization.CultureInfo.CurrentCulture.ToString() == "en" ? "enName" : "arName");
-                            return BusinessObjects.Models.ResultsEnum.deleted;
-                        }
-                        else
-                        {
-                            ViewBag.AllocateId = new SelectList(lstServiceAllocate, "id", System.Globalization.CultureInfo.CurrentCulture.ToString() == "en" ? "enName" : "arName");
-                            return BusinessObjects.Models.ResultsEnum.notAuthorize;
-                        }
-                    }
-                }
-                else
+                if (lstAllocateCounterService == null)
                 {
                     ViewBag.AllocateId = new SelectList(lstServiceAllocate, "id", System.Globalization.CultureInfo.CurrentCulture.ToString() == "en" ? "enName" : "arName");
                     return BusinessObjects.Models.ResultsEnum.error;
+                }
+                else if (lstAllocateCounterService.Count == 0 || lstAllocateCounterService.FirstOrDefault().id > 0)
+                {
+                    foreach (var item in lstServices)
+                    {
+                        if (lstAllocateCounterService.Where(x => x.serviceId == item.id).FirstOrDefault() != null)
+                        {
+                            item.isDeleted = true;
+                        }
+                        else
+                        {
+                            lstServiceAllocate.Add(new ServiceAllocate(item.id, item.enName, item.arName, counterId, null));
+                        }
+                    }
+                    ViewBag.AllocateId = new SelectList(lstServiceAllocate, "id", System.Globalization.CultureInfo.CurrentCulture.ToString() == "en" ? "enName" : "arName");
+                    return BusinessObjects.Models.ResultsEnum.filled;
+                }
+                else
+                {
+                    if (lstAllocateCounterService.FirstOrDefault().id == 0)
+                    {
+                        ViewBag.AllocateId = new SelectList(lstServiceAllocate, "id", System.Globalization.CultureInfo.CurrentCulture.ToString() == "en" ? "enName" : "arName");
+                        return BusinessObjects.Models.ResultsEnum.deleted;
+                    }
+                    else
+                    {
+                        ViewBag.AllocateId = new SelectList(lstServiceAllocate, "id", System.Globalization.CultureInfo.CurrentCulture.ToString() == "en" ? "enName" : "arName");
+                        return BusinessObjects.Models.ResultsEnum.notAuthorize;
+                    }
                 }
             }
             catch (Exception ex)
@@ -215,7 +199,7 @@ namespace BankConfigurationPortal.Controllers
                 ExceptionsWriter.saveExceptionToLogFile(ex);
                 return BusinessObjects.Models.ResultsEnum.error;
             }
-        }
+}
         #endregion
     }
 }

@@ -12,7 +12,7 @@
 @using (Html.BeginForm())
 {
     @Html.HiddenFor(model => model.id)
-    <div class="multi-drop-div">
+    <div class="multi-drop-div  custom-allocate">
         @Html.Label(LangText.services, LangText.services, new { @class = "labels label-forms" })
         <div class="dropdown-mul-2">
             @Html.DropDownListFor(model => model.AllocateId, null, new { @class = "form-control col-md-12 drop-down-list-height", multiple = "multiple" })
@@ -23,7 +23,9 @@
 
 
 @{Html.RenderAction("_AllocateCounterServiceList", new { ViewBag.counterId });}
-@Html.ActionLink(LangText.backToBranches, "Home", "Branches", null, new { @class = "button4" })
+<div class="custom-back">
+    @Html.ActionLink(LangText.backToBranches, "Home", "Branches", null, new { @class = "button4" })
+</div>
 
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/bootstrap")

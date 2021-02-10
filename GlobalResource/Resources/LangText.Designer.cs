@@ -637,6 +637,15 @@ namespace GlobalResource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Something went wrong.
+        /// </summary>
+        public static string somethingWentWrongAlert {
+            get {
+                return ResourceManager.GetString("somethingWentWrongAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Maximum number of ticket.
         /// </summary>
         public static string ticket {

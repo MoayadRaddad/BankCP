@@ -23,5 +23,6 @@ namespace BusinessObjects.Models
         [Required(ErrorMessageResourceName = "errorType", ErrorMessageResourceType = typeof(GlobalResource.Resources.LangText))]
         public string type { get; set; }
         public int branchId { get; set; }
+        public int bankId { get; set; }
     }
 }

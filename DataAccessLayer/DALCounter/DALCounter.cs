@@ -6,23 +6,25 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessObjects.Models;
 
 namespace DataAccessLayer.DALCounter
 {
     public class DALCounter
     {
-        public BusinessObjects.Models.Counter selectCounterById(int counterId)
+        public Counter selectCounterById(int counterId, int bankId)
         {
             try
             {
-                string pquery = "SELECT * FROM tblCounters where id = @counterId";
+                string pquery = "SELECT * FROM tblCounters where id = @id and bankId = @bankId";
                 List<SqlParameter> counterParams = new List<SqlParameter>();
-                counterParams.Add(new SqlParameter("@counterId", counterId));
+                counterParams.Add(new SqlParameter("@id", counterId));
+                counterParams.Add(new SqlParameter("@bankId", bankId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
                 DataSet dataSet = dBHelper.executeAdapter(pquery, counterParams);
                 if (dataSet != null)
                 {
-                    BusinessObjects.Models.Counter counter = new BusinessObjects.Models.Counter();
+                    Counter counter = new Counter();
                     if (dataSet.Tables[0].Rows.Count != 0)
                     {
                         DataRow dataRow = dataSet.Tables[0].Rows[0];
@@ -36,7 +38,7 @@ namespace DataAccessLayer.DALCounter
                     }
                     else
                     {
-                        counter.id = -1;
+                        counter.id = 0;
                         return counter;
                     }
                 }
@@ -51,11 +53,11 @@ namespace DataAccessLayer.DALCounter
                 return null;
             }
         }
-        public List<BusinessObjects.Models.Counter> selectCountersByBranchId(int pBranchId, int pBankId)
+        public List<Counter> selectCountersByBranchId(int pBranchId, int pBankId)
         {
             try
             {
-                List<BusinessObjects.Models.Counter> lstCounters = new List<BusinessObjects.Models.Counter>();
+                List<Counter> lstCounters = new List<Counter>();
                 string pquery = "sp_selectCountersByBranchId";
                 List<SqlParameter> ServiceParams = new List<SqlParameter>();
                 ServiceParams.Add(new SqlParameter("@branchId", pBranchId));
@@ -70,7 +72,7 @@ namespace DataAccessLayer.DALCounter
                         {
                             foreach (DataRow dataRow in dataSet.Tables[0].Rows)
                             {
-                                BusinessObjects.Models.Counter counter = new BusinessObjects.Models.Counter();
+                                Counter counter = new Counter();
                                 counter.id = Convert.ToInt32(dataRow["id"]);
                                 counter.enName = dataRow["enName"].ToString();
                                 counter.arName = dataRow["arName"].ToString();
@@ -82,8 +84,8 @@ namespace DataAccessLayer.DALCounter
                         }
                         else
                         {
-                            BusinessObjects.Models.Counter counter = new BusinessObjects.Models.Counter();
-                            counter.id = -1;
+                            Counter counter = new Counter();
+                            counter.id = 0;
                             lstCounters.Add(counter);
                             return lstCounters;
                         }
@@ -101,11 +103,11 @@ namespace DataAccessLayer.DALCounter
                 return null;
             }
         }
-        public BusinessObjects.Models.ResultsEnum insertCounter(BusinessObjects.Models.Counter counter, int bankId)
+        public ResultsEnum insertCounter(Counter counter, int bankId)
         {
             try
             {
-                string pquery = "sp_insertCounter";
+                string pquery = "insert into tblCounters OUTPUT INSERTED.IDENTITYCOL  values (@enName,@arName,@active,@type,@branchId,@bankId)";
                 List<SqlParameter> counterParams = new List<SqlParameter>();
                 counterParams.Add(new SqlParameter("@enName", counter.enName));
                 counterParams.Add(new SqlParameter("@arName", counter.arName));
@@ -114,34 +116,27 @@ namespace DataAccessLayer.DALCounter
                 counterParams.Add(new SqlParameter("@branchId", counter.branchId));
                 counterParams.Add(new SqlParameter("@bankId", bankId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
-                int returnValue = Convert.ToInt32(dBHelper.executeScalarProc(pquery, counterParams));
-                if (returnValue != 0)
+                int returnValue = Convert.ToInt32(dBHelper.executeScalar(pquery, counterParams));
+                if ((sqlResultsEnum)returnValue == sqlResultsEnum.failed)
                 {
-                    if (returnValue != -1)
-                    {
-                        return BusinessObjects.Models.ResultsEnum.inserted;
-                    }
-                    else
-                    {
-                        return BusinessObjects.Models.ResultsEnum.notAuthorize;
-                    }
+                    return ResultsEnum.deleted;
                 }
                 else
                 {
-                    return BusinessObjects.Models.ResultsEnum.deleted;
+                    return ResultsEnum.inserted;
                 }
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return BusinessObjects.Models.ResultsEnum.notInserted;
+                return ResultsEnum.notInserted;
             }
         }
-        public BusinessObjects.Models.ResultsEnum updateCounter(BusinessObjects.Models.Counter counter, int bankId)
+        public ResultsEnum updateCounter(Counter counter, int bankId)
         {
             try
             {
-                string storedProc = "sp_updateCounter";
+                string storedProc = "update tblCounters set enName = @enName,arName = @arName,active = @active,type = @type OUTPUT INSERTED.IDENTITYCOL where id = @id and bankId = @bankId";
                 List<SqlParameter> counterParams = new List<SqlParameter>();
                 counterParams.Add(new SqlParameter("@id", counter.id));
                 counterParams.Add(new SqlParameter("@enName", counter.enName));
@@ -151,93 +146,72 @@ namespace DataAccessLayer.DALCounter
                 counterParams.Add(new SqlParameter("@branchId", counter.branchId));
                 counterParams.Add(new SqlParameter("@bankId", bankId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
-                int returnValue = Convert.ToInt32(dBHelper.executeScalarProc(storedProc, counterParams));
-                if (returnValue != 0)
+                int returnValue = Convert.ToInt32(dBHelper.executeScalar(storedProc, counterParams));
+                if ((sqlResultsEnum)returnValue == sqlResultsEnum.failed)
                 {
-                    if (returnValue != -1)
-                    {
-                        return BusinessObjects.Models.ResultsEnum.updated;
-                    }
-                    else
-                    {
-                        return BusinessObjects.Models.ResultsEnum.notAuthorize;
-                    }
+                    return ResultsEnum.deleted;
                 }
                 else
                 {
-                    return BusinessObjects.Models.ResultsEnum.deleted;
+                    return ResultsEnum.updated;
                 }
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return BusinessObjects.Models.ResultsEnum.notUpdated;
+                return ResultsEnum.notUpdated;
             }
         }
-        public BusinessObjects.Models.ResultsEnum deleteAllocateCounterServiceByCounterId(int counterId, int branchId)
+        public ResultsEnum deleteAllocateCounterServiceByCounterId(int counterId, int bankId)
         {
             try
             {
                 string storedProc = string.Empty;
-                storedProc = "sp_deleteAllocateCounterServiceByCounterId";
+                storedProc = "delete from tblAllocateCounterService OUTPUT DELETED.IDENTITYCOL where counterId = @counterId and bankId = @bankId";
                 List<SqlParameter> counterParams = new List<SqlParameter>();
                 counterParams.Add(new SqlParameter("@counterId", counterId));
-                counterParams.Add(new SqlParameter("@branchId", branchId));
+                counterParams.Add(new SqlParameter("@bankId", bankId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
-                int check = Convert.ToInt32(dBHelper.executeScalarProc(storedProc, counterParams));
-                if (check != -1)
+                int returnValue = Convert.ToInt32(dBHelper.executeScalar(storedProc, counterParams));
+                if ((sqlResultsEnum)returnValue == sqlResultsEnum.failed)
                 {
-                    if (check != 0)
-                    {
-                        return BusinessObjects.Models.ResultsEnum.deleted;
-                    }
-                    else
-                    {
-                        return BusinessObjects.Models.ResultsEnum.notDeleted;
-                    }
+                    return ResultsEnum.notDeleted;
                 }
                 else
                 {
-                    return BusinessObjects.Models.ResultsEnum.notAuthorize;
+                    return ResultsEnum.deleted;
                 }
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return BusinessObjects.Models.ResultsEnum.notDeleted;
+                return ResultsEnum.notDeleted;
             }
         }
-        public BusinessObjects.Models.ResultsEnum deleteCounterById(int counterId, int branchId)
+        public ResultsEnum deleteCounterById(int counterId, int bankId)
         {
             try
             {
                 string storedProc = string.Empty;
-                storedProc = "sp_deleteCounter";
+                storedProc = "delete from tblCounters OUTPUT DELETED.IDENTITYCOL where id = @id and bankId = @bankId";
                 List<SqlParameter> counterParams = new List<SqlParameter>();
                 counterParams.Add(new SqlParameter("@id", counterId));
-                counterParams.Add(new SqlParameter("@branchId", branchId));
+                counterParams.Add(new SqlParameter("@bankId", bankId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
-                int check = Convert.ToInt32(dBHelper.executeScalarProc(storedProc, counterParams));
-                if (check != -1)
+                int returnValue = Convert.ToInt32(dBHelper.executeScalar(storedProc, counterParams));
+                if ((sqlResultsEnum)returnValue == sqlResultsEnum.failed)
                 {
-                    if (check != 0)
-                    {
-                        return BusinessObjects.Models.ResultsEnum.deleted;
-                    }
-                    else
-                    {
-                        return BusinessObjects.Models.ResultsEnum.notDeleted;
-                    }
+                    return ResultsEnum.notDeleted;
                 }
                 else
                 {
-                    return BusinessObjects.Models.ResultsEnum.notAuthorize;
+                    return ResultsEnum.deleted;
                 }
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return BusinessObjects.Models.ResultsEnum.notDeleted;
+                return ResultsEnum.notDeleted;
             }
         }
     }

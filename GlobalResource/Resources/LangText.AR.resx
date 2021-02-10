@@ -309,6 +309,9 @@
   <data name="somethingWentWrong" xml:space="preserve">
     <value>حدث خطأ ما ، يرجى الاتصال بفريق الدعم.</value>
   </data>
+  <data name="String1" xml:space="preserve">
+    <value>حدث خطأ ما</value>
+  </data>
   <data name="ticket" xml:space="preserve">
     <value>العدد الأقصى للتذكرة</value>
   </data>

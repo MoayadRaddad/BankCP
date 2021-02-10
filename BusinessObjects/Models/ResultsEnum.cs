@@ -19,4 +19,9 @@ namespace BusinessObjects.Models
         updated,
         notUpdated
     }
+    public enum sqlResultsEnum
+    {
+        failed = 0,
+        success = 1
+    }
 }

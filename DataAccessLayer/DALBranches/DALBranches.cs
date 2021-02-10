@@ -6,23 +6,25 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessObjects.Models;
 
 namespace DataAccessLayer.DALBranches
 {
     public class DALBranches
     {
-        public BusinessObjects.Models.Branch selectBranchById(int branchId)
+        public Branch selectBranchById(int branchId, int bankId)
         {
             try
             {
-                string query = "SELECT * FROM tblBranches where id = @branchId";
+                string query = "SELECT * FROM tblBranches where id = @branchId and bankId = @bankId";
                 List<SqlParameter> branchParams = new List<SqlParameter>();
                 branchParams.Add(new SqlParameter("@branchId", branchId));
+                branchParams.Add(new SqlParameter("@bankId", bankId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
                 DataSet dataSet = dBHelper.executeAdapter(query, branchParams);
                 if (dataSet != null)
                 {
-                    BusinessObjects.Models.Branch branch = new BusinessObjects.Models.Branch();
+                    Branch branch = new Branch();
                     if (dataSet.Tables[0].Rows.Count != 0)
                     {
                         DataRow dataRow = dataSet.Tables[0].Rows[0];
@@ -35,7 +37,7 @@ namespace DataAccessLayer.DALBranches
                     }
                     else
                     {
-                        branch.id = -1;
+                        branch.id = 0;
                         return branch;
                     }
                 }
@@ -50,11 +52,11 @@ namespace DataAccessLayer.DALBranches
                 return null;
             }
         }
-        public List<BusinessObjects.Models.Branch> selectBranchesByBankId(int pBankId)
+        public List<Branch> selectBranchesByBankId(int pBankId)
         {
             try
             {
-                List<BusinessObjects.Models.Branch> lstBranches = new List<BusinessObjects.Models.Branch>();
+                List<Branch> lstBranches = new List<Branch>();
                 string storedProc = "sp_selectBranchesByBankId";
                 List<SqlParameter> branchParams = new List<SqlParameter>();
                 branchParams.Add(new SqlParameter("@bankId", pBankId));
@@ -68,7 +70,7 @@ namespace DataAccessLayer.DALBranches
                         {
                             foreach (DataRow dataRow in dataSet.Tables[0].Rows)
                             {
-                                BusinessObjects.Models.Branch branch = new BusinessObjects.Models.Branch();
+                                Branch branch = new Branch();
                                 branch.id = Convert.ToInt32(dataRow["id"]);
                                 branch.enName = dataRow["enName"].ToString();
                                 branch.arName = dataRow["arName"].ToString();
@@ -79,8 +81,8 @@ namespace DataAccessLayer.DALBranches
                         }
                         else
                         {
-                            BusinessObjects.Models.Branch branch = new BusinessObjects.Models.Branch();
-                            branch.id = -1;
+                            Branch branch = new Branch();
+                            branch.id = 0;
                             lstBranches.Add(branch);
                             return lstBranches;
                         }
@@ -98,38 +100,38 @@ namespace DataAccessLayer.DALBranches
                 return null;
             }
         }
-        public BusinessObjects.Models.ResultsEnum insertBranch(BusinessObjects.Models.Branch branch)
+        public ResultsEnum insertBranch(Branch branch)
         {
             try
             {
-                string storedProc = "sp_insertBranch";
+                string storedProc = "insert into tblBranches OUTPUT INSERTED.IDENTITYCOL  values (@enName,@arName,@active,@bankId)";
                 List<SqlParameter> branchParams = new List<SqlParameter>();
                 branchParams.Add(new SqlParameter("@enName", branch.enName));
                 branchParams.Add(new SqlParameter("@arName", branch.arName));
                 branchParams.Add(new SqlParameter("@active", branch.active));
                 branchParams.Add(new SqlParameter("@bankId", branch.bankId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
-                int returnValue = Convert.ToInt32(dBHelper.executeScalarProc(storedProc, branchParams));
-                if (returnValue != 0)
+                int returnValue = Convert.ToInt32(dBHelper.executeScalar(storedProc, branchParams));
+                if ((sqlResultsEnum)returnValue == sqlResultsEnum.failed)
                 {
-                    return BusinessObjects.Models.ResultsEnum.inserted;
+                    return ResultsEnum.deleted;
                 }
                 else
                 {
-                    return BusinessObjects.Models.ResultsEnum.deleted;
+                    return ResultsEnum.inserted;
                 }
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return BusinessObjects.Models.ResultsEnum.notInserted;
+                return ResultsEnum.notInserted;
             }
         }
-        public BusinessObjects.Models.ResultsEnum updateBranch(BusinessObjects.Models.Branch branch)
+        public ResultsEnum updateBranch(Branch branch)
         {
             try
             {
-                string storedProc = "sp_updateBranch";
+                string storedProc = "update tblBranches set enName = @enName,arName = @arName,active = @active OUTPUT INSERTED.IDENTITYCOL where id = @id and bankId = @bankId";
                 List<SqlParameter> branchParams = new List<SqlParameter>();
                 branchParams.Add(new SqlParameter("@id", branch.id));
                 branchParams.Add(new SqlParameter("@enName", branch.enName));
@@ -137,63 +139,23 @@ namespace DataAccessLayer.DALBranches
                 branchParams.Add(new SqlParameter("@active", branch.active));
                 branchParams.Add(new SqlParameter("@bankId", branch.bankId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
-                int returnValue = Convert.ToInt32(dBHelper.executeScalarProc(storedProc, branchParams));
-                if(returnValue != 0)
+                int returnValue = Convert.ToInt32(dBHelper.executeScalar(storedProc, branchParams));
+                if ((sqlResultsEnum)returnValue == sqlResultsEnum.failed)
                 {
-                    if(returnValue != -1)
-                    {
-                        return BusinessObjects.Models.ResultsEnum.updated;
-                    }
-                    else
-                    {
-                        return BusinessObjects.Models.ResultsEnum.notAuthorize;
-                    }
+                    return ResultsEnum.deleted;
                 }
                 else
                 {
-                    return BusinessObjects.Models.ResultsEnum.deleted;
+                    return ResultsEnum.updated;
                 }
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                    return BusinessObjects.Models.ResultsEnum.notUpdated;
+                    return ResultsEnum.notUpdated;
             }
         }
-        public BusinessObjects.Models.ResultsEnum deleteBranchById(int branchId, int bankId)
-        {
-            try
-            {
-                string storedProc = string.Empty;
-                storedProc = "sp_deleteBranch";
-                List<SqlParameter> branchParams = new List<SqlParameter>();
-                branchParams.Add(new SqlParameter("@id", branchId));
-                branchParams.Add(new SqlParameter("@bankId", bankId));
-                DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
-                int check = Convert.ToInt32(dBHelper.executeScalarProc(storedProc, branchParams));
-                if(check != -1)
-                {
-                    if (check != 0)
-                    {
-                        return BusinessObjects.Models.ResultsEnum.deleted;
-                    }
-                    else
-                    {
-                        return BusinessObjects.Models.ResultsEnum.notDeleted;
-                    }
-                }
-                else
-                {
-                    return BusinessObjects.Models.ResultsEnum.notAuthorize;
-                }
-            }
-            catch (Exception ex)
-            {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
-                return BusinessObjects.Models.ResultsEnum.notDeleted;
-            }
-        }
-        public BusinessObjects.Models.ResultsEnum deleteCountersByBranchId(int branchId, int bankId)
+        public ResultsEnum deleteCountersByBranchId(int branchId, int bankId)
         {
             try
             {
@@ -203,27 +165,46 @@ namespace DataAccessLayer.DALBranches
                 branchParams.Add(new SqlParameter("@branchId", branchId));
                 branchParams.Add(new SqlParameter("@bankId", bankId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
-                int check = Convert.ToInt32(dBHelper.executeScalarProc(storedProc, branchParams));
-                if (check != -1)
+                int returnValue = Convert.ToInt32(dBHelper.executeScalarProc(storedProc, branchParams));
+                if ((sqlResultsEnum)returnValue == sqlResultsEnum.failed)
                 {
-                    if (check != 0)
-                    {
-                        return BusinessObjects.Models.ResultsEnum.deleted;
-                    }
-                    else
-                    {
-                        return BusinessObjects.Models.ResultsEnum.notDeleted;
-                    }
+                    return ResultsEnum.notDeleted;
                 }
                 else
                 {
-                    return BusinessObjects.Models.ResultsEnum.notAuthorize;
+                    return ResultsEnum.deleted;
                 }
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return BusinessObjects.Models.ResultsEnum.notDeleted;
+                return ResultsEnum.notDeleted;
+            }
+        }
+        public ResultsEnum deleteBranchById(int branchId, int bankId)
+        {
+            try
+            {
+                string storedProc = string.Empty;
+                storedProc = "delete from tblBranches OUTPUT DELETED.IDENTITYCOL where id = @id and bankId = @bankId";
+                List<SqlParameter> branchParams = new List<SqlParameter>();
+                branchParams.Add(new SqlParameter("@id", branchId));
+                branchParams.Add(new SqlParameter("@bankId", bankId));
+                DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
+                int returnValue = Convert.ToInt32(dBHelper.executeScalar(storedProc, branchParams));
+                if ((sqlResultsEnum)returnValue == sqlResultsEnum.failed)
+                {
+                    return ResultsEnum.notDeleted;
+                }
+                else
+                {
+                    return ResultsEnum.deleted;
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionsWriter.saveExceptionToLogFile(ex);
+                return ResultsEnum.notDeleted;
             }
         }
     }

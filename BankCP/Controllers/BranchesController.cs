@@ -5,10 +5,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using GlobalResource.Resources;
+using BankCP.Models;
 
 namespace BankConfigurationPortal.Controllers
 {
     [Authorize]
+    [SessionAuthorize]
     public class BranchesController : Controller
     {
         #region ActionMethods
@@ -28,29 +30,23 @@ namespace BankConfigurationPortal.Controllers
                 BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
                 BusinessAccessLayer.BALBranches.BALBranches bALBranches = new BusinessAccessLayer.BALBranches.BALBranches();
                 List<BusinessObjects.Models.Branch> lstBranches = bALBranches.selectBranchesByBankId(((BusinessObjects.Models.User)Session["UserObj"]).bankId);
-                if (lstBranches != null)
-                {
-                    if (lstBranches.Count > 0)
-                    {
-                        if (lstBranches.FirstOrDefault() != null && lstBranches.FirstOrDefault().id != -1)
-                        {
-                            return View(lstBranches);
-                        }
-                        else
-                        {
-                            ViewBag.errorMsg = LangText.notAuthorized;
-                            return View();
-                        }
-                    }
-                    else
-                    {
-                        return View();
-                    }
-                }
-                else
+                if (lstBranches == null)
                 {
                     ViewBag.errorMsg = LangText.checkConnection;
                     return View();
+                }
+                else if (lstBranches.Count == 0)
+                {
+                    return View();
+                }
+                else if (lstBranches.FirstOrDefault().id == 0)
+                {
+                    ViewBag.errorMsg = LangText.somethingWentWrongAlert;
+                    return View();
+                }
+                else
+                {
+                    return View(lstBranches);
                 }
             }
             catch (Exception ex)
@@ -89,21 +85,18 @@ namespace BankConfigurationPortal.Controllers
                     branch.bankId = ((BusinessObjects.Models.User)Session["UserObj"]).bankId;
                     BusinessAccessLayer.BALBranches.BALBranches bALBranches = new BusinessAccessLayer.BALBranches.BALBranches();
                     BusinessObjects.Models.ResultsEnum checkInserted = bALBranches.insertBranch(branch);
-                    if (checkInserted != BusinessObjects.Models.ResultsEnum.notInserted)
+                    if (checkInserted == BusinessObjects.Models.ResultsEnum.notInserted)
                     {
-                        if (checkInserted == BusinessObjects.Models.ResultsEnum.inserted)
-                        {
-                            return RedirectToAction("Home", "Branches");
-                        }
-                        else
-                        {
-                            ViewBag.errorMsg = LangText.delete;
-                            return View();
-                        }
+                        ViewBag.errorMsg = LangText.checkConnection;
+                        return View();
+                    }
+                    else if (checkInserted == BusinessObjects.Models.ResultsEnum.inserted)
+                    {
+                        return RedirectToAction("Home", "Branches");
                     }
                     else
                     {
-                        ViewBag.errorMsg = LangText.checkConnection;
+                        ViewBag.errorMsg = LangText.somethingWentWrongAlert;
                         return View();
                     }
                 }
@@ -132,14 +125,9 @@ namespace BankConfigurationPortal.Controllers
                 {
                     return RedirectToAction("Home");
                 }
-                else if (checkDeleted == BusinessObjects.Models.ResultsEnum.notAuthorize)
-                {
-                    TempData["errorMsg"] = LangText.notAuthorized;
-                    return RedirectToAction("Home");
-                }
                 else
                 {
-                    TempData["errorMsg"] = LangText.itemDeleted;
+                    TempData["errorMsg"] = LangText.somethingWentWrongAlert;
                     return RedirectToAction("Home");
                 }
             }
@@ -158,31 +146,20 @@ namespace BankConfigurationPortal.Controllers
             try
             {
                 BusinessAccessLayer.BALBranches.BALBranches bALBranches = new BusinessAccessLayer.BALBranches.BALBranches();
-                BusinessObjects.Models.Branch branch = bALBranches.selectBranchById(branchId);
-                if (branch != null)
-                {
-                    if (branch.id != -1)
-                    {
-                        if (branch.bankId == ((BusinessObjects.Models.User)Session["UserObj"]).bankId)
-                        {
-                            return View(branch);
-                        }
-                        else
-                        {
-                            ViewBag.errorMsg = LangText.notAuthorized;
-                            return View();
-                        }
-                    }
-                    else
-                    {
-                        ViewBag.errorMsg = LangText.itemDeleted;
-                        return View();
-                    }
-                }
-                else
+                BusinessObjects.Models.Branch branch = bALBranches.selectBranchById(branchId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
+                if (branch == null)
                 {
                     ViewBag.errorMsg = LangText.checkConnection;
                     return View();
+                }
+                else if (branch.id == 0)
+                {
+                    ViewBag.errorMsg = LangText.somethingWentWrongAlert;
+                    return View();
+                }
+                else
+                {
+                    return View(branch);
                 }
             }
             catch (Exception ex)
@@ -206,29 +183,18 @@ namespace BankConfigurationPortal.Controllers
                     BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
                     BusinessAccessLayer.BALBranches.BALBranches bALBranches = new BusinessAccessLayer.BALBranches.BALBranches();
                     BusinessObjects.Models.ResultsEnum checkUpdated = bALBranches.updateBranch(branch);
-                    if (checkUpdated != BusinessObjects.Models.ResultsEnum.notUpdated)
+                    if (checkUpdated == BusinessObjects.Models.ResultsEnum.notUpdated)
                     {
-                        if (checkUpdated != BusinessObjects.Models.ResultsEnum.deleted)
-                        {
-                            if (checkUpdated == BusinessObjects.Models.ResultsEnum.updated)
-                            {
-                                return RedirectToAction("Home", "Branches");
-                            }
-                            else
-                            {
-                                ViewBag.errorMsg = LangText.notAuthorized;
-                                return View();
-                            }
-                        }
-                        else
-                        {
-                            ViewBag.errorMsg = LangText.itemDeleted;
-                            return View();
-                        }
+                        ViewBag.errorMsg = LangText.checkConnection;
+                        return View();
+                    }
+                    else if (checkUpdated == BusinessObjects.Models.ResultsEnum.updated)
+                    {
+                        return RedirectToAction("Home", "Branches");
                     }
                     else
                     {
-                        ViewBag.errorMsg = LangText.checkConnection;
+                        ViewBag.errorMsg = LangText.somethingWentWrongAlert;
                         return View();
                     }
                 }

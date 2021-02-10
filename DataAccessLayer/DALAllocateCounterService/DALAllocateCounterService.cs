@@ -6,16 +6,17 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessObjects.Models;
 
 namespace DataAccessLayer.DALAllocateCounterService
 {
     public class DALAllocateCounterService
     {
-        public List<BusinessObjects.Models.AllocateCounterService> selectAllocateCounterService(int counterId, int bankId)
+        public List<AllocateCounterService> selectAllocateCounterService(int counterId, int bankId)
         {
             try
             {
-                List<BusinessObjects.Models.AllocateCounterService> lstAllocateCounterService = new List<BusinessObjects.Models.AllocateCounterService>();
+                List<AllocateCounterService> lstAllocateCounterService = new List<AllocateCounterService>();
                 string pquery = "sp_selectAllocateCounterService";
                 List<SqlParameter> AllocateCounterServiceParams = new List<SqlParameter>();
                 AllocateCounterServiceParams.Add(new SqlParameter("@counterId", counterId));
@@ -30,7 +31,7 @@ namespace DataAccessLayer.DALAllocateCounterService
                         {
                             foreach (DataRow dataRow in dataSet.Tables[0].Rows)
                             {
-                                BusinessObjects.Models.AllocateCounterService allocateCounterService = new BusinessObjects.Models.AllocateCounterService();
+                                AllocateCounterService allocateCounterService = new AllocateCounterService();
                                 allocateCounterService.id = Convert.ToInt32(dataRow["id"]);
                                 allocateCounterService.counterId = Convert.ToInt32(dataRow["counterId"]);
                                 allocateCounterService.serviceId = Convert.ToInt32(dataRow["serviceId"]);
@@ -41,7 +42,7 @@ namespace DataAccessLayer.DALAllocateCounterService
                         }
                         else
                         {
-                            BusinessObjects.Models.AllocateCounterService allocateCounterService = new BusinessObjects.Models.AllocateCounterService();
+                            AllocateCounterService allocateCounterService = new AllocateCounterService();
                             allocateCounterService.id = Convert.ToInt32((dataSet.Tables[0].Rows[0])["id"]);
                             lstAllocateCounterService.Add(allocateCounterService);
                             return lstAllocateCounterService;
@@ -60,62 +61,56 @@ namespace DataAccessLayer.DALAllocateCounterService
                 return null;
             }
         }
-        public BusinessObjects.Models.ResultsEnum insertAllocateCounterService(int serviceId, int counterId, int bankId)
+        public ResultsEnum insertAllocateCounterService(int serviceId, int counterId, int bankId)
         {
             try
             {
-                string pquery = "sp_insertAllocateCounterService";
+                string pquery = "insert into tblAllocateCounterService OUTPUT INSERTED.IDENTITYCOL  values (@counterId,@serviceId,@bankId)";
                 List<SqlParameter> allocateParams = new List<SqlParameter>();
                 allocateParams.Add(new SqlParameter("@counterId", counterId));
                 allocateParams.Add(new SqlParameter("@serviceId", serviceId));
                 allocateParams.Add(new SqlParameter("@bankId", bankId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
-                if (Convert.ToInt32(dBHelper.executeScalarProc(pquery, allocateParams)) != 0)
-                {
-                    return BusinessObjects.Models.ResultsEnum.inserted;
-                }
-                else
-                {
-                    return BusinessObjects.Models.ResultsEnum.notInserted;
-                }
+                int returnValue = Convert.ToInt32(dBHelper.executeScalar(pquery, allocateParams));
+                if ((sqlResultsEnum)returnValue == sqlResultsEnum.failed)
+                    {
+                        return ResultsEnum.deleted;
+                    }
+                    else
+                    {
+                        return ResultsEnum.inserted;
+                    }
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return BusinessObjects.Models.ResultsEnum.notInserted;
+                return ResultsEnum.notInserted;
             }
         }
-        public BusinessObjects.Models.ResultsEnum deleteAllocateCounterService(int allocateId, int bankId)
+        public ResultsEnum deleteAllocateCounterService(int allocateId, int bankId)
         {
             try
             {
                 string storedProc = string.Empty;
-                storedProc = "sp_deleteAllocateCounterService";
+                storedProc = "delete from tblAllocateCounterService OUTPUT DELETED.IDENTITYCOL where id = @id and bankId = @bankId";
                 List<SqlParameter> allocateParams = new List<SqlParameter>();
                 allocateParams.Add(new SqlParameter("@id", allocateId));
                 allocateParams.Add(new SqlParameter("@bankId", bankId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
-                int check = Convert.ToInt32(dBHelper.executeScalarProc(storedProc, allocateParams));
-                if (check != -1)
+                int returnValue = Convert.ToInt32(dBHelper.executeScalar(storedProc, allocateParams));
+                if ((sqlResultsEnum)returnValue == sqlResultsEnum.failed)
                 {
-                    if (check != 0)
-                    {
-                        return BusinessObjects.Models.ResultsEnum.deleted;
-                    }
-                    else
-                    {
-                        return BusinessObjects.Models.ResultsEnum.notDeleted;
-                    }
+                    return ResultsEnum.notDeleted;
                 }
                 else
                 {
-                    return BusinessObjects.Models.ResultsEnum.notAuthorize;
+                    return ResultsEnum.deleted;
                 }
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return BusinessObjects.Models.ResultsEnum.notDeleted;
+                return ResultsEnum.notDeleted;
             }
         }
     }

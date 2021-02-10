@@ -10,12 +10,12 @@ namespace BusinessAccessLayer.BALCounter
 {
     public class BALCounter
     {
-        public BusinessObjects.Models.Counter selectCounterById(int counterId)
+        public BusinessObjects.Models.Counter selectCounterById(int counterId, int bankId)
         {
             try
             {
                 DataAccessLayer.DALCounter.DALCounter dALCounter = new DataAccessLayer.DALCounter.DALCounter();
-                return dALCounter.selectCounterById(counterId);
+                return dALCounter.selectCounterById(counterId, bankId);
             }
             catch (Exception ex)
             {
@@ -62,7 +62,7 @@ namespace BusinessAccessLayer.BALCounter
                 return BusinessObjects.Models.ResultsEnum.notUpdated;
             }
         }
-        public BusinessObjects.Models.ResultsEnum deleteCounterById(int counterId, int branchId)
+        public BusinessObjects.Models.ResultsEnum deleteCounterById(int counterId, int bankId)
         {
             try
             {
@@ -70,10 +70,10 @@ namespace BusinessAccessLayer.BALCounter
                 using (TransactionScope scope = new TransactionScope())
                 {
                     DataAccessLayer.DALCounter.DALCounter dALCounter = new DataAccessLayer.DALCounter.DALCounter();
-                    checkDelete = dALCounter.deleteAllocateCounterServiceByCounterId(counterId, branchId);
+                    checkDelete = dALCounter.deleteAllocateCounterServiceByCounterId(counterId, bankId);
                     if (checkDelete == BusinessObjects.Models.ResultsEnum.deleted)
                     {
-                        checkDelete = dALCounter.deleteCounterById(counterId, branchId);
+                        checkDelete = dALCounter.deleteCounterById(counterId, bankId);
                         if (checkDelete == BusinessObjects.Models.ResultsEnum.deleted)
                         {
                             scope.Complete();

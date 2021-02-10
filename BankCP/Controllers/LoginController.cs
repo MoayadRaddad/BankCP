@@ -1,4 +1,5 @@
-﻿using BusinessCommon.ExceptionsWriter;
+﻿using BankCP.Models;
+using BusinessCommon.ExceptionsWriter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Web.Security;
 namespace BankConfigurationPortal.Controllers
 {
     [AllowAnonymous]
+    [SessionAuthorize]
     public class LoginController : Controller
     {
         #region ActionMethods

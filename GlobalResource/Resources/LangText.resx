@@ -309,6 +309,9 @@
   <data name="somethingWentWrong" xml:space="preserve">
     <value>Something went wrong, please call support team.</value>
   </data>
+  <data name="somethingWentWrongAlert" xml:space="preserve">
+    <value>Something went wrong</value>
+  </data>
   <data name="ticket" xml:space="preserve">
     <value>Maximum number of ticket</value>
   </data>

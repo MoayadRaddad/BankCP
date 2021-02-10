@@ -10,12 +10,12 @@ namespace BusinessAccessLayer.BALBranches
 {
     public class BALBranches
     {
-        public BusinessObjects.Models.Branch selectBranchById(int branchId)
+        public BusinessObjects.Models.Branch selectBranchById(int branchId, int bankId)
         {
             try
             {
                 DataAccessLayer.DALBranches.DALBranches dALBranches = new DataAccessLayer.DALBranches.DALBranches();
-                return dALBranches.selectBranchById(branchId);
+                return dALBranches.selectBranchById(branchId, bankId);
             }
             catch (Exception ex)
             {

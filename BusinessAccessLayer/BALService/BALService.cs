@@ -8,12 +8,12 @@ namespace BusinessAccessLayer.BALService
 {
     public class BALService
     {
-        public BusinessObjects.Models.Service selectServiceById(int ServiceId)
+        public BusinessObjects.Models.Service selectServiceById(int ServiceId, int bankId)
         {
             try
             {
                 DataAccessLayer.DALService.DALService dALServices = new DataAccessLayer.DALService.DALService();
-                return dALServices.selectServiceById(ServiceId);
+                return dALServices.selectServiceById(ServiceId, bankId);
             }
             catch (Exception ex)
             {

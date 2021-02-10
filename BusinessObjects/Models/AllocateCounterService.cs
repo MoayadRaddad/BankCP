@@ -14,5 +14,6 @@ namespace BusinessObjects.Models
         public string serviceEnName { get; set; }
         public string serviceArName { get; set; }
         public bool isDeleted { get; set; }
+        public int bankId { get; set; }
     }
 }
