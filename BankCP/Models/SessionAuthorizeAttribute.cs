@@ -15,7 +15,7 @@ namespace BankCP.Models
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
-            filterContext.Result = new RedirectResult("/Login/login");
+            filterContext.Result = new RedirectResult("~/Login/login");
         }
     }
 }
