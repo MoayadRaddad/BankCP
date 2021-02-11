@@ -573,7 +573,7 @@ th, td {
 .table100-head {
     position: absolute;
     width: 100%;
-    top: -15px;
+    top: 0px;
     left: 0;
 }
 
@@ -1005,4 +1005,15 @@ th, td {
 
 .custom-back {
     padding-right: 15px;
+}
+
+.text-font-size {
+    font-size: 18px;
+}
+
+.title-custom-center {
+    float: none !important;
+    text-align: center;
+    font-size: 20px;
+    z-index: -1;
 }

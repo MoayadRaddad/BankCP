@@ -65,13 +65,13 @@ namespace DataAccessLayer.DALAllocateCounterService
         {
             try
             {
-                string pquery = "insert into tblAllocateCounterService OUTPUT INSERTED.IDENTITYCOL  values (@counterId,@serviceId,@bankId)";
+                string storedProc = "sp_insertAllocateCounterService";
                 List<SqlParameter> allocateParams = new List<SqlParameter>();
-                allocateParams.Add(new SqlParameter("@counterId", counterId));
+                allocateParams.Add(new SqlParameter("@id", counterId));
                 allocateParams.Add(new SqlParameter("@serviceId", serviceId));
                 allocateParams.Add(new SqlParameter("@bankId", bankId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
-                int returnValue = Convert.ToInt32(dBHelper.executeScalar(pquery, allocateParams));
+                int returnValue = Convert.ToInt32(dBHelper.executeScalarProc(storedProc, allocateParams));
                 if ((sqlResultsEnum)returnValue == sqlResultsEnum.failed)
                     {
                         return ResultsEnum.deleted;
@@ -87,15 +87,16 @@ namespace DataAccessLayer.DALAllocateCounterService
                 return ResultsEnum.notInserted;
             }
         }
-        public ResultsEnum deleteAllocateCounterService(int allocateId, int bankId)
+        public ResultsEnum deleteAllocateCounterService(int allocateId, int counterId, int bankId)
         {
             try
             {
                 string storedProc = string.Empty;
-                storedProc = "delete from tblAllocateCounterService OUTPUT DELETED.IDENTITYCOL where id = @id and bankId = @bankId";
+                storedProc = "delete from tblAllocateCounterService OUTPUT DELETED.IDENTITYCOL where id = @id and counterId = @counterId and bankId = @bankId";
                 List<SqlParameter> allocateParams = new List<SqlParameter>();
                 allocateParams.Add(new SqlParameter("@id", allocateId));
                 allocateParams.Add(new SqlParameter("@bankId", bankId));
+                allocateParams.Add(new SqlParameter("@counterId", counterId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
                 int returnValue = Convert.ToInt32(dBHelper.executeScalar(storedProc, allocateParams));
                 if ((sqlResultsEnum)returnValue == sqlResultsEnum.failed)

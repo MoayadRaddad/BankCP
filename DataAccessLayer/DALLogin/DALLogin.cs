@@ -16,7 +16,7 @@ namespace DataAccessLayer.DALLogin
         {
             try
             {
-                string pquery = "select tblUsers.* from tblUsers inner join tblBanks on tblUsers.bankId = tblBanks.id where tblBanks.name = @bankName and tblUsers.userName = @userName and tblUsers.password = @password";
+                string pquery = "select tblUsers.*, tblBanks.name from tblUsers inner join tblBanks on tblUsers.bankId = tblBanks.id where tblBanks.name = @bankName and tblUsers.userName = @userName and tblUsers.password = @password";
                 List<SqlParameter> UserParams = new List<SqlParameter>();
                 UserParams.Add(new SqlParameter("@bankName", pUser.bankName));
                 UserParams.Add(new SqlParameter("@userName", pUser.userName));
@@ -29,6 +29,7 @@ namespace DataAccessLayer.DALLogin
                     {
                         pUser.id = Convert.ToInt32(dataSet.Tables[0].Rows[0][0].ToString());
                         pUser.bankId = Convert.ToInt32(dataSet.Tables[0].Rows[0][3].ToString());
+                        pUser.bankName = dataSet.Tables[0].Rows[0][4].ToString();
                     }
                     else
                     {

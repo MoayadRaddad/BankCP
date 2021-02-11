@@ -107,7 +107,7 @@ namespace DataAccessLayer.DALCounter
         {
             try
             {
-                string pquery = "insert into tblCounters OUTPUT INSERTED.IDENTITYCOL  values (@enName,@arName,@active,@type,@branchId,@bankId)";
+                string pquery = "sp_insertCounter";
                 List<SqlParameter> counterParams = new List<SqlParameter>();
                 counterParams.Add(new SqlParameter("@enName", counter.enName));
                 counterParams.Add(new SqlParameter("@arName", counter.arName));
@@ -116,7 +116,7 @@ namespace DataAccessLayer.DALCounter
                 counterParams.Add(new SqlParameter("@branchId", counter.branchId));
                 counterParams.Add(new SqlParameter("@bankId", bankId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
-                int returnValue = Convert.ToInt32(dBHelper.executeScalar(pquery, counterParams));
+                int returnValue = Convert.ToInt32(dBHelper.executeScalarProc(pquery, counterParams));
                 if ((sqlResultsEnum)returnValue == sqlResultsEnum.failed)
                 {
                     return ResultsEnum.deleted;
@@ -173,14 +173,7 @@ namespace DataAccessLayer.DALCounter
                 counterParams.Add(new SqlParameter("@bankId", bankId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
                 int returnValue = Convert.ToInt32(dBHelper.executeScalar(storedProc, counterParams));
-                if ((sqlResultsEnum)returnValue == sqlResultsEnum.failed)
-                {
-                    return ResultsEnum.notDeleted;
-                }
-                else
-                {
-                    return ResultsEnum.deleted;
-                }
+                return ResultsEnum.deleted;
             }
             catch (Exception ex)
             {
@@ -188,15 +181,16 @@ namespace DataAccessLayer.DALCounter
                 return ResultsEnum.notDeleted;
             }
         }
-        public ResultsEnum deleteCounterById(int counterId, int bankId)
+        public ResultsEnum deleteCounterById(int counterId, int bankId, int branchId)
         {
             try
             {
                 string storedProc = string.Empty;
-                storedProc = "delete from tblCounters OUTPUT DELETED.IDENTITYCOL where id = @id and bankId = @bankId";
+                storedProc = "delete from tblCounters OUTPUT DELETED.IDENTITYCOL where id = @id and branchId = @branchId and bankId = @bankId";
                 List<SqlParameter> counterParams = new List<SqlParameter>();
                 counterParams.Add(new SqlParameter("@id", counterId));
                 counterParams.Add(new SqlParameter("@bankId", bankId));
+                counterParams.Add(new SqlParameter("@branchId", branchId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
                 int returnValue = Convert.ToInt32(dBHelper.executeScalar(storedProc, counterParams));
                 if ((sqlResultsEnum)returnValue == sqlResultsEnum.failed)

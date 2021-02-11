@@ -1019,3 +1019,14 @@ th, td {
 .custom-back {
     padding-left: 15px;
 }
+
+.text-font-size {
+    font-size: 19px;
+}
+
+.title-custom-center {
+    float: none !important;
+    text-align: center;
+    font-size: 20px;
+    z-index: -1;
+}

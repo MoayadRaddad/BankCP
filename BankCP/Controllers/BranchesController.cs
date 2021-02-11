@@ -32,8 +32,8 @@ namespace BankConfigurationPortal.Controllers
                 List<BusinessObjects.Models.Branch> lstBranches = bALBranches.selectBranchesByBankId(((BusinessObjects.Models.User)Session["UserObj"]).bankId);
                 if (lstBranches == null)
                 {
-                    ViewBag.errorMsg = LangText.checkConnection;
-                    return View();
+                    TempData["errorMsg"] = LangText.checkConnection;
+                    return RedirectToAction("login", "Login");
                 }
                 else if (lstBranches.Count == 0)
                 {
@@ -41,8 +41,8 @@ namespace BankConfigurationPortal.Controllers
                 }
                 else if (lstBranches.FirstOrDefault().id == 0)
                 {
-                    ViewBag.errorMsg = LangText.somethingWentWrongAlert;
-                    return View();
+                    TempData["errorMsg"] = LangText.somethingWentWrongAlert;
+                    return RedirectToAction("login", "Login");
                 }
                 else
                 {
@@ -87,7 +87,7 @@ namespace BankConfigurationPortal.Controllers
                     BusinessObjects.Models.ResultsEnum checkInserted = bALBranches.insertBranch(branch);
                     if (checkInserted == BusinessObjects.Models.ResultsEnum.notInserted)
                     {
-                        ViewBag.errorMsg = LangText.checkConnection;
+                        TempData["errorMsg"] = LangText.checkConnection;
                         return View();
                     }
                     else if (checkInserted == BusinessObjects.Models.ResultsEnum.inserted)
@@ -97,7 +97,7 @@ namespace BankConfigurationPortal.Controllers
                     else
                     {
                         ViewBag.errorMsg = LangText.somethingWentWrongAlert;
-                        return View();
+                        return RedirectToAction("Home", "Branches");
                     }
                 }
                 else
@@ -149,13 +149,13 @@ namespace BankConfigurationPortal.Controllers
                 BusinessObjects.Models.Branch branch = bALBranches.selectBranchById(branchId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
                 if (branch == null)
                 {
-                    ViewBag.errorMsg = LangText.checkConnection;
-                    return View();
+                    TempData["errorMsg"] = LangText.checkConnection;
+                    return RedirectToAction("Home", "Branches");
                 }
                 else if (branch.id == 0)
                 {
-                    ViewBag.errorMsg = LangText.somethingWentWrongAlert;
-                    return View();
+                    TempData["errorMsg"] = LangText.somethingWentWrongAlert;
+                    return RedirectToAction("Home", "Branches");
                 }
                 else
                 {
@@ -185,8 +185,8 @@ namespace BankConfigurationPortal.Controllers
                     BusinessObjects.Models.ResultsEnum checkUpdated = bALBranches.updateBranch(branch);
                     if (checkUpdated == BusinessObjects.Models.ResultsEnum.notUpdated)
                     {
-                        ViewBag.errorMsg = LangText.checkConnection;
-                        return View();
+                        TempData["errorMsg"] = LangText.checkConnection;
+                        return RedirectToAction("Home", "Branches");
                     }
                     else if (checkUpdated == BusinessObjects.Models.ResultsEnum.updated)
                     {
@@ -194,8 +194,8 @@ namespace BankConfigurationPortal.Controllers
                     }
                     else
                     {
-                        ViewBag.errorMsg = LangText.somethingWentWrongAlert;
-                        return View();
+                        TempData["errorMsg"] = LangText.somethingWentWrongAlert;
+                        return RedirectToAction("Home", "Branches");
                     }
                 }
                 else

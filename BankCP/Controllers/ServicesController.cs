@@ -32,8 +32,8 @@ namespace BankConfigurationPortal.Controllers
                 List<BusinessObjects.Models.Service> lstServices = bALService.selectServicesByBankId(((BusinessObjects.Models.User)Session["UserObj"]).bankId);
                 if (lstServices == null)
                 {
-                    ViewBag.errorMsg = LangText.checkConnection;
-                    return View();
+                    TempData["errorMsg"] = LangText.checkConnection;
+                    return RedirectToAction("login", "Login");
                 }
                 else if (lstServices.Count == 0)
                 {
@@ -41,8 +41,8 @@ namespace BankConfigurationPortal.Controllers
                 }
                 else if (lstServices.FirstOrDefault().id == 0)
                 {
-                    ViewBag.errorMsg = LangText.somethingWentWrongAlert;
-                    return View();
+                    TempData["errorMsg"] = LangText.somethingWentWrongAlert;
+                    return RedirectToAction("login", "Login");
                 }
                 else
                 {
@@ -87,8 +87,8 @@ namespace BankConfigurationPortal.Controllers
                     BusinessObjects.Models.ResultsEnum checkInserted = bALServices.insertService(service);
                     if (checkInserted == BusinessObjects.Models.ResultsEnum.notInserted)
                     {
-                        ViewBag.errorMsg = LangText.checkConnection;
-                        return View();
+                        TempData["errorMsg"] = LangText.checkConnection;
+                        return RedirectToAction("Home", "Services");
                     }
                     else if (checkInserted == BusinessObjects.Models.ResultsEnum.inserted)
                     {
@@ -96,8 +96,8 @@ namespace BankConfigurationPortal.Controllers
                     }
                     else
                     {
-                        ViewBag.errorMsg = LangText.somethingWentWrongAlert;
-                        return View();
+                        TempData["errorMsg"] = LangText.somethingWentWrongAlert;
+                        return RedirectToAction("Home", "Services");
                     }
                 }
                 else
@@ -149,13 +149,13 @@ namespace BankConfigurationPortal.Controllers
                 BusinessObjects.Models.Service service = bALServices.selectServiceById(serviceId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
                 if (service == null)
                 {
-                    ViewBag.errorMsg = LangText.checkConnection;
-                    return View();
+                    TempData["errorMsg"] = LangText.checkConnection;
+                    return RedirectToAction("Home", "Services");
                 }
                 else if (service.id == 0)
                 {
-                    ViewBag.errorMsg = LangText.somethingWentWrongAlert;
-                    return View();
+                    TempData["errorMsg"] = LangText.somethingWentWrongAlert;
+                    return RedirectToAction("Home", "Services");
                 }
                 else
                 {
@@ -185,8 +185,8 @@ namespace BankConfigurationPortal.Controllers
                     BusinessObjects.Models.ResultsEnum checkUpdated = bALServices.updateService(service);
                     if (checkUpdated == BusinessObjects.Models.ResultsEnum.notUpdated)
                     {
-                        ViewBag.errorMsg = LangText.checkConnection;
-                        return View();
+                        TempData["errorMsg"] = LangText.checkConnection;
+                        return RedirectToAction("Home", "Services");
                     }
                     else if (checkUpdated == BusinessObjects.Models.ResultsEnum.updated)
                     {
@@ -194,8 +194,8 @@ namespace BankConfigurationPortal.Controllers
                     }
                     else
                     {
-                        ViewBag.errorMsg = LangText.somethingWentWrongAlert;
-                        return View();
+                        TempData["errorMsg"] = LangText.somethingWentWrongAlert;
+                        return RedirectToAction("Home", "Services");
                     }
                 }
                 else

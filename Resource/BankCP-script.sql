@@ -1,44 +1,11 @@
 USE [master]
-IF (not EXISTS (SELECT name FROM master.dbo.sysdatabases WHERE ('[' + name + ']' = N'TSDApp2' OR name = N'TSDApp2')))
+IF (not EXISTS (SELECT name FROM master.dbo.sysdatabases WHERE ('[' + name + ']' = N'TSDApp' OR name = N'TSDApp')))
 begin
-CREATE DATABASE [TSDApp2]
+CREATE DATABASE [TSDApp]
 CONTAINMENT = NONE
 end
 GO
-IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
-begin
-EXEC [TSDApp2].[dbo].[sp_fulltext_database] @action = 'enable'
-end
-ALTER DATABASE [TSDApp2] SET ANSI_NULL_DEFAULT OFF 
-ALTER DATABASE [TSDApp2] SET ANSI_NULLS OFF 
-ALTER DATABASE [TSDApp2] SET ANSI_PADDING OFF 
-ALTER DATABASE [TSDApp2] SET ANSI_WARNINGS OFF 
-ALTER DATABASE [TSDApp2] SET ARITHABORT OFF 
-ALTER DATABASE [TSDApp2] SET AUTO_CLOSE OFF 
-ALTER DATABASE [TSDApp2] SET AUTO_SHRINK OFF 
-ALTER DATABASE [TSDApp2] SET AUTO_UPDATE_STATISTICS ON 
-ALTER DATABASE [TSDApp2] SET CURSOR_CLOSE_ON_COMMIT OFF 
-ALTER DATABASE [TSDApp2] SET CURSOR_DEFAULT  GLOBAL 
-ALTER DATABASE [TSDApp2] SET CONCAT_NULL_YIELDS_NULL OFF 
-ALTER DATABASE [TSDApp2] SET NUMERIC_ROUNDABORT OFF 
-ALTER DATABASE [TSDApp2] SET QUOTED_IDENTIFIER OFF 
-ALTER DATABASE [TSDApp2] SET RECURSIVE_TRIGGERS OFF 
-ALTER DATABASE [TSDApp2] SET  ENABLE_BROKER 
-ALTER DATABASE [TSDApp2] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
-ALTER DATABASE [TSDApp2] SET DATE_CORRELATION_OPTIMIZATION OFF 
-ALTER DATABASE [TSDApp2] SET TRUSTWORTHY OFF 
-ALTER DATABASE [TSDApp2] SET PARAMETERIZATION SIMPLE 
-ALTER DATABASE [TSDApp2] SET READ_COMMITTED_SNAPSHOT OFF 
-ALTER DATABASE [TSDApp2] SET HONOR_BROKER_PRIORITY OFF 
-ALTER DATABASE [TSDApp2] SET RECOVERY FULL 
-ALTER DATABASE [TSDApp2] SET  MULTI_USER 
-ALTER DATABASE [TSDApp2] SET PAGE_VERIFY CHECKSUM  
-ALTER DATABASE [TSDApp2] SET DB_CHAINING OFF 
-ALTER DATABASE [TSDApp2] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
-ALTER DATABASE [TSDApp2] SET TARGET_RECOVERY_TIME = 60 SECONDS 
-EXEC sys.sp_db_vardecimal_storage_format N'TSDApp2', N'ON'
-GO
-USE [TSDApp2]
+USE [TSDApp]
 GO
 /****** Object:  Table [dbo].[tblAllocateCounterService]    Script Date: 09/02/2021 11:30:24 ******/
 SET ANSI_NULLS ON
@@ -466,7 +433,69 @@ BEGIN CATCH
 END CATCH 
 END
 GO
+/****** Object:  StoredProcedure [dbo].[sp_insertAllocateCounterService]    Script Date: 2/10/2021 11:11:15 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF EXISTS ( SELECT * FROM   sysobjects WHERE name = N'sp_insertAllocateCounterService' )
+BEGIN
+    DROP PROCEDURE [dbo].[sp_insertAllocateCounterService]
+END
+GO
+CREATE proc [dbo].[sp_insertAllocateCounterService]
+@id int,
+@serviceId int,
+@bankId int
+as
+begin
+BEGIN TRY 
+IF (EXISTS (SELECT * FROM tblCounters where id = @id and bankId = @bankId))
+insert into tblAllocateCounterService OUTPUT INSERTED.IDENTITYCOL  values (@id,@serviceId,@bankId)
+else
+select 0;
+END TRY  
+BEGIN CATCH  
+     THROW; 
+END CATCH 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_insertAllocateCounterService]    Script Date: 11/02/2021 10:06:56 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF EXISTS ( SELECT * FROM   sysobjects WHERE name = N'sp_insertCounter' )
+BEGIN
+    DROP PROCEDURE [dbo].[sp_insertCounter]
+END
+GO
+
+CREATE proc [dbo].[sp_insertCounter]
+@enName nvarchar(100),
+@arName nvarchar(100),
+@active bit,
+@type nvarchar(100),
+@branchId int,
+@bankId int
+as
+begin
+BEGIN TRY 
+IF (EXISTS (SELECT * FROM tblBranches where id = @branchId and bankId = @bankId))
+insert into tblCounters OUTPUT INSERTED.IDENTITYCOL  values (@enName,@arName,@active,@type,@branchId,@bankId)
+else
+select 0;
+END TRY  
+BEGIN CATCH  
+     THROW; 
+END CATCH 
+END
+
+GO
 USE [master]
 GO
-ALTER DATABASE [TSDApp2] SET  READ_WRITE 
+ALTER DATABASE [TSDApp] SET  READ_WRITE 
 GO

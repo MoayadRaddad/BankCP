@@ -22,6 +22,13 @@ namespace BankConfigurationPortal.Controllers
         {
             try
             {
+                if (TempData["errorMsg"] != null)
+                {
+                    ViewBag.errorMsg = TempData["errorMsg"];
+                    TempData["errorMsg"] = null;
+                    Session.Clear();
+                    FormsAuthentication.SignOut();
+                }
                 if (Session["UserObj"] != null)
                 {
                     return RedirectToAction("Home", "Branches");

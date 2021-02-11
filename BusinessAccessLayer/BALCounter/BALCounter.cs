@@ -62,7 +62,7 @@ namespace BusinessAccessLayer.BALCounter
                 return BusinessObjects.Models.ResultsEnum.notUpdated;
             }
         }
-        public BusinessObjects.Models.ResultsEnum deleteCounterById(int counterId, int bankId)
+        public BusinessObjects.Models.ResultsEnum deleteCounterById(int counterId, int bankId, int branchId)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace BusinessAccessLayer.BALCounter
                     checkDelete = dALCounter.deleteAllocateCounterServiceByCounterId(counterId, bankId);
                     if (checkDelete == BusinessObjects.Models.ResultsEnum.deleted)
                     {
-                        checkDelete = dALCounter.deleteCounterById(counterId, bankId);
+                        checkDelete = dALCounter.deleteCounterById(counterId, bankId, branchId);
                         if (checkDelete == BusinessObjects.Models.ResultsEnum.deleted)
                         {
                             scope.Complete();

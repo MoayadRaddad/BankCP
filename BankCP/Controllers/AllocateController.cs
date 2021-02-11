@@ -30,21 +30,19 @@ namespace BankConfigurationPortal.Controllers
                     TempData["errorMsg"] = null;
                 }
                 BusinessObjects.Models.ResultsEnum check = FillAllocateBag(counterId);
-                if (check != BusinessObjects.Models.ResultsEnum.error)
+
+                if (check == BusinessObjects.Models.ResultsEnum.filled)
                 {
-                    if (check == BusinessObjects.Models.ResultsEnum.notAuthorize)
-                    {
-                        ViewBag.errorMsg = LangText.notAuthorized;
-                    }
-                    else if (check != BusinessObjects.Models.ResultsEnum.filled)
-                    {
-                        ViewBag.errorMsg = LangText.itemDeleted;
-                    }
                     return View();
+                }
+                else if (check == BusinessObjects.Models.ResultsEnum.error)
+                {
+                    return View("Error");
                 }
                 else
                 {
-                    return View("Error");
+                    TempData["errorMsg"] = LangText.somethingWentWrongAlert;
+                    return RedirectToAction("Home", "Branches");
                 }
             }
             catch (Exception ex)
@@ -65,20 +63,13 @@ namespace BankConfigurationPortal.Controllers
                 {
                     BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService bALAllocateCounterService = new BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService();
                     BusinessObjects.Models.ResultsEnum insertedCheck = bALAllocateCounterService.insertAllocateCounterService(lstServiceAllocate.AllocateId, lstServiceAllocate.counterId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
-                    if (insertedCheck == BusinessObjects.Models.ResultsEnum.inserted)
+                    if (insertedCheck != BusinessObjects.Models.ResultsEnum.inserted)
                     {
-                        return RedirectToAction("Home", new { counterId = lstServiceAllocate.counterId });
-                    }
-                    else
-                    {
-                        ViewBag.errorMsg = LangText.somethingWentWrongAlert;
-                        return View();
+                        TempData["errorMsg"] = LangText.somethingWentWrongAlert;
                     }
                 }
-                else
-                {
-                    return RedirectToAction("Home", new { counterId = lstServiceAllocate.counterId });
-                }
+                return RedirectToAction("Home", new { counterId = lstServiceAllocate.counterId });
+
             }
             catch (Exception ex)
             {
@@ -98,17 +89,17 @@ namespace BankConfigurationPortal.Controllers
                 var lstAllocate = bALAllocateCounterService.selectAllocateCounterService(counterId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
                 if (lstAllocate == null)
                 {
-                    ViewBag.errorMsg = LangText.checkConnection;
-                    return View();
+                    TempData["errorMsg"] = LangText.checkConnection;
+                    return RedirectToAction("Home", new { counterId = counterId });
                 }
-                else if (lstAllocate.Count > 0 && lstAllocate.FirstOrDefault().id != 0)
+                else if (lstAllocate.Count > 0 && lstAllocate.FirstOrDefault().id == 0)
                 {
-                    return View(lstAllocate);
+                    TempData["errorMsg"] = LangText.somethingWentWrongAlert;
+                    return RedirectToAction("Home", new { counterId = counterId });
                 }
                 else
                 {
-                    ViewBag.errorMsg = LangText.somethingWentWrongAlert;
-                    return View();
+                    return View(lstAllocate);
                 }
             }
             catch (Exception ex)
@@ -126,7 +117,7 @@ namespace BankConfigurationPortal.Controllers
             try
             {
                 BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService bALAllocateCounterService = new BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService();
-                BusinessObjects.Models.ResultsEnum DeletedCheck = bALAllocateCounterService.deleteAllocateCounterService(id, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
+                BusinessObjects.Models.ResultsEnum DeletedCheck = bALAllocateCounterService.deleteAllocateCounterService(id, ((BusinessObjects.Models.User)Session["UserObj"]).bankId, counterId);
                 if (DeletedCheck == BusinessObjects.Models.ResultsEnum.deleted)
                 {
                     return RedirectToAction("Home", new { counterId = counterId });
@@ -182,16 +173,9 @@ namespace BankConfigurationPortal.Controllers
                 }
                 else
                 {
-                    if (lstAllocateCounterService.FirstOrDefault().id == 0)
-                    {
-                        ViewBag.AllocateId = new SelectList(lstServiceAllocate, "id", System.Globalization.CultureInfo.CurrentCulture.ToString() == "en" ? "enName" : "arName");
-                        return BusinessObjects.Models.ResultsEnum.deleted;
-                    }
-                    else
-                    {
-                        ViewBag.AllocateId = new SelectList(lstServiceAllocate, "id", System.Globalization.CultureInfo.CurrentCulture.ToString() == "en" ? "enName" : "arName");
-                        return BusinessObjects.Models.ResultsEnum.notAuthorize;
-                    }
+                    ViewBag.AllocateId = new SelectList(lstServiceAllocate, "id", System.Globalization.CultureInfo.CurrentCulture.ToString() == "en" ? "enName" : "arName");
+                    return BusinessObjects.Models.ResultsEnum.deleted;
+
                 }
             }
             catch (Exception ex)
@@ -199,7 +183,7 @@ namespace BankConfigurationPortal.Controllers
                 ExceptionsWriter.saveExceptionToLogFile(ex);
                 return BusinessObjects.Models.ResultsEnum.error;
             }
-}
+        }
         #endregion
     }
 }

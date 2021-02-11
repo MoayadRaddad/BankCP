@@ -44,23 +44,22 @@
                 <ul class="nav navbar-nav">
                     @if (LangText.languageText == "English")
                     {
-                        <li class="revert-float">@Html.ActionLink(LangText.languageText, "Change", "Lang", new { lang = "En" }, new { style = "font-size: 17px;" })</li>
-                    }
+        <li class="revert-float">@Html.ActionLink(LangText.languageText, "Change", "Lang", new { lang = "En" }, new { @class = "text-font-size" })</li> }
                     else
                     {
-                        <li class="revert-float">@Html.ActionLink(LangText.languageText, "Change", "Lang", new { lang = "Ar" }, new { style = "font-size: 18px;" })</li>
-                    }
+        <li class="revert-float">@Html.ActionLink(LangText.languageText, "Change", "Lang", new { lang = "Ar" }, new { @class = "text-font-size" })</li>}
                     @using (Html.BeginForm("logout", "Login", FormMethod.Post))
                     {
-                        @Html.AntiForgeryToken()
-                        if (Session["UserObj"] != null)
+        @Html.AntiForgeryToken() if (Session["UserObj"] != null)
                         {
-                            <li class="revert-float">
-                                <input type="submit" value="@LangText.signOut" class="input-custom" />
-                            </li>
-                        }
+        <li class="revert-float">
+            <input type="submit" value="@LangText.signOut" class="input-custom" />
+        </li>}
                     }
-                    }
+            @if (Session["UserObj"] != null)
+            {
+                <li class="revert-float text-font-size input-custom title-custom-center">@(((BusinessObjects.Models.User)Session["UserObj"]).bankName.ToString())</li>
+            }
                 </ul>
             </div>
         </div>
