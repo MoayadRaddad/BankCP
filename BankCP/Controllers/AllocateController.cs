@@ -117,7 +117,7 @@ namespace BankConfigurationPortal.Controllers
             try
             {
                 BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService bALAllocateCounterService = new BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService();
-                BusinessObjects.Models.ResultsEnum DeletedCheck = bALAllocateCounterService.deleteAllocateCounterService(id, ((BusinessObjects.Models.User)Session["UserObj"]).bankId, counterId);
+                BusinessObjects.Models.ResultsEnum DeletedCheck = bALAllocateCounterService.deleteAllocateCounterService(id, counterId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
                 if (DeletedCheck == BusinessObjects.Models.ResultsEnum.deleted)
                 {
                     return RedirectToAction("Home", new { counterId = counterId });

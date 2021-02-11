@@ -48,12 +48,12 @@ namespace BusinessAccessLayer.BALAllocateCounterService
                 return BusinessObjects.Models.ResultsEnum.notInserted;
             }
         }
-        public BusinessObjects.Models.ResultsEnum deleteAllocateCounterService(int allocateId, int bankId, int counterId)
+        public BusinessObjects.Models.ResultsEnum deleteAllocateCounterService(int allocateId, int counterId, int bankId)
         {
             try
             {
                 DataAccessLayer.DALAllocateCounterService.DALAllocateCounterService dALAllocateCounterService = new DataAccessLayer.DALAllocateCounterService.DALAllocateCounterService();
-                return dALAllocateCounterService.deleteAllocateCounterService(allocateId, bankId, counterId);
+                return dALAllocateCounterService.deleteAllocateCounterService(allocateId, counterId, bankId);
             }
             catch (Exception ex)
             {
