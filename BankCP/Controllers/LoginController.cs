@@ -52,14 +52,6 @@ namespace BankConfigurationPortal.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    ////Create
-                    //Random generator = new Random();
-                    //String password = generator.Next(0, 1000000).ToString("D6");
-                    //BusinessCommon.Security.PassPhrase passPhrase = BusinessCommon.Security.PasswordHasher.CreatePassPhrase(password);
-
-                    ////Login
-                    //bool checkPass = BusinessCommon.Security.PasswordHasher.ValidatePassword(password, Hash, Salt);
-
                     BusinessAccessLayer.BALLogin.BALLogin bALLogin = new BusinessAccessLayer.BALLogin.BALLogin();
                     pUser = bALLogin.userLogin(pUser);
                     if (pUser != null)
@@ -67,7 +59,6 @@ namespace BankConfigurationPortal.Controllers
                         if (pUser.id != 0)
                         {
                             Session["UserObj"] = pUser;
-                            FormsAuthentication.SetAuthCookie(pUser.userName, false);
                             return RedirectToAction("Home", "Branches");
                         }
                         else
@@ -104,7 +95,11 @@ namespace BankConfigurationPortal.Controllers
                 if (ModelState.IsValid)
                 {
                     Session.Clear();
-                    FormsAuthentication.SignOut();
+                    string[] myCookies = Request.Cookies.AllKeys;
+                    foreach (string cookie in myCookies)
+                    {
+                        Response.Cookies[cookie].Expires = DateTime.Now.AddDays(-1);
+                    }
                 }
                 return RedirectToAction("login");
             }

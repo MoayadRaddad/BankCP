@@ -9,7 +9,6 @@ using BankCP.Models;
 
 namespace BankConfigurationPortal.Controllers
 {
-    [Authorize]
     [SessionAuthorize]
     public class BranchesController : Controller
     {
