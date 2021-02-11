@@ -1,9 +1,7 @@
-﻿@model IEnumerable<BusinessObjects.Models.Service>
+﻿@model BankCP.Models.CustomerServiceModel
 @using GlobalResource.Resources
 
-@{
-    ViewBag.Title = LangText.services;
-}
+@{ ViewBag.Title = LangText.services; }
 
 <h1 class="title-custom">@LangText.services</h1>
 
@@ -12,7 +10,8 @@
     @Html.ActionLink(LangText.branches, "Home", "Branches", null, new { @class = "button4 revert-float" })
 </div>
 
-
+@using (Html.BeginForm("Home", "Services", new { CurrentPageIndex = Model.CurrentPageIndex}, FormMethod.Post))
+            {
 <div class="wrap-table100 wrap-table100-custom">
     <div class="table100 ver1 m-b-20">
         <div class="table100-head">
@@ -39,37 +38,62 @@
         <div class="table100-body js-pscroll">
             <table>
                 <tbody>
-                    @if (Model != null)
+                    @if (Model.Services != null)
                     {
-                        foreach (var item in Model)
+                        foreach (BusinessObjects.Models.Service item in Model.Services)
                         {
                             using (Html.BeginForm("Delete", "Services", new { serviceId = item.id }, FormMethod.Post, new { @class = "formAlert" }))
                             {
-                                <tr class="row100 body">
-                                    <td class="cell100 column1">
-                                        @Html.DisplayFor(modelItem => item.enName)
-                                    </td>
-                                    <td class="cell100 column2">
-                                        @Html.DisplayFor(modelItem => item.arName)
-                                    </td>
-                                    <td class="cell100 column3-Service">
-                                        @Html.DisplayFor(modelItem => item.active)
-                                    </td>
-                                    <td class="cell100 column4-Service">
-                                        @Html.DisplayFor(modelItem => item.maxNumOfTickets)
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td class="cell100 column5-Service">
-                                        @Html.ActionLink(LangText.edit, "Edit", new { serviceId = item.id }) |
-                                        <input type="submit" value="@LangText.delete " class="buttonLink" />
-                                    </td>
-                                </tr>
-                            }
+    <tr class="row100 body">
+        <td class="cell100 column1">
+            @Html.DisplayFor(modelItem => item.enName)
+        </td>
+        <td class="cell100 column2">
+            @Html.DisplayFor(modelItem => item.arName)
+        </td>
+        <td class="cell100 column3-Service">
+            @Html.DisplayFor(modelItem => item.active)
+        </td>
+        <td class="cell100 column4-Service">
+            @Html.DisplayFor(modelItem => item.maxNumOfTickets)
+        </td>
+        <td>
+        </td>
+        <td class="cell100 column5-Service">
+            @Html.ActionLink(LangText.edit, "Edit", new { serviceId = item.id }) |
+            <input type="submit" value="@LangText.delete " class="buttonLink" />
+        </td>
+    </tr>}
                         }
                     }
                 </tbody>
             </table>
+            <table class="table-number" cellpadding="0" cellspacing="0">
+                <tr class="row100 body">
+                    @for (int i = 1; i <= Model.PageCount; i++)
+                    {
+                        <td class="cell100">
+                            @if (i != Model.CurrentPageIndex)
+                            {
+                            <a href="javascript:PagerClick(@i);">@i</a> }
+                            else
+                            {
+                            <span>@i</span>}
+                        </td>
+                     }
+                </tr>
+            </table>
+            <input type="hidden" id="hfCurrentPageIndex" name="currentPageIndex" />
+            
         </div>
     </div>
 </div>
+}
+
+
+<script type="text/javascript">
+            function PagerClick(index) {
+                document.getElementById("hfCurrentPageIndex").value = index;
+                document.forms[1].submit();
+            }
+</script>

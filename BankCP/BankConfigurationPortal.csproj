@@ -243,6 +243,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CustomerServiceModel.cs" />
     <Compile Include="Models\ServiceAllocate.cs" />
     <Compile Include="Models\SessionAuthorizeAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -310,7 +311,6 @@
     <Content Include="Views\Branches\Home.cshtml" />
     <Content Include="Views\Branches\Add.cshtml" />
     <Content Include="Views\Branches\Edit.cshtml" />
-    <Content Include="Views\Services\Home.cshtml" />
     <Content Include="Views\Services\Add.cshtml" />
     <Content Include="Views\Services\Edit.cshtml" />
     <Content Include="Views\Counters\Home.cshtml" />
@@ -318,6 +318,7 @@
     <Content Include="Views\Counters\Edit.cshtml" />
     <Content Include="Views\Allocate\Home.cshtml" />
     <Content Include="Views\Allocate\_AllocateCounterServiceList.cshtml" />
+    <Content Include="Views\Services\Home.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

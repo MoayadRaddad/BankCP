@@ -27,6 +27,12 @@ CREATE TABLE [dbo].[tblAllocateCounterService](
 END
 
 GO
+if not EXISTS ( SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tblAllocateCounterService' AND COLUMN_NAME = 'bankId' )
+begin
+ALTER TABLE [dbo].[tblAllocateCounterService]
+ADD bankId [int];
+end
+GO
 /****** Object:  Table [dbo].[tblBanks]    Script Date: 09/02/2021 11:30:24 ******/
 SET ANSI_NULLS ON
 GO
@@ -84,6 +90,12 @@ CREATE TABLE [dbo].[tblCounters](
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
+end
+GO
+if not EXISTS ( SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tblCounters' AND COLUMN_NAME = 'bankId' )
+begin
+ALTER TABLE [dbo].[tblCounters]
+ADD bankId [int];
 end
 GO
 /****** Object:  Table [dbo].[tblIssueTicketButton]    Script Date: 09/02/2021 11:30:24 ******/

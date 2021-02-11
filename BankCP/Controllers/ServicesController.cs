@@ -26,32 +26,54 @@ namespace BankConfigurationPortal.Controllers
                     ViewBag.errorMsg = TempData["errorMsg"];
                     TempData["errorMsg"] = null;
                 }
-                BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
-                BusinessAccessLayer.BALService.BALService bALService = new BusinessAccessLayer.BALService.BALService();
-                List<BusinessObjects.Models.Service> lstServices = bALService.selectServicesByBankId(((BusinessObjects.Models.User)Session["UserObj"]).bankId);
-                if (lstServices == null)
+                CustomerServiceModel servicesModel = GetServices(1);
+                if (servicesModel.Services == null)
                 {
                     TempData["errorMsg"] = LangText.checkConnection;
                     return RedirectToAction("login", "Login");
                 }
-                else if (lstServices.Count == 0)
+                else if (servicesModel.Services.Count == 0)
                 {
                     return View();
                 }
-                else if (lstServices.FirstOrDefault().id == 0)
+                else if (servicesModel.Services.FirstOrDefault().id == 0)
                 {
                     TempData["errorMsg"] = LangText.somethingWentWrongAlert;
                     return RedirectToAction("login", "Login");
                 }
                 else
                 {
-                    return View(lstServices);
+                    return View(servicesModel);
                 }
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
                 return View("Error");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Home(int currentPageIndex)
+        {
+            CustomerServiceModel servicesModel = GetServices(currentPageIndex);
+            if (servicesModel.Services == null)
+            {
+                TempData["errorMsg"] = LangText.checkConnection;
+                return RedirectToAction("login", "Login");
+            }
+            else if (servicesModel.Services.Count == 0)
+            {
+                return View();
+            }
+            else if (servicesModel.Services.FirstOrDefault().id == 0)
+            {
+                TempData["errorMsg"] = LangText.somethingWentWrongAlert;
+                return RedirectToAction("login", "Login");
+            }
+            else
+            {
+                return View(servicesModel);
             }
         }
         /// <summary>
@@ -207,6 +229,22 @@ namespace BankConfigurationPortal.Controllers
                 ExceptionsWriter.saveExceptionToLogFile(ex);
                 return View("Error");
             }
+        }
+        #endregion
+
+        #region
+        private CustomerServiceModel GetServices(int currentPage)
+        {
+            int maxRows = 8;
+            BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
+            BusinessAccessLayer.BALService.BALService bALService = new BusinessAccessLayer.BALService.BALService();
+            List<BusinessObjects.Models.Service> lstServices = bALService.selectServicesByBankId(((BusinessObjects.Models.User)Session["UserObj"]).bankId);
+            CustomerServiceModel servicesModel = new CustomerServiceModel();
+            servicesModel.Services = lstServices.ToList().Skip((currentPage - 1) * maxRows).Take(maxRows).ToList();
+            double pageCount = (double)((decimal)lstServices.Count() / Convert.ToDecimal(maxRows));
+            servicesModel.PageCount = (int)Math.Ceiling(pageCount);
+            servicesModel.CurrentPageIndex = currentPage;
+            return servicesModel;
         }
         #endregion
     }
