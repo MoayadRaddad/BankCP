@@ -13,7 +13,7 @@
                 <div class="multi-drop-div  custom-allocate">
                     @Html.Label(LangText.services, LangText.services, new { @class = "labels label-forms" })
                     <div class="dropdown-mul-2">
-                        @Html.DropDownListFor(model => model.AllocateId, null, new { @class = "form-control col-md-12 drop-down-list-height", multiple = "multiple" })
+                        @Html.DropDownListFor(model => model.AllocateId, ViewBag.AllocateId as SelectList, new { @class = "form-control col-md-12 drop-down-list-height", multiple = "multiple" })
                     </div>
                     <input type="submit" value="@LangText.save " class="button4 revert-float" />
                 </div>}

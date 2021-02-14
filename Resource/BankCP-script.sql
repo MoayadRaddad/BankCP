@@ -507,6 +507,62 @@ END CATCH
 END
 
 GO
+/****** Object:  StoredProcedure [dbo].[sp_deleteAllocateCounterServiceByServiceId]    Script Date: 14/02/2021 12:01:21 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF EXISTS ( SELECT * FROM   sysobjects WHERE name = N'sp_deleteAllocateCounterServiceByServiceId' )
+BEGIN
+    DROP PROCEDURE [dbo].[sp_deleteAllocateCounterServiceByServiceId]
+END
+GO
+
+create proc [dbo].[sp_deleteAllocateCounterServiceByServiceId]
+@serviceId int,
+@bankId int
+as
+begin
+BEGIN TRY
+delete from tblAllocateCounterService where serviceId = @serviceId and bankId = @bankId
+select 1
+END TRY  
+BEGIN CATCH  
+     select 0
+END CATCH 
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[sp_deleteAllocateCounterServiceByCounterId]    Script Date: 14/02/2021 12:01:15 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF EXISTS ( SELECT * FROM   sysobjects WHERE name = N'sp_deleteAllocateCounterServiceByCounterId' )
+BEGIN
+    DROP PROCEDURE [dbo].[sp_deleteAllocateCounterServiceByCounterId]
+END
+GO
+
+create proc [dbo].[sp_deleteAllocateCounterServiceByCounterId]
+@counterId int,
+@bankId int
+as
+begin
+BEGIN TRY
+delete from tblAllocateCounterService where counterId = @counterId and bankId = @bankId
+select 1
+END TRY  
+BEGIN CATCH  
+     select 0
+END CATCH 
+END
+
+GO
 USE [master]
 GO
 ALTER DATABASE [TSDApp] SET  READ_WRITE 

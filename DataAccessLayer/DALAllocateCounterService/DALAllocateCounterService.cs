@@ -74,7 +74,7 @@ namespace DataAccessLayer.DALAllocateCounterService
                 int returnValue = Convert.ToInt32(dBHelper.executeScalarProc(storedProc, allocateParams));
                 if ((sqlResultsEnum)returnValue == sqlResultsEnum.failed)
                     {
-                        return ResultsEnum.deleted;
+                        return ResultsEnum.notFound;
                     }
                     else
                     {
@@ -87,7 +87,7 @@ namespace DataAccessLayer.DALAllocateCounterService
                 return ResultsEnum.notInserted;
             }
         }
-        public ResultsEnum deleteAllocateCounterService(int allocateId, int counterId, int bankId)
+        public sqlResultsEnum deleteAllocateCounterService(int allocateId, int counterId, int bankId)
         {
             try
             {
@@ -101,17 +101,17 @@ namespace DataAccessLayer.DALAllocateCounterService
                 int returnValue = Convert.ToInt32(dBHelper.executeScalar(storedProc, allocateParams));
                 if ((sqlResultsEnum)returnValue == sqlResultsEnum.failed)
                 {
-                    return ResultsEnum.notDeleted;
+                    return sqlResultsEnum.failed;
                 }
                 else
                 {
-                    return ResultsEnum.deleted;
+                    return sqlResultsEnum.success;
                 }
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return ResultsEnum.notDeleted;
+                return sqlResultsEnum.failed;
             }
         }
     }

@@ -10,8 +10,7 @@
     @Html.ActionLink(LangText.branches, "Home", "Branches", null, new { @class = "button4 revert-float" })
 </div>
 
-@using (Html.BeginForm("Home", "Services", new { CurrentPageIndex = Model.CurrentPageIndex}, FormMethod.Post))
-            {
+
 <div class="wrap-table100 wrap-table100-custom">
     <div class="table100 ver1 m-b-20">
         <div class="table100-head">
@@ -68,6 +67,8 @@
                     }
                 </tbody>
             </table>
+            @using (Html.BeginForm("Home", "Services", new { CurrentPageIndex = Model.CurrentPageIndex}, FormMethod.Post, new { id = "PagerForm" }))
+            {
             <table class="table-number" cellpadding="0" cellspacing="0">
                 <tr class="row100 body">
                     @for (int i = 1; i <= Model.PageCount; i++)
@@ -84,16 +85,16 @@
                 </tr>
             </table>
             <input type="hidden" id="hfCurrentPageIndex" name="currentPageIndex" />
+            }
             
         </div>
     </div>
 </div>
-}
 
 
 <script type="text/javascript">
             function PagerClick(index) {
                 document.getElementById("hfCurrentPageIndex").value = index;
-                document.forms[1].submit();
+                document.forms["PagerForm"].submit();
             }
 </script>

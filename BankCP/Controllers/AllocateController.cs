@@ -116,8 +116,8 @@ namespace BankConfigurationPortal.Controllers
             try
             {
                 BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService bALAllocateCounterService = new BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService();
-                BusinessObjects.Models.ResultsEnum DeletedCheck = bALAllocateCounterService.deleteAllocateCounterService(id, counterId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
-                if (DeletedCheck == BusinessObjects.Models.ResultsEnum.deleted)
+                BusinessObjects.Models.sqlResultsEnum DeletedCheck = bALAllocateCounterService.deleteAllocateCounterService(id, counterId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
+                if (DeletedCheck == BusinessObjects.Models.sqlResultsEnum.success)
                 {
                     return RedirectToAction("Home", new { counterId = counterId });
                 }
@@ -173,7 +173,7 @@ namespace BankConfigurationPortal.Controllers
                 else
                 {
                     ViewBag.AllocateId = new SelectList(lstServiceAllocate, "id", System.Globalization.CultureInfo.CurrentCulture.ToString() == "en" ? "enName" : "arName");
-                    return BusinessObjects.Models.ResultsEnum.deleted;
+                    return BusinessObjects.Models.ResultsEnum.notFound;
 
                 }
             }

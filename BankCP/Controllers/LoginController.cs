@@ -27,7 +27,6 @@ namespace BankConfigurationPortal.Controllers
                     ViewBag.errorMsg = TempData["errorMsg"];
                     TempData["errorMsg"] = null;
                     Session.Clear();
-                    FormsAuthentication.SignOut();
                 }
                 if (Session["UserObj"] != null)
                 {

@@ -8,7 +8,7 @@ namespace BusinessObjects.Models
 {
     public enum ResultsEnum
     {
-        deleted,
+        notFound,
         notDeleted,
         inserted,
         notInserted,
@@ -17,7 +17,8 @@ namespace BusinessObjects.Models
         error,
         notAuthorize,
         updated,
-        notUpdated
+        notUpdated,
+        deleted
     }
     public enum sqlResultsEnum
     {

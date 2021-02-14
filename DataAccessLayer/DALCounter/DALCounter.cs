@@ -119,7 +119,7 @@ namespace DataAccessLayer.DALCounter
                 int returnValue = Convert.ToInt32(dBHelper.executeScalarProc(pquery, counterParams));
                 if ((sqlResultsEnum)returnValue == sqlResultsEnum.failed)
                 {
-                    return ResultsEnum.deleted;
+                    return ResultsEnum.notFound;
                 }
                 else
                 {
@@ -149,7 +149,7 @@ namespace DataAccessLayer.DALCounter
                 int returnValue = Convert.ToInt32(dBHelper.executeScalar(storedProc, counterParams));
                 if ((sqlResultsEnum)returnValue == sqlResultsEnum.failed)
                 {
-                    return ResultsEnum.deleted;
+                    return ResultsEnum.notFound;
                 }
                 else
                 {
@@ -162,26 +162,26 @@ namespace DataAccessLayer.DALCounter
                 return ResultsEnum.notUpdated;
             }
         }
-        public ResultsEnum deleteAllocateCounterServiceByCounterId(int counterId, int bankId)
+        public sqlResultsEnum deleteAllocateCounterServiceByCounterId(int counterId, int bankId)
         {
             try
             {
                 string storedProc = string.Empty;
-                storedProc = "delete from tblAllocateCounterService OUTPUT DELETED.IDENTITYCOL where counterId = @counterId and bankId = @bankId";
+                storedProc = "sp_deleteAllocateCounterServiceByCounterId";
                 List<SqlParameter> counterParams = new List<SqlParameter>();
                 counterParams.Add(new SqlParameter("@counterId", counterId));
                 counterParams.Add(new SqlParameter("@bankId", bankId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
-                int returnValue = Convert.ToInt32(dBHelper.executeScalar(storedProc, counterParams));
-                return ResultsEnum.deleted;
+                int returnValue = Convert.ToInt32(dBHelper.executeScalarProc(storedProc, counterParams));
+                return (sqlResultsEnum)returnValue;
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return ResultsEnum.notDeleted;
+                return sqlResultsEnum.failed;
             }
         }
-        public ResultsEnum deleteCounterById(int counterId, int bankId, int branchId)
+        public sqlResultsEnum deleteCounterById(int counterId, int bankId, int branchId)
         {
             try
             {
@@ -195,17 +195,17 @@ namespace DataAccessLayer.DALCounter
                 int returnValue = Convert.ToInt32(dBHelper.executeScalar(storedProc, counterParams));
                 if ((sqlResultsEnum)returnValue == sqlResultsEnum.failed)
                 {
-                    return ResultsEnum.notDeleted;
+                    return sqlResultsEnum.failed;
                 }
                 else
                 {
-                    return ResultsEnum.deleted;
+                    return sqlResultsEnum.success;
                 }
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return ResultsEnum.notDeleted;
+                return sqlResultsEnum.failed;
             }
         }
     }

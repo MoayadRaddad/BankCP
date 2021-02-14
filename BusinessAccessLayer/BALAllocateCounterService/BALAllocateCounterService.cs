@@ -48,7 +48,7 @@ namespace BusinessAccessLayer.BALAllocateCounterService
                 return BusinessObjects.Models.ResultsEnum.notInserted;
             }
         }
-        public BusinessObjects.Models.ResultsEnum deleteAllocateCounterService(int allocateId, int counterId, int bankId)
+        public BusinessObjects.Models.sqlResultsEnum deleteAllocateCounterService(int allocateId, int counterId, int bankId)
         {
             try
             {
@@ -58,7 +58,7 @@ namespace BusinessAccessLayer.BALAllocateCounterService
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return BusinessObjects.Models.ResultsEnum.notDeleted;
+                return BusinessObjects.Models.sqlResultsEnum.failed;
             }
         }
     }

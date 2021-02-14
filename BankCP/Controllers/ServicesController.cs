@@ -34,7 +34,7 @@ namespace BankConfigurationPortal.Controllers
                 }
                 else if (servicesModel.Services.Count == 0)
                 {
-                    return View();
+                    return View(servicesModel);
                 }
                 else if (servicesModel.Services.FirstOrDefault().id == 0)
                 {
@@ -64,7 +64,7 @@ namespace BankConfigurationPortal.Controllers
             }
             else if (servicesModel.Services.Count == 0)
             {
-                return View();
+                return View(servicesModel);
             }
             else if (servicesModel.Services.FirstOrDefault().id == 0)
             {
@@ -141,8 +141,8 @@ namespace BankConfigurationPortal.Controllers
             try
             {
                 BusinessAccessLayer.BALService.BALService bALServices = new BusinessAccessLayer.BALService.BALService();
-                BusinessObjects.Models.ResultsEnum checkDeleted = bALServices.deleteServiceById(serviceId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
-                if (checkDeleted == BusinessObjects.Models.ResultsEnum.deleted)
+                BusinessObjects.Models.sqlResultsEnum checkDeleted = bALServices.deleteServiceById(serviceId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
+                if (checkDeleted == BusinessObjects.Models.sqlResultsEnum.success)
                 {
                     return RedirectToAction("Home");
                 }
@@ -232,10 +232,10 @@ namespace BankConfigurationPortal.Controllers
         }
         #endregion
 
-        #region
+        #region Methods
         private CustomerServiceModel GetServices(int currentPage)
         {
-            int maxRows = 8;
+            int maxRows = 7;
             BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
             BusinessAccessLayer.BALService.BALService bALService = new BusinessAccessLayer.BALService.BALService();
             List<BusinessObjects.Models.Service> lstServices = bALService.selectServicesByBankId(((BusinessObjects.Models.User)Session["UserObj"]).bankId);

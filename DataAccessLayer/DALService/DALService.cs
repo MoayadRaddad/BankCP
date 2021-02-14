@@ -115,7 +115,7 @@ namespace DataAccessLayer.DALService
                 int returnValue = Convert.ToInt32(dBHelper.executeScalar(pquery, serviceParams));
                 if ((sqlResultsEnum)returnValue == sqlResultsEnum.failed)
                 {
-                    return ResultsEnum.deleted;
+                    return ResultsEnum.notFound;
                 }
                 else
                 {
@@ -144,7 +144,7 @@ namespace DataAccessLayer.DALService
                 int returnValue = Convert.ToInt32(dBHelper.executeScalar(storedProc, serviceParams));
                 if ((sqlResultsEnum)returnValue == sqlResultsEnum.failed)
                 {
-                    return ResultsEnum.deleted;
+                    return ResultsEnum.notFound;
                 }
                 else
                 {
@@ -157,26 +157,26 @@ namespace DataAccessLayer.DALService
                 return ResultsEnum.notUpdated;
             }
         }
-        public ResultsEnum deleteAllocateCounterServiceByServiceId(int serviceId, int bankId)
+        public sqlResultsEnum deleteAllocateCounterServiceByServiceId(int serviceId, int bankId)
         {
             try
             {
                 string storedProc = string.Empty;
-                storedProc = "delete from tblAllocateCounterService OUTPUT DELETED.IDENTITYCOL where serviceId = @serviceId and bankId = @bankId";
+                storedProc = "sp_deleteAllocateCounterServiceByServiceId";
                 List<SqlParameter> serviceParams = new List<SqlParameter>();
                 serviceParams.Add(new SqlParameter("@serviceId", serviceId));
                 serviceParams.Add(new SqlParameter("@bankId", bankId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
-                int returnValue = Convert.ToInt32(dBHelper.executeScalar(storedProc, serviceParams));
-                return ResultsEnum.deleted;
+                int returnValue = Convert.ToInt32(dBHelper.executeScalarProc(storedProc, serviceParams));
+                return (sqlResultsEnum)returnValue;
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return ResultsEnum.notDeleted;
+                return sqlResultsEnum.failed;
             }
         }
-        public ResultsEnum deleteServiceById(int serviceId, int bankId)
+        public sqlResultsEnum deleteServiceById(int serviceId, int bankId)
         {
             try
             {
@@ -187,19 +187,19 @@ namespace DataAccessLayer.DALService
                 serviceParams.Add(new SqlParameter("@bankId", bankId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
                 int returnValue = Convert.ToInt32(dBHelper.executeScalar(storedProc, serviceParams));
-                if ((sqlResultsEnum)returnValue == sqlResultsEnum.failed)
+                if((sqlResultsEnum)returnValue == sqlResultsEnum.failed)
                 {
-                    return ResultsEnum.notDeleted;
+                    return sqlResultsEnum.failed;
                 }
                 else
                 {
-                    return ResultsEnum.deleted;
+                    return sqlResultsEnum.success;
                 }
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return ResultsEnum.notDeleted;
+                return sqlResultsEnum.failed;
             }
         }
     }

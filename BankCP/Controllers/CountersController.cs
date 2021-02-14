@@ -119,8 +119,8 @@ namespace BankConfigurationPortal.Controllers
             try
             {
                 BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
-                BusinessObjects.Models.ResultsEnum checkDeleted = bALCounter.deleteCounterById(counterId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId, branchId);
-                if (checkDeleted == BusinessObjects.Models.ResultsEnum.deleted)
+                BusinessObjects.Models.sqlResultsEnum checkDeleted = bALCounter.deleteCounterById(counterId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId, branchId);
+                if (checkDeleted == BusinessObjects.Models.sqlResultsEnum.success)
                 {
                     return RedirectToAction("Home", new { branchId = branchId });
                 }

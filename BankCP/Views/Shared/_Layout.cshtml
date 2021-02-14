@@ -74,33 +74,14 @@
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
-    <script>
+<script>
         $(".formAlert").submit(function (e) {
-            e.preventDefault();
-            var form = this;
-
-            Swal.fire({
-                title: '@LangText.checkSure',
-                text: '@LangText.revert',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                cancelButtonText: '@LangText.cancel',
-                confirmButtonText: '@LangText.yesDelete'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
-                else {
-                    return false;
-                }
-            })
+            callConfirmAlert(this, e, '@LangText.checkSure', '@LangText.revert', '@LangText.cancel', '@LangText.yesDelete');
         });
 
         $('.input100').on('blur', function (evt) {
             $(this).valid();
         });
-    </script>
+</script>
 </body>
 </html>

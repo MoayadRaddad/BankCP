@@ -114,7 +114,7 @@ namespace DataAccessLayer.DALBranches
                 int returnValue = Convert.ToInt32(dBHelper.executeScalar(storedProc, branchParams));
                 if ((sqlResultsEnum)returnValue == sqlResultsEnum.failed)
                 {
-                    return ResultsEnum.deleted;
+                    return ResultsEnum.notFound;
                 }
                 else
                 {
@@ -142,7 +142,7 @@ namespace DataAccessLayer.DALBranches
                 int returnValue = Convert.ToInt32(dBHelper.executeScalar(storedProc, branchParams));
                 if ((sqlResultsEnum)returnValue == sqlResultsEnum.failed)
                 {
-                    return ResultsEnum.deleted;
+                    return ResultsEnum.notFound;
                 }
                 else
                 {
@@ -155,7 +155,7 @@ namespace DataAccessLayer.DALBranches
                     return ResultsEnum.notUpdated;
             }
         }
-        public ResultsEnum deleteCountersByBranchId(int branchId, int bankId)
+        public sqlResultsEnum deleteCountersByBranchId(int branchId, int bankId)
         {
             try
             {
@@ -168,20 +168,20 @@ namespace DataAccessLayer.DALBranches
                 int returnValue = Convert.ToInt32(dBHelper.executeScalarProc(storedProc, branchParams));
                 if ((sqlResultsEnum)returnValue == sqlResultsEnum.failed)
                 {
-                    return ResultsEnum.notDeleted;
+                    return sqlResultsEnum.failed;
                 }
                 else
                 {
-                    return ResultsEnum.deleted;
+                    return sqlResultsEnum.success;
                 }
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return ResultsEnum.notDeleted;
+                return sqlResultsEnum.failed;
             }
         }
-        public ResultsEnum deleteBranchById(int branchId, int bankId)
+        public sqlResultsEnum deleteBranchById(int branchId, int bankId)
         {
             try
             {
@@ -194,17 +194,17 @@ namespace DataAccessLayer.DALBranches
                 int returnValue = Convert.ToInt32(dBHelper.executeScalar(storedProc, branchParams));
                 if ((sqlResultsEnum)returnValue == sqlResultsEnum.failed)
                 {
-                    return ResultsEnum.notDeleted;
+                    return sqlResultsEnum.failed;
                 }
                 else
                 {
-                    return ResultsEnum.deleted;
+                    return sqlResultsEnum.success;
                 }
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return ResultsEnum.notDeleted;
+                return sqlResultsEnum.failed;
             }
         }
     }

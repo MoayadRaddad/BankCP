@@ -62,19 +62,19 @@ namespace BusinessAccessLayer.BALBranches
                 return BusinessObjects.Models.ResultsEnum.notUpdated;
             }
         }
-        public BusinessObjects.Models.ResultsEnum deleteBranchById(int branchId, int bankId)
+        public BusinessObjects.Models.sqlResultsEnum deleteBranchById(int branchId, int bankId)
         {
             try
             {
-                BusinessObjects.Models.ResultsEnum checkDelete;
+                BusinessObjects.Models.sqlResultsEnum checkDelete;
                 using (TransactionScope scope = new TransactionScope())
                 {
                     DataAccessLayer.DALBranches.DALBranches dALBranches = new DataAccessLayer.DALBranches.DALBranches();
                     checkDelete = dALBranches.deleteCountersByBranchId(branchId, bankId);
-                    if(checkDelete == BusinessObjects.Models.ResultsEnum.deleted)
+                    if(checkDelete == BusinessObjects.Models.sqlResultsEnum.success)
                     {
                         checkDelete = dALBranches.deleteBranchById(branchId, bankId);
-                        if (checkDelete == BusinessObjects.Models.ResultsEnum.deleted)
+                        if (checkDelete == BusinessObjects.Models.sqlResultsEnum.success)
                         {
                             scope.Complete();
                         }
@@ -85,7 +85,7 @@ namespace BusinessAccessLayer.BALBranches
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return BusinessObjects.Models.ResultsEnum.notDeleted;
+                return BusinessObjects.Models.sqlResultsEnum.failed;
             }
         }
     }

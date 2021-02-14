@@ -60,19 +60,19 @@ namespace BusinessAccessLayer.BALService
                 return BusinessObjects.Models.ResultsEnum.notUpdated;
             }
         }
-        public BusinessObjects.Models.ResultsEnum deleteServiceById(int serviceId, int bankId)
+        public BusinessObjects.Models.sqlResultsEnum deleteServiceById(int serviceId, int bankId)
         {
             try
             {
-                BusinessObjects.Models.ResultsEnum checkDelete;
+                BusinessObjects.Models.sqlResultsEnum checkDelete;
                 using (TransactionScope scope = new TransactionScope())
                 {
                     DataAccessLayer.DALService.DALService dALServices = new DataAccessLayer.DALService.DALService();
                     checkDelete = dALServices.deleteAllocateCounterServiceByServiceId(serviceId, bankId);
-                    if (checkDelete == BusinessObjects.Models.ResultsEnum.deleted)
+                    if (checkDelete == BusinessObjects.Models.sqlResultsEnum.success)
                     {
                         checkDelete = dALServices.deleteServiceById(serviceId, bankId);
-                        if (checkDelete == BusinessObjects.Models.ResultsEnum.deleted)
+                        if (checkDelete == BusinessObjects.Models.sqlResultsEnum.success)
                         {
                             scope.Complete();
                         }
@@ -83,7 +83,7 @@ namespace BusinessAccessLayer.BALService
             catch (Exception ex)
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
-                return BusinessObjects.Models.ResultsEnum.notDeleted;
+                return BusinessObjects.Models.sqlResultsEnum.failed;
             }
         }
     }

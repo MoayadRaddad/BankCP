@@ -1063,5 +1063,5 @@ th, td {
 }
 
     .table100-body table:first-child {
-        border-bottom: 1px solid #808080;
+        border-bottom: 1px solid lightgray;
     }
