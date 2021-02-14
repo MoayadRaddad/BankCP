@@ -412,6 +412,24 @@ namespace GlobalResource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Maximum Service Time field required.
+        /// </summary>
+        public static string errorMaxTime {
+            get {
+                return ResourceManager.GetString("errorMaxTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum Service Time field required.
+        /// </summary>
+        public static string errorMinTime {
+            get {
+                return ResourceManager.GetString("errorMinTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         public static string errorMsg {
@@ -439,6 +457,24 @@ namespace GlobalResource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Maximum service time value must be between 30 - 999999.
+        /// </summary>
+        public static string errorRangeMaxTime {
+            get {
+                return ResourceManager.GetString("errorRangeMaxTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum service time value must be between 30 - 999999.
+        /// </summary>
+        public static string errorRangeMinTime {
+            get {
+                return ResourceManager.GetString("errorRangeMinTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ticket field required.
         /// </summary>
         public static string errorTickets {
@@ -462,6 +498,15 @@ namespace GlobalResource.Resources {
         public static string errorUserName {
             get {
                 return ResourceManager.GetString("errorUserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;Maximum Service Time&apos; must be greater than &apos;Minimum Service Time&apos;.
+        /// </summary>
+        public static string GreatThanMin {
+            get {
+                return ResourceManager.GetString("GreatThanMin", resourceCulture);
             }
         }
         
@@ -502,6 +547,15 @@ namespace GlobalResource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;Minimum Service Time&apos; must be less than &apos;Maximum Service Time&apos;.
+        /// </summary>
+        public static string LessThanMax {
+            get {
+                return ResourceManager.GetString("LessThanMax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Login.
         /// </summary>
         public static string login {
@@ -516,6 +570,24 @@ namespace GlobalResource.Resources {
         public static string loginMessage {
             get {
                 return ResourceManager.GetString("loginMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum Service Time.
+        /// </summary>
+        public static string MaximumServiceTime {
+            get {
+                return ResourceManager.GetString("MaximumServiceTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum Service Time.
+        /// </summary>
+        public static string MinimumServiceTime {
+            get {
+                return ResourceManager.GetString("MinimumServiceTime", resourceCulture);
             }
         }
         

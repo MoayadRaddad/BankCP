@@ -234,6 +234,12 @@
   <data name="errorMax" xml:space="preserve">
     <value>Length must be less than 100 character</value>
   </data>
+  <data name="errorMaxTime" xml:space="preserve">
+    <value>Maximum Service Time field required</value>
+  </data>
+  <data name="errorMinTime" xml:space="preserve">
+    <value>Minimum Service Time field required</value>
+  </data>
   <data name="errorMsg" xml:space="preserve">
     <value>Error</value>
   </data>
@@ -243,6 +249,12 @@
   <data name="errorRange" xml:space="preserve">
     <value>Ticket value must be between 1 - 100</value>
   </data>
+  <data name="errorRangeMaxTime" xml:space="preserve">
+    <value>Maximum service time value must be between 30 - 999999</value>
+  </data>
+  <data name="errorRangeMinTime" xml:space="preserve">
+    <value>Minimum service time value must be between 30 - 999999</value>
+  </data>
   <data name="errorTickets" xml:space="preserve">
     <value>Ticket field required</value>
   </data>
@@ -251,6 +263,9 @@
   </data>
   <data name="errorUserName" xml:space="preserve">
     <value>User-name field required</value>
+  </data>
+  <data name="GreatThanMin" xml:space="preserve">
+    <value>'Maximum Service Time' must be greater than 'Minimum Service Time'</value>
   </data>
   <data name="home" xml:space="preserve">
     <value>Home</value>
@@ -264,11 +279,20 @@
   <data name="languageText" xml:space="preserve">
     <value>عربي</value>
   </data>
+  <data name="LessThanMax" xml:space="preserve">
+    <value>'Minimum Service Time' must be less than 'Maximum Service Time'</value>
+  </data>
   <data name="login" xml:space="preserve">
     <value>Login</value>
   </data>
   <data name="loginMessage" xml:space="preserve">
     <value>Bank name, username or password is not correct</value>
+  </data>
+  <data name="MaximumServiceTime" xml:space="preserve">
+    <value>Maximum Service Time</value>
+  </data>
+  <data name="MinimumServiceTime" xml:space="preserve">
+    <value>Minimum Service Time</value>
   </data>
   <data name="name" xml:space="preserve">
     <value>Name</value>

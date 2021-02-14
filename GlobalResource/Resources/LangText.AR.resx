@@ -234,6 +234,12 @@
   <data name="errorMax" xml:space="preserve">
     <value>يجب أن لا يزيد حجم النص عن 100 حرف</value>
   </data>
+  <data name="errorMaxTime" xml:space="preserve">
+    <value>حقل الحد الأقصى لوقت الخدمة مطلوب</value>
+  </data>
+  <data name="errorMinTime" xml:space="preserve">
+    <value>حقل الحد الأدنى لوقت الخدمة مطلوب</value>
+  </data>
   <data name="errorMsg" xml:space="preserve">
     <value>خطأ</value>
   </data>
@@ -243,6 +249,12 @@
   <data name="errorRange" xml:space="preserve">
     <value>يجب أن تكون القيمة ما بين 1 - 100</value>
   </data>
+  <data name="errorRangeMaxTime" xml:space="preserve">
+    <value>يجب أن تكون قيمة وقت الخدمة القصوى بين 30-999999</value>
+  </data>
+  <data name="errorRangeMinTime" xml:space="preserve">
+    <value>يجب أن يكون الحد الأدنى لقيمة وقت الخدمة بين 30-999999</value>
+  </data>
   <data name="errorTickets" xml:space="preserve">
     <value>حقل التذاكر مطلوب</value>
   </data>
@@ -251,6 +263,9 @@
   </data>
   <data name="errorUserName" xml:space="preserve">
     <value>حقل إسم المستخدم مطلوب</value>
+  </data>
+  <data name="GreatThanMin" xml:space="preserve">
+    <value>يجب أن يكون "الحد الأقصى لوقت الخدمة" أكبر من "الحد الأدنى لوقت الخدمة"</value>
   </data>
   <data name="home" xml:space="preserve">
     <value>الرئيسية</value>
@@ -264,11 +279,20 @@
   <data name="languageText" xml:space="preserve">
     <value>English</value>
   </data>
+  <data name="LessThanMax" xml:space="preserve">
+    <value>يجب أن يكون "الحد الأدنى لوقت الخدمة" أقل من "الحد الأقصى لوقت الخدمة"</value>
+  </data>
   <data name="login" xml:space="preserve">
     <value>تسجيل الدخول</value>
   </data>
   <data name="loginMessage" xml:space="preserve">
     <value>إسم البنك أو إسم المستخدم أو كلمة المرور غير صحيحة</value>
+  </data>
+  <data name="MaximumServiceTime" xml:space="preserve">
+    <value>أقصى وقت للخدمة</value>
+  </data>
+  <data name="MinimumServiceTime" xml:space="preserve">
+    <value>الحد الأدنى من وقت الخدمة</value>
   </data>
   <data name="name" xml:space="preserve">
     <value>الإسم</value>
