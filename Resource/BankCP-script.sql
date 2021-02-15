@@ -213,6 +213,12 @@ ALTER TABLE [dbo].[tblService]
 ADD arName [nvarchar](max), bankId [int], active [bit], maxNumOfTickets [int];
 end
 GO
+if not EXISTS ( SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tblService' AND COLUMN_NAME = 'minimumServiceTime' )
+begin
+ALTER TABLE [dbo].[tblService]
+ADD minimumServiceTime [int], maximumServiceTime [int];
+end
+GO
 IF (not EXISTS (SELECT * FROM INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE WHERE TABLE_SCHEMA = N'dbo' AND TABLE_NAME = N'tblAllocateCounterService' AND CONSTRAINT_NAME = N'FK_tblAllocate_Counter_Service_tblCounters'))
 BEGIN
 ALTER TABLE [dbo].[tblAllocateCounterService]  WITH CHECK ADD  CONSTRAINT [FK_tblAllocate_Counter_Service_tblCounters] FOREIGN KEY([counterId])

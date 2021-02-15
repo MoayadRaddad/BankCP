@@ -6,11 +6,9 @@ using System.Web;
 using System.Web.Mvc;
 using GlobalResource.Resources;
 using BankConfigurationPortal.Models;
-using BankCP.Models;
 
 namespace BankConfigurationPortal.Controllers
 {
-    [SessionAuthorize]
     public class AllocateController : Controller
     {
         #region ActionMethods

@@ -9,7 +9,6 @@ namespace BusinessObjects.Models
 {
     public class CustomValidation
     {
-        [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
         public class GreaterThanAttribute : ValidationAttribute
         {
             private readonly string _comparisonProperty;
@@ -21,7 +20,10 @@ namespace BusinessObjects.Models
 
             protected override ValidationResult IsValid(object value, ValidationContext validationContext)
             {
-                ErrorMessage = ErrorMessageString;
+                if (string.IsNullOrEmpty(ErrorMessageString))
+                {
+                    ErrorMessage = ErrorMessageString;
+                }
 
                 if (value.GetType() == typeof(IComparable))
                 {
@@ -58,24 +60,6 @@ namespace BusinessObjects.Models
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
         public class LessThanAttribute : ValidationAttribute
         {
             private readonly string _comparisonProperty;
@@ -87,7 +71,10 @@ namespace BusinessObjects.Models
 
             protected override ValidationResult IsValid(object value, ValidationContext validationContext)
             {
-                ErrorMessage = ErrorMessageString;
+                if (string.IsNullOrEmpty(ErrorMessageString))
+                {
+                    ErrorMessage = ErrorMessageString;
+                }
 
                 if (value.GetType() == typeof(IComparable))
                 {

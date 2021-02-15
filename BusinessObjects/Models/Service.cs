@@ -25,13 +25,13 @@ namespace BusinessObjects.Models
         [Required(ErrorMessageResourceName = "errorMinTime", ErrorMessageResourceType = typeof(GlobalResource.Resources.LangText))]
         [Display(Name = "MinimumServiceTime", ResourceType = typeof(GlobalResource.Resources.LangText))]
         [Range(30, 999999, ErrorMessageResourceName = "errorRangeMinTime", ErrorMessageResourceType = typeof(GlobalResource.Resources.LangText))]
-        [LessThan("MaximumServiceTime", ErrorMessageResourceName = "LessThanMax", ErrorMessageResourceType = typeof(GlobalResource.Resources.LangText))]
-        public int MinimumServiceTime { get; set; }
+        [LessThan("maximumServiceTime", ErrorMessageResourceName = "LessThanMax", ErrorMessageResourceType = typeof(GlobalResource.Resources.LangText))]
+        public int minimumServiceTime { get; set; }
         [Required(ErrorMessageResourceName = "errorMaxTime", ErrorMessageResourceType = typeof(GlobalResource.Resources.LangText))]
         [Display(Name = "MaximumServiceTime", ResourceType = typeof(GlobalResource.Resources.LangText))]
         [Range(30, 999999, ErrorMessageResourceName = "errorRangeMaxTime", ErrorMessageResourceType = typeof(GlobalResource.Resources.LangText))]
-        [GreaterThan("MinimumServiceTime", ErrorMessageResourceName = "GreatThanMin", ErrorMessageResourceType = typeof(GlobalResource.Resources.LangText))]
-        public int MaximumServiceTime { get; set; }
+        [GreaterThan("minimumServiceTime", ErrorMessageResourceName = "GreatThanMin", ErrorMessageResourceType = typeof(GlobalResource.Resources.LangText))]
+        public int maximumServiceTime { get; set; }
         public int bankId { get; set; }
         public bool isDeleted { get; set; }
     }

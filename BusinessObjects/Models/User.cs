@@ -22,5 +22,6 @@ namespace BusinessObjects.Models
         [Display(Name = "bankName", ResourceType = typeof(GlobalResource.Resources.LangText))]
         public string bankName { get; set; }
         public int bankId { get; set; }
+        public bool RememberMe { get; set; }
     }
 }

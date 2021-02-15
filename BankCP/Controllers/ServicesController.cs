@@ -5,11 +5,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using GlobalResource.Resources;
-using BankCP.Models;
+using BankConfigurationPortal.Models;
 
 namespace BankConfigurationPortal.Controllers
 {
-    [SessionAuthorize]
     public class ServicesController : Controller
     {
         #region ActionMethods
@@ -84,7 +83,10 @@ namespace BankConfigurationPortal.Controllers
         {
             try
             {
-                return View();
+                BusinessObjects.Models.Service service = new BusinessObjects.Models.Service();
+                service.minimumServiceTime = 45;
+                service.maximumServiceTime = 300;
+                return View(service);
             }
             catch (Exception ex)
             {
@@ -180,6 +182,8 @@ namespace BankConfigurationPortal.Controllers
                 }
                 else
                 {
+                    service.minimumServiceTime = service.minimumServiceTime != 0 ? service.minimumServiceTime : 45;
+                    service.maximumServiceTime = service.maximumServiceTime != 0 ? service.maximumServiceTime : 300;
                     return View(service);
                 }
             }

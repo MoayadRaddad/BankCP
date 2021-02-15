@@ -1,16 +1,14 @@
-﻿using BankCP.Models;
+﻿using BankConfigurationPortal.Models;
 using BusinessCommon.ExceptionsWriter;
+using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
 
 namespace BankConfigurationPortal.Controllers
 {
-    [AllowAnonymous]
-    [SessionAuthorize]
     public class LoginController : Controller
     {
         #region ActionMethods
@@ -55,7 +53,7 @@ namespace BankConfigurationPortal.Controllers
                     pUser = bALLogin.userLogin(pUser);
                     if (pUser != null)
                     {
-                        if (pUser.id != 0)
+                        if (pUser.id != 0 && owinCookieAuthorization(pUser))
                         {
                             Session["UserObj"] = pUser;
                             return RedirectToAction("Home", "Branches");
@@ -94,11 +92,9 @@ namespace BankConfigurationPortal.Controllers
                 if (ModelState.IsValid)
                 {
                     Session.Clear();
-                    string[] myCookies = Request.Cookies.AllKeys;
-                    foreach (string cookie in myCookies)
-                    {
-                        Response.Cookies[cookie].Expires = DateTime.Now.AddDays(-1);
-                    }
+                    var ctx = Request.GetOwinContext();
+                    var authManager = ctx.Authentication;
+                    authManager.SignOut("ApplicationCookie");
                 }
                 return RedirectToAction("login");
             }
@@ -106,6 +102,32 @@ namespace BankConfigurationPortal.Controllers
             {
                 ExceptionsWriter.saveExceptionToLogFile(ex);
                 return View("Error");
+            }
+        }
+        #endregion
+
+        #region Methods
+        private bool owinCookieAuthorization(BusinessObjects.Models.User user)
+        {
+            try
+            {
+                var claims = new[] { new Claim(ClaimTypes.Name, user.userName) };
+                var identity = new ClaimsIdentity(claims, "ApplicationCookie");
+                identity.AddClaim(new Claim(ClaimTypes.Role, "admins"));
+                var context = Request.GetOwinContext();
+                var authManager = context.Authentication;
+                authManager.SignIn(new AuthenticationProperties()
+                {
+                    AllowRefresh = true,
+                    IsPersistent = true,
+                    ExpiresUtc = DateTime.UtcNow.AddHours(1)
+                }, identity);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ExceptionsWriter.saveExceptionToLogFile(ex);
+                return false;
             }
         }
         #endregion

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace BankCP.Models
+namespace BankConfigurationPortal.Models
 {
     public class SessionAuthorizeAttribute : AuthorizeAttribute
     {

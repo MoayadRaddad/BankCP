@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="ConnectionString\ConnectionString.cs" />
     <Compile Include="ExceptionsWriter\ExceptionsWriter.cs" />
+    <Compile Include="ExceptionsWriter\Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\PasswordHasher.cs" />
   </ItemGroup>

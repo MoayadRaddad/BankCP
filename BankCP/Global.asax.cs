@@ -35,5 +35,15 @@ namespace BankConfigurationPortal
                 System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("En");
             }
         }
+
+        //protected void Application_Error(object sender, EventArgs e)
+        //{
+        //    Exception ex = Server.GetLastError();
+        //    if(ex != null)
+        //    {
+        //        BusinessCommon.ExceptionsWriter.Logger.Log(ex);
+        //        Server.ClearError();
+        //    }
+        //}
     }
 }

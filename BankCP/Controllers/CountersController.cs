@@ -5,11 +5,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using GlobalResource.Resources;
-using BankCP.Models;
+using BankConfigurationPortal.Models;
 
 namespace BankConfigurationPortal.Controllers
 {
-    [SessionAuthorize]
     public class CountersController : Controller
     {
         #region ActionMethods

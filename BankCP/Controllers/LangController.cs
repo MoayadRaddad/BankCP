@@ -1,4 +1,4 @@
-﻿using BankCP.Models;
+﻿using BankConfigurationPortal.Models;
 using BusinessCommon.ExceptionsWriter;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,6 @@ using System.Web.Mvc;
 namespace BankConfigurationPortal.Controllers
 {
     [AllowAnonymous]
-    [SessionAuthorize]
     public class LangController : Controller
     {
         /// <summary>

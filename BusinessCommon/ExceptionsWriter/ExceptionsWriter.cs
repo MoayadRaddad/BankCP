@@ -15,6 +15,7 @@ namespace BusinessCommon.ExceptionsWriter
         {
             try
             {
+                Logger.Log(ex);
                 string filePath = System.AppDomain.CurrentDomain.BaseDirectory + "/App_Data/Exceptions.json";
                 using (StreamWriter writer = File.AppendText(filePath))
                 {
@@ -33,8 +34,7 @@ namespace BusinessCommon.ExceptionsWriter
             }
             catch (Exception exception)
             {
-                saveExceptionToLogFile(exception);
-                throw exception;
+                Logger.Log(exception);
             }
         }
     }
