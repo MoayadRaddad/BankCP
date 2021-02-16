@@ -1,5 +1,6 @@
 ﻿using BankConfigurationPortal.Models;
 using BusinessCommon.ExceptionsWriter;
+using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Web.Mvc;
 
 namespace BankConfigurationPortal.Controllers
 {
+    [AllowAnonymous]
     public class LoginController : Controller
     {
         #region ActionMethods
@@ -20,13 +22,7 @@ namespace BankConfigurationPortal.Controllers
         {
             try
             {
-                if (TempData["errorMsg"] != null)
-                {
-                    ViewBag.errorMsg = TempData["errorMsg"];
-                    TempData["errorMsg"] = null;
-                    Session.Clear();
-                }
-                if (Session["UserObj"] != null)
+                if(AuthenticationManager.User.Identity.IsAuthenticated == true && Session["UserObj"] != null)
                 {
                     return RedirectToAction("Home", "Branches");
                 }
@@ -83,6 +79,7 @@ namespace BankConfigurationPortal.Controllers
         /// <summary>
         /// Clear session and signout from form authentication
         /// </summary>
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult logout()
@@ -91,10 +88,8 @@ namespace BankConfigurationPortal.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
                     Session.Clear();
-                    var ctx = Request.GetOwinContext();
-                    var authManager = ctx.Authentication;
-                    authManager.SignOut("ApplicationCookie");
                 }
                 return RedirectToAction("login");
             }
@@ -111,16 +106,15 @@ namespace BankConfigurationPortal.Controllers
         {
             try
             {
-                var claims = new[] { new Claim(ClaimTypes.Name, user.userName) };
-                var identity = new ClaimsIdentity(claims, "ApplicationCookie");
-                identity.AddClaim(new Claim(ClaimTypes.Role, "admins"));
-                var context = Request.GetOwinContext();
-                var authManager = context.Authentication;
-                authManager.SignIn(new AuthenticationProperties()
+                var claims = new List<Claim>();
+                claims.Add(new Claim(ClaimTypes.NameIdentifier, user.id.ToString()));
+                claims.Add(new Claim(ClaimTypes.Name, user.userName));
+                var identity = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
+                AuthenticationManager.SignIn(new AuthenticationProperties()
                 {
                     AllowRefresh = true,
                     IsPersistent = true,
-                    ExpiresUtc = DateTime.UtcNow.AddHours(1)
+                    ExpiresUtc = DateTime.UtcNow.AddMinutes(30)
                 }, identity);
                 return true;
             }
@@ -129,6 +123,11 @@ namespace BankConfigurationPortal.Controllers
                 ExceptionsWriter.saveExceptionToLogFile(ex);
                 return false;
             }
+        }
+
+        private IAuthenticationManager AuthenticationManager
+        {
+            get { return HttpContext.GetOwinContext().Authentication; }
         }
         #endregion
     }

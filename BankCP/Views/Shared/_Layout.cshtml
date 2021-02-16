@@ -50,13 +50,13 @@
         <li class="revert-float">@Html.ActionLink(LangText.languageText, "Change", "Lang", new { lang = "Ar" }, new { @class = "text-font-size" })</li>}
                     @using (Html.BeginForm("logout", "Login", FormMethod.Post))
                     {
-        @Html.AntiForgeryToken() if (Session["UserObj"] != null)
+        @Html.AntiForgeryToken() if (HttpContext.Current.User.Identity.IsAuthenticated == true && Session["UserObj"] != null)
                         {
         <li class="revert-float">
             <input type="submit" value="@LangText.signOut" class="input-custom" />
         </li>}
                     }
-            @if (Session["UserObj"] != null)
+            @if (HttpContext.Current.User.Identity.IsAuthenticated == true && Session["UserObj"] != null)
             {
                 <li class="revert-float text-font-size input-custom title-custom-center">@(((BusinessObjects.Models.User)Session["UserObj"]).bankName.ToString())</li>
             }

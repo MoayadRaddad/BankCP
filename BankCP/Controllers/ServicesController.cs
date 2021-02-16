@@ -9,6 +9,7 @@ using BankConfigurationPortal.Models;
 
 namespace BankConfigurationPortal.Controllers
 {
+    [Authorize]
     public class ServicesController : Controller
     {
         #region ActionMethods

@@ -4,7 +4,9 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web.Helpers;
 
 [assembly: OwinStartup(typeof(BankCP.Startup))]
 
@@ -21,9 +23,10 @@ namespace BankCP
         {
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
-                CookieName = "ApplicationCookie",
-                CookieHttpOnly = true,
+                AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+                LoginPath = new PathString("/Login/login")
             });
+            AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
         }
     }
 }

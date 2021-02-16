@@ -9,7 +9,7 @@ using BankConfigurationPortal.Models;
 
 namespace BankConfigurationPortal.Controllers
 {
-    //[Authorize(Roles = "admins")]
+    [Authorize]
     public class BranchesController : Controller
     {
         #region ActionMethods
