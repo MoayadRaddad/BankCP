@@ -6,6 +6,8 @@ using System.Web;
 using System.Web.Mvc;
 using GlobalResource.Resources;
 using BankConfigurationPortal.Models;
+using System.Diagnostics;
+using System.Security.Claims;
 
 namespace BankConfigurationPortal.Controllers
 {
@@ -45,7 +47,7 @@ namespace BankConfigurationPortal.Controllers
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return View("Error");
             }
         }
@@ -60,7 +62,9 @@ namespace BankConfigurationPortal.Controllers
                 if (lstServiceAllocate.AllocateId != null && lstServiceAllocate.AllocateId.Count > 0)
                 {
                     BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService bALAllocateCounterService = new BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService();
-                    BusinessObjects.Models.ResultsEnum insertedCheck = bALAllocateCounterService.insertAllocateCounterService(lstServiceAllocate.AllocateId, lstServiceAllocate.counterId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
+                    ClaimsPrincipal principal = HttpContext.User as ClaimsPrincipal;
+                    var bankId = Convert.ToInt32(principal.FindFirst("BankId").Value);
+                    BusinessObjects.Models.ResultsEnum insertedCheck = bALAllocateCounterService.insertAllocateCounterService(lstServiceAllocate.AllocateId, lstServiceAllocate.counterId, bankId);
                     if (insertedCheck != BusinessObjects.Models.ResultsEnum.inserted)
                     {
                         TempData["errorMsg"] = LangText.somethingWentWrongAlert;
@@ -71,7 +75,7 @@ namespace BankConfigurationPortal.Controllers
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return View("Error");
             }
         }
@@ -84,7 +88,9 @@ namespace BankConfigurationPortal.Controllers
             try
             {
                 BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService bALAllocateCounterService = new BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService();
-                var lstAllocate = bALAllocateCounterService.selectAllocateCounterService(counterId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
+                ClaimsPrincipal principal = HttpContext.User as ClaimsPrincipal;
+                var bankId = Convert.ToInt32(principal.FindFirst("BankId").Value);
+                var lstAllocate = bALAllocateCounterService.selectAllocateCounterService(counterId, bankId);
                 if (lstAllocate == null)
                 {
                     TempData["errorMsg"] = LangText.checkConnection;
@@ -102,7 +108,7 @@ namespace BankConfigurationPortal.Controllers
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return View("Error");
             }
         }
@@ -115,7 +121,9 @@ namespace BankConfigurationPortal.Controllers
             try
             {
                 BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService bALAllocateCounterService = new BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService();
-                BusinessObjects.Models.sqlResultsEnum DeletedCheck = bALAllocateCounterService.deleteAllocateCounterService(id, counterId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
+                ClaimsPrincipal principal = HttpContext.User as ClaimsPrincipal;
+                var bankId = Convert.ToInt32(principal.FindFirst("BankId").Value);
+                BusinessObjects.Models.sqlResultsEnum DeletedCheck = bALAllocateCounterService.deleteAllocateCounterService(id, counterId, bankId);
                 if (DeletedCheck == BusinessObjects.Models.sqlResultsEnum.success)
                 {
                     return RedirectToAction("Home", new { counterId = counterId });
@@ -128,7 +136,7 @@ namespace BankConfigurationPortal.Controllers
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return View("Error");
             }
         }
@@ -146,8 +154,10 @@ namespace BankConfigurationPortal.Controllers
                 BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService bALAllocateCounterService = new BusinessAccessLayer.BALAllocateCounterService.BALAllocateCounterService();
                 BusinessAccessLayer.BALService.BALService bALService = new BusinessAccessLayer.BALService.BALService();
                 List<Models.ServiceAllocate> lstServiceAllocate = new List<ServiceAllocate>();
-                List<BusinessObjects.Models.Service> lstServices = bALService.selectServicesByBankId(((BusinessObjects.Models.User)Session["UserObj"]).bankId);
-                List<BusinessObjects.Models.AllocateCounterService> lstAllocateCounterService = bALAllocateCounterService.selectAllocateCounterService(counterId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
+                ClaimsPrincipal principal = HttpContext.User as ClaimsPrincipal;
+                var bankId = Convert.ToInt32(principal.FindFirst("BankId").Value);
+                List<BusinessObjects.Models.Service> lstServices = bALService.selectServicesByBankId(bankId);
+                List<BusinessObjects.Models.AllocateCounterService> lstAllocateCounterService = bALAllocateCounterService.selectAllocateCounterService(counterId, bankId);
                 if (lstAllocateCounterService == null)
                 {
                     ViewBag.AllocateId = new SelectList(lstServiceAllocate, "id", System.Globalization.CultureInfo.CurrentCulture.ToString() == "en" ? "enName" : "arName");
@@ -178,7 +188,7 @@ namespace BankConfigurationPortal.Controllers
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return BusinessObjects.Models.ResultsEnum.error;
             }
         }

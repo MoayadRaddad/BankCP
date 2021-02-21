@@ -1,6 +1,7 @@
 ﻿using BusinessCommon.ExceptionsWriter;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace BusinessAccessLayer.BALAllocateCounterService
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return null;
             }
         }
@@ -44,7 +45,7 @@ namespace BusinessAccessLayer.BALAllocateCounterService
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return BusinessObjects.Models.ResultsEnum.notInserted;
             }
         }
@@ -57,7 +58,7 @@ namespace BusinessAccessLayer.BALAllocateCounterService
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return BusinessObjects.Models.sqlResultsEnum.failed;
             }
         }

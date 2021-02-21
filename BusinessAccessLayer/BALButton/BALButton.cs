@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Text;
 using System.Transactions;
 
@@ -18,7 +19,7 @@ namespace BusinessAccessLayer.BALButton
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return null;
             }
         }
@@ -39,7 +40,7 @@ namespace BusinessAccessLayer.BALButton
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return 0;
             }
         }
@@ -52,7 +53,7 @@ namespace BusinessAccessLayer.BALButton
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return false;
             }
         }

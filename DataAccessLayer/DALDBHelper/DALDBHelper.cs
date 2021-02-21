@@ -9,6 +9,7 @@ using System.Reflection;
 using System.IO;
 using BusinessCommon.ExceptionsWriter;
 using System.Configuration;
+using System.Diagnostics;
 
 namespace DataAccessLayer.DALDBHelper
 {
@@ -27,7 +28,7 @@ namespace DataAccessLayer.DALDBHelper
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return -1;
             }
         }
@@ -39,7 +40,7 @@ namespace DataAccessLayer.DALDBHelper
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return -1;
             }
         }
@@ -51,7 +52,7 @@ namespace DataAccessLayer.DALDBHelper
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return null;
             }
         }
@@ -63,7 +64,7 @@ namespace DataAccessLayer.DALDBHelper
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return null;
             }
         }
@@ -86,7 +87,7 @@ namespace DataAccessLayer.DALDBHelper
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return null;
             }
         }
@@ -110,7 +111,7 @@ namespace DataAccessLayer.DALDBHelper
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return null;
             }
         }
@@ -140,7 +141,7 @@ namespace DataAccessLayer.DALDBHelper
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return -1;
             }
         }
@@ -170,7 +171,7 @@ namespace DataAccessLayer.DALDBHelper
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return -1;
             }
         }
@@ -199,7 +200,7 @@ namespace DataAccessLayer.DALDBHelper
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return null;
             }
         }
@@ -229,7 +230,7 @@ namespace DataAccessLayer.DALDBHelper
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return null;
             }
         }

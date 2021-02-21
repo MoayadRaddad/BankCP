@@ -6,6 +6,8 @@ using System.Web;
 using System.Web.Mvc;
 using GlobalResource.Resources;
 using BankConfigurationPortal.Models;
+using System.Diagnostics;
+using System.Security.Claims;
 
 namespace BankConfigurationPortal.Controllers
 {
@@ -28,7 +30,9 @@ namespace BankConfigurationPortal.Controllers
                 ViewBag.branchId = branchId;
                 BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
                 BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
-                List<BusinessObjects.Models.Counter> lstCounters = bALCounter.selectCountersByBranchId(branchId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
+                ClaimsPrincipal principal = HttpContext.User as ClaimsPrincipal;
+                var bankId = Convert.ToInt32(principal.FindFirst("BankId").Value);
+                List<BusinessObjects.Models.Counter> lstCounters = bALCounter.selectCountersByBranchId(branchId, bankId);
                 if (lstCounters == null)
                 {
                     TempData["errorMsg"] = LangText.checkConnection;
@@ -50,7 +54,7 @@ namespace BankConfigurationPortal.Controllers
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return View("Error");
             }
         }
@@ -67,7 +71,7 @@ namespace BankConfigurationPortal.Controllers
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return View("Error");
             }
         }
@@ -83,7 +87,9 @@ namespace BankConfigurationPortal.Controllers
                 {
                     BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
                     counter.branchId = branchId;
-                    BusinessObjects.Models.ResultsEnum checkInserted = bALCounter.insertCounter(counter, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
+                    ClaimsPrincipal principal = HttpContext.User as ClaimsPrincipal;
+                    var bankId = Convert.ToInt32(principal.FindFirst("BankId").Value);
+                    BusinessObjects.Models.ResultsEnum checkInserted = bALCounter.insertCounter(counter, bankId);
                     if (checkInserted == BusinessObjects.Models.ResultsEnum.notInserted)
                     {
                         TempData["errorMsg"] = LangText.checkConnection;
@@ -106,7 +112,7 @@ namespace BankConfigurationPortal.Controllers
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return View("Error");
             }
         }
@@ -119,7 +125,9 @@ namespace BankConfigurationPortal.Controllers
             try
             {
                 BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
-                BusinessObjects.Models.sqlResultsEnum checkDeleted = bALCounter.deleteCounterById(counterId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId, branchId);
+                ClaimsPrincipal principal = HttpContext.User as ClaimsPrincipal;
+                var bankId = Convert.ToInt32(principal.FindFirst("BankId").Value);
+                BusinessObjects.Models.sqlResultsEnum checkDeleted = bALCounter.deleteCounterById(counterId, bankId, branchId);
                 if (checkDeleted == BusinessObjects.Models.sqlResultsEnum.success)
                 {
                     return RedirectToAction("Home", new { branchId = branchId });
@@ -132,7 +140,7 @@ namespace BankConfigurationPortal.Controllers
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return View("Error");
             }
         }
@@ -146,7 +154,9 @@ namespace BankConfigurationPortal.Controllers
             {
                 ViewBag.branchId = branchId;
                 BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
-                BusinessObjects.Models.Counter counter = bALCounter.selectCounterById(counterId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
+                ClaimsPrincipal principal = HttpContext.User as ClaimsPrincipal;
+                var bankId = Convert.ToInt32(principal.FindFirst("BankId").Value);
+                BusinessObjects.Models.Counter counter = bALCounter.selectCounterById(counterId, bankId);
                 if (counter == null)
                 {
                     TempData["errorMsg"] = LangText.checkConnection;
@@ -164,7 +174,7 @@ namespace BankConfigurationPortal.Controllers
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return View("Error");
             }
         }
@@ -181,7 +191,9 @@ namespace BankConfigurationPortal.Controllers
                 {
                     BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
                     BusinessAccessLayer.BALCounter.BALCounter bALCounter = new BusinessAccessLayer.BALCounter.BALCounter();
-                    BusinessObjects.Models.ResultsEnum checkUpdated = bALCounter.updateCounter(counter, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
+                    ClaimsPrincipal principal = HttpContext.User as ClaimsPrincipal;
+                    var bankId = Convert.ToInt32(principal.FindFirst("BankId").Value);
+                    BusinessObjects.Models.ResultsEnum checkUpdated = bALCounter.updateCounter(counter, bankId);
                     if (checkUpdated == BusinessObjects.Models.ResultsEnum.notUpdated)
                     {
                         TempData["errorMsg"] = LangText.checkConnection;
@@ -204,7 +216,7 @@ namespace BankConfigurationPortal.Controllers
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return View("Error");
             }
         }

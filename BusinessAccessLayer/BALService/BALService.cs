@@ -1,6 +1,7 @@
 ﻿using BusinessCommon.ExceptionsWriter;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Transactions;
 
@@ -17,7 +18,7 @@ namespace BusinessAccessLayer.BALService
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return null;
             }
         }
@@ -30,7 +31,7 @@ namespace BusinessAccessLayer.BALService
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return null;
             }
         }
@@ -43,7 +44,7 @@ namespace BusinessAccessLayer.BALService
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return BusinessObjects.Models.ResultsEnum.notInserted;
             }
         }
@@ -56,7 +57,7 @@ namespace BusinessAccessLayer.BALService
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return BusinessObjects.Models.ResultsEnum.notUpdated;
             }
         }
@@ -82,7 +83,7 @@ namespace BusinessAccessLayer.BALService
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return BusinessObjects.Models.sqlResultsEnum.failed;
             }
         }

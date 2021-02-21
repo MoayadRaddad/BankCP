@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BusinessCommon.ExceptionsWriter;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -14,10 +16,15 @@ namespace BankConfigurationPortal
     {
         protected void Application_Start()
         {
+            ExceptionsWriter.saveEventsAndExceptions(null, "Application started", EventLogEntryType.Information);
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            if (!EventLog.SourceExists("BankConfigurationPortal"))
+            {
+                EventLog.CreateEventSource("BankConfigurationPortal", "BankConfigurationPortalLogs");
+            }
         }
 
         protected void Application_BeginRequest(object sender, EventArgs e)
@@ -35,15 +42,5 @@ namespace BankConfigurationPortal
                 System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("En");
             }
         }
-
-        //protected void Application_Error(object sender, EventArgs e)
-        //{
-        //    Exception ex = Server.GetLastError();
-        //    if(ex != null)
-        //    {
-        //        BusinessCommon.ExceptionsWriter.Logger.Log(ex);
-        //        Server.ClearError();
-        //    }
-        //}
     }
 }

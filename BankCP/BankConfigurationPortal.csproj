@@ -323,7 +323,6 @@
     </Compile>
     <Compile Include="Models\CustomerServiceModel.cs" />
     <Compile Include="Models\ServiceAllocate.cs" />
-    <Compile Include="Models\SessionAuthorizeAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -357,6 +356,7 @@
     <Content Include="fonts\Cairo-Regular.ttf" />
     <Content Include="fonts\Cairo-SemiBold.ttf" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\CustomValidation.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />

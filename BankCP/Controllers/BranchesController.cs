@@ -6,6 +6,8 @@ using System.Web;
 using System.Web.Mvc;
 using GlobalResource.Resources;
 using BankConfigurationPortal.Models;
+using System.Diagnostics;
+using System.Security.Claims;
 
 namespace BankConfigurationPortal.Controllers
 {
@@ -28,7 +30,9 @@ namespace BankConfigurationPortal.Controllers
                 }
                 BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
                 BusinessAccessLayer.BALBranches.BALBranches bALBranches = new BusinessAccessLayer.BALBranches.BALBranches();
-                List<BusinessObjects.Models.Branch> lstBranches = bALBranches.selectBranchesByBankId(((BusinessObjects.Models.User)Session["UserObj"]).bankId);
+                ClaimsPrincipal principal = HttpContext.User as ClaimsPrincipal;
+                var bankId = Convert.ToInt32(principal.FindFirst("BankId").Value);
+                List<BusinessObjects.Models.Branch> lstBranches = bALBranches.selectBranchesByBankId(bankId);
                 if (lstBranches == null)
                 {
                     TempData["errorMsg"] = LangText.checkConnection;
@@ -50,7 +54,7 @@ namespace BankConfigurationPortal.Controllers
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return View("Error");
             }
         }
@@ -66,7 +70,7 @@ namespace BankConfigurationPortal.Controllers
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return View("Error");
             }
         }
@@ -81,7 +85,8 @@ namespace BankConfigurationPortal.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    branch.bankId = ((BusinessObjects.Models.User)Session["UserObj"]).bankId;
+                    ClaimsPrincipal principal = HttpContext.User as ClaimsPrincipal;
+                    branch.bankId= Convert.ToInt32(principal.FindFirst("BankId").Value);
                     BusinessAccessLayer.BALBranches.BALBranches bALBranches = new BusinessAccessLayer.BALBranches.BALBranches();
                     BusinessObjects.Models.ResultsEnum checkInserted = bALBranches.insertBranch(branch);
                     if (checkInserted == BusinessObjects.Models.ResultsEnum.notInserted)
@@ -106,7 +111,7 @@ namespace BankConfigurationPortal.Controllers
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return View("Error");
             }
         }
@@ -119,7 +124,9 @@ namespace BankConfigurationPortal.Controllers
             try
             {
                 BusinessAccessLayer.BALBranches.BALBranches bALBranches = new BusinessAccessLayer.BALBranches.BALBranches();
-                BusinessObjects.Models.sqlResultsEnum checkDeleted = bALBranches.deleteBranchById(branchId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
+                ClaimsPrincipal principal = HttpContext.User as ClaimsPrincipal;
+                var bankId = Convert.ToInt32(principal.FindFirst("BankId").Value);
+                BusinessObjects.Models.sqlResultsEnum checkDeleted = bALBranches.deleteBranchById(branchId, bankId);
                 if (checkDeleted == BusinessObjects.Models.sqlResultsEnum.success)
                 {
                     return RedirectToAction("Home");
@@ -132,7 +139,7 @@ namespace BankConfigurationPortal.Controllers
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return View("Error");
             }
         }
@@ -145,7 +152,9 @@ namespace BankConfigurationPortal.Controllers
             try
             {
                 BusinessAccessLayer.BALBranches.BALBranches bALBranches = new BusinessAccessLayer.BALBranches.BALBranches();
-                BusinessObjects.Models.Branch branch = bALBranches.selectBranchById(branchId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
+                ClaimsPrincipal principal = HttpContext.User as ClaimsPrincipal;
+                var bankId = Convert.ToInt32(principal.FindFirst("BankId").Value);
+                BusinessObjects.Models.Branch branch = bALBranches.selectBranchById(branchId, bankId);
                 if (branch == null)
                 {
                     TempData["errorMsg"] = LangText.checkConnection;
@@ -163,7 +172,7 @@ namespace BankConfigurationPortal.Controllers
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return View("Error");
             }
         }
@@ -178,7 +187,8 @@ namespace BankConfigurationPortal.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    branch.bankId = ((BusinessObjects.Models.User)Session["UserObj"]).bankId;
+                    ClaimsPrincipal principal = HttpContext.User as ClaimsPrincipal;
+                    branch.bankId = Convert.ToInt32(principal.FindFirst("BankId").Value);
                     BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
                     BusinessAccessLayer.BALBranches.BALBranches bALBranches = new BusinessAccessLayer.BALBranches.BALBranches();
                     BusinessObjects.Models.ResultsEnum checkUpdated = bALBranches.updateBranch(branch);
@@ -204,7 +214,7 @@ namespace BankConfigurationPortal.Controllers
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return View("Error");
             }
         }

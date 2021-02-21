@@ -4,6 +4,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
@@ -22,7 +23,7 @@ namespace BankConfigurationPortal.Controllers
         {
             try
             {
-                if(AuthenticationManager.User.Identity.IsAuthenticated == true && Session["UserObj"] != null)
+                if (AuthenticationManager.User.Identity.IsAuthenticated == true)
                 {
                     return RedirectToAction("Home", "Branches");
                 }
@@ -30,7 +31,7 @@ namespace BankConfigurationPortal.Controllers
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return View("Error");
             }
         }
@@ -51,7 +52,6 @@ namespace BankConfigurationPortal.Controllers
                     {
                         if (pUser.id != 0 && owinCookieAuthorization(pUser))
                         {
-                            Session["UserObj"] = pUser;
                             return RedirectToAction("Home", "Branches");
                         }
                         else
@@ -72,7 +72,7 @@ namespace BankConfigurationPortal.Controllers
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return View("Error");
             }
         }
@@ -89,13 +89,12 @@ namespace BankConfigurationPortal.Controllers
                 if (ModelState.IsValid)
                 {
                     AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-                    Session.Clear();
                 }
                 return RedirectToAction("login");
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return View("Error");
             }
         }
@@ -109,18 +108,15 @@ namespace BankConfigurationPortal.Controllers
                 var claims = new List<Claim>();
                 claims.Add(new Claim(ClaimTypes.NameIdentifier, user.id.ToString()));
                 claims.Add(new Claim(ClaimTypes.Name, user.userName));
-                var identity = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
-                AuthenticationManager.SignIn(new AuthenticationProperties()
-                {
-                    AllowRefresh = true,
-                    IsPersistent = true,
-                    ExpiresUtc = DateTime.UtcNow.AddMinutes(30)
-                }, identity);
+                claims.Add(new Claim("BankId", user.bankId.ToString()));
+                claims.Add(new Claim("BankName", user.bankName));
+                 var identity = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
+                AuthenticationManager.SignIn(new AuthenticationProperties() { AllowRefresh = true , IsPersistent = true }, identity);
                 return true;
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return false;
             }
         }

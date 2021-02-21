@@ -1,4 +1,5 @@
 ﻿@using GlobalResource.Resources
+@using System.Security.Claims;
 
 <!DOCTYPE html>
 <html lang="@LangText.language" dir="@LangText.direction">
@@ -50,15 +51,15 @@
         <li class="revert-float">@Html.ActionLink(LangText.languageText, "Change", "Lang", new { lang = "Ar" }, new { @class = "text-font-size" })</li>}
                     @using (Html.BeginForm("logout", "Login", FormMethod.Post))
                     {
-        @Html.AntiForgeryToken() if (HttpContext.Current.User.Identity.IsAuthenticated == true && Session["UserObj"] != null)
+        @Html.AntiForgeryToken() if (HttpContext.Current.User.Identity.IsAuthenticated == true)
                         {
         <li class="revert-float">
             <input type="submit" value="@LangText.signOut" class="input-custom" />
         </li>}
                     }
-            @if (HttpContext.Current.User.Identity.IsAuthenticated == true && Session["UserObj"] != null)
+            @if (HttpContext.Current.User.Identity.IsAuthenticated == true)
             {
-                <li class="revert-float text-font-size input-custom title-custom-center">@(((BusinessObjects.Models.User)Session["UserObj"]).bankName.ToString())</li>
+                <li class="revert-float text-font-size input-custom title-custom-center">@((HttpContext.Current.User as ClaimsPrincipal).FindFirst("BankName").Value)</li>
             }
                 </ul>
             </div>

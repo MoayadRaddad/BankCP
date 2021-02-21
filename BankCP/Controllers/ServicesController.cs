@@ -6,6 +6,8 @@ using System.Web;
 using System.Web.Mvc;
 using GlobalResource.Resources;
 using BankConfigurationPortal.Models;
+using System.Diagnostics;
+using System.Security.Claims;
 
 namespace BankConfigurationPortal.Controllers
 {
@@ -48,7 +50,7 @@ namespace BankConfigurationPortal.Controllers
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return View("Error");
             }
         }
@@ -91,7 +93,7 @@ namespace BankConfigurationPortal.Controllers
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return View("Error");
             }
         }
@@ -106,7 +108,9 @@ namespace BankConfigurationPortal.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    service.bankId = ((BusinessObjects.Models.User)Session["UserObj"]).bankId;
+                    ClaimsPrincipal principal = HttpContext.User as ClaimsPrincipal;
+                    var bankId = Convert.ToInt32(principal.FindFirst("BankId").Value);
+                    service.bankId = bankId;
                     BusinessAccessLayer.BALService.BALService bALServices = new BusinessAccessLayer.BALService.BALService();
                     BusinessObjects.Models.ResultsEnum checkInserted = bALServices.insertService(service);
                     if (checkInserted == BusinessObjects.Models.ResultsEnum.notInserted)
@@ -131,7 +135,7 @@ namespace BankConfigurationPortal.Controllers
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return View("Error");
             }
         }
@@ -144,7 +148,9 @@ namespace BankConfigurationPortal.Controllers
             try
             {
                 BusinessAccessLayer.BALService.BALService bALServices = new BusinessAccessLayer.BALService.BALService();
-                BusinessObjects.Models.sqlResultsEnum checkDeleted = bALServices.deleteServiceById(serviceId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
+                ClaimsPrincipal principal = HttpContext.User as ClaimsPrincipal;
+                var bankId = Convert.ToInt32(principal.FindFirst("BankId").Value);
+                BusinessObjects.Models.sqlResultsEnum checkDeleted = bALServices.deleteServiceById(serviceId, bankId);
                 if (checkDeleted == BusinessObjects.Models.sqlResultsEnum.success)
                 {
                     return RedirectToAction("Home");
@@ -157,7 +163,7 @@ namespace BankConfigurationPortal.Controllers
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return View("Error");
             }
         }
@@ -170,7 +176,9 @@ namespace BankConfigurationPortal.Controllers
             try
             {
                 BusinessAccessLayer.BALService.BALService bALServices = new BusinessAccessLayer.BALService.BALService();
-                BusinessObjects.Models.Service service = bALServices.selectServiceById(serviceId, ((BusinessObjects.Models.User)Session["UserObj"]).bankId);
+                ClaimsPrincipal principal = HttpContext.User as ClaimsPrincipal;
+                var bankId = Convert.ToInt32(principal.FindFirst("BankId").Value);
+                BusinessObjects.Models.Service service = bALServices.selectServiceById(serviceId, bankId);
                 if (service == null)
                 {
                     TempData["errorMsg"] = LangText.checkConnection;
@@ -190,7 +198,7 @@ namespace BankConfigurationPortal.Controllers
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return View("Error");
             }
         }
@@ -205,7 +213,9 @@ namespace BankConfigurationPortal.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    service.bankId = ((BusinessObjects.Models.User)Session["UserObj"]).bankId;
+                    ClaimsPrincipal principal = HttpContext.User as ClaimsPrincipal;
+                    var bankId = Convert.ToInt32(principal.FindFirst("BankId").Value);
+                    service.bankId = bankId;
                     BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
                     BusinessAccessLayer.BALService.BALService bALServices = new BusinessAccessLayer.BALService.BALService();
                     BusinessObjects.Models.ResultsEnum checkUpdated = bALServices.updateService(service);
@@ -231,7 +241,7 @@ namespace BankConfigurationPortal.Controllers
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return View("Error");
             }
         }
@@ -243,7 +253,9 @@ namespace BankConfigurationPortal.Controllers
             int maxRows = 7;
             BusinessAccessLayer.BALCommon.BALCommon bALCommon = new BusinessAccessLayer.BALCommon.BALCommon();
             BusinessAccessLayer.BALService.BALService bALService = new BusinessAccessLayer.BALService.BALService();
-            List<BusinessObjects.Models.Service> lstServices = bALService.selectServicesByBankId(((BusinessObjects.Models.User)Session["UserObj"]).bankId);
+            ClaimsPrincipal principal = HttpContext.User as ClaimsPrincipal;
+            var bankId = Convert.ToInt32(principal.FindFirst("BankId").Value);
+            List<BusinessObjects.Models.Service> lstServices = bALService.selectServicesByBankId(bankId);
             CustomerServiceModel servicesModel = new CustomerServiceModel();
             servicesModel.Services = lstServices.ToList().Skip((currentPage - 1) * maxRows).Take(maxRows).ToList();
             double pageCount = (double)((decimal)lstServices.Count() / Convert.ToDecimal(maxRows));

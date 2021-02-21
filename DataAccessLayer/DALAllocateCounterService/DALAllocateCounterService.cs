@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BusinessObjects.Models;
+using System.Diagnostics;
 
 namespace DataAccessLayer.DALAllocateCounterService
 {
@@ -57,7 +58,7 @@ namespace DataAccessLayer.DALAllocateCounterService
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return null;
             }
         }
@@ -83,7 +84,7 @@ namespace DataAccessLayer.DALAllocateCounterService
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return ResultsEnum.notInserted;
             }
         }
@@ -110,7 +111,7 @@ namespace DataAccessLayer.DALAllocateCounterService
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return sqlResultsEnum.failed;
             }
         }

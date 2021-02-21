@@ -69,8 +69,10 @@
     <Compile Include="Models\Branch.cs" />
     <Compile Include="Models\Button.cs" />
     <Compile Include="Models\Counter.cs" />
-    <Compile Include="Models\CustomValidation.cs" />
+    <Compile Include="Models\GreaterThanAttribute.cs" />
     <Compile Include="Models\IssueTicketButton.cs" />
+    <Compile Include="Models\LessThanAttribute.cs" />
+    <Compile Include="Models\logInfo.cs" />
     <Compile Include="Models\ResultsEnum.cs" />
     <Compile Include="Models\Screen.cs" />
     <Compile Include="Models\Service.cs" />

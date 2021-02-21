@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 using BusinessObjects.Models;
+using System.Diagnostics;
 
 namespace DataAccessLayer.DALService
 {
@@ -55,7 +56,7 @@ namespace DataAccessLayer.DALService
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return null;
             }
         }
@@ -112,7 +113,7 @@ namespace DataAccessLayer.DALService
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return null;
             }
         }
@@ -142,7 +143,7 @@ namespace DataAccessLayer.DALService
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return ResultsEnum.notInserted;
             }
         }
@@ -173,7 +174,7 @@ namespace DataAccessLayer.DALService
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return ResultsEnum.notUpdated;
             }
         }
@@ -192,7 +193,7 @@ namespace DataAccessLayer.DALService
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return sqlResultsEnum.failed;
             }
         }
@@ -218,7 +219,7 @@ namespace DataAccessLayer.DALService
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return sqlResultsEnum.failed;
             }
         }

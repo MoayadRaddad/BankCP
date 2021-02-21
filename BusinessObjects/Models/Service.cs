@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
-using static BusinessObjects.Models.CustomValidation;
 
 namespace BusinessObjects.Models
 {

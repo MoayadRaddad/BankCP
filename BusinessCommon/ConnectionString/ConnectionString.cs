@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 
@@ -16,7 +17,7 @@ namespace BusinessCommon.ConnectionString
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
             }
         }
         public static void setConnectionString()
@@ -41,7 +42,7 @@ namespace BusinessCommon.ConnectionString
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
             }
         }
         public static int checkConnectionStringStatus()
@@ -63,7 +64,7 @@ namespace BusinessCommon.ConnectionString
             }
             catch (Exception ex)
             {
-                ExceptionsWriter.ExceptionsWriter.saveExceptionToLogFile(ex);
+                ExceptionsWriter.ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return 0;
             }
         }

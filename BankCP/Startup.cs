@@ -24,6 +24,8 @@ namespace BankCP
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+                ExpireTimeSpan = System.TimeSpan.FromMinutes(30),
+                CookieName = "CustomCookie",
                 LoginPath = new PathString("/Login/login")
             });
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
