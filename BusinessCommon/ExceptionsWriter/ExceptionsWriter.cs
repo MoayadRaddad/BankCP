@@ -77,7 +77,7 @@ namespace BusinessCommon.ExceptionsWriter
                     sbExceptionMessage.Append("Date" + Environment.NewLine);
                     sbExceptionMessage.Append(DateTime.Now.ToString() + Environment.NewLine);
                     sbExceptionMessage.Append("Type" + Environment.NewLine);
-                    sbExceptionMessage.Append(type.ToString());
+                    sbExceptionMessage.Append(type.ToString() + Environment.NewLine);
                     sbExceptionMessage.Append("Message" + Environment.NewLine);
                     sbExceptionMessage.Append(message + Environment.NewLine);
                 }
