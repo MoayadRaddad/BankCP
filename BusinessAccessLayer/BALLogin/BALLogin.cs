@@ -23,5 +23,18 @@ namespace BusinessAccessLayer.BALLogin
                 return null;
             }
         }
+        public BusinessObjects.Models.User UserCheck(string userName, string password)
+        {
+            try
+            {
+                DataAccessLayer.DALLogin.DALLogin dALLogin = new DataAccessLayer.DALLogin.DALLogin();
+                return dALLogin.UserCheck(userName, password);
+            }
+            catch (Exception ex)
+            {
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
+                return null;
+            }
+        }
     }
 }

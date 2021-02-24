@@ -569,6 +569,9 @@ END CATCH
 END
 
 GO
+update tblService set minimumServiceTime = 45, maximumServiceTime = 300 where minimumServiceTime is null
+
+GO
 USE [master]
 GO
 ALTER DATABASE [TSDApp] SET  READ_WRITE 

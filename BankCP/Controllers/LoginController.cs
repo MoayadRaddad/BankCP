@@ -111,7 +111,7 @@ namespace BankConfigurationPortal.Controllers
                 claims.Add(new Claim("BankId", user.bankId.ToString()));
                 claims.Add(new Claim("BankName", user.bankName));
                  var identity = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
-                AuthenticationManager.SignIn(new AuthenticationProperties() { AllowRefresh = true , IsPersistent = true }, identity);
+                AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = true }, identity);
                 return true;
             }
             catch (Exception ex)

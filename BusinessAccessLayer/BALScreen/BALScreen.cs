@@ -23,6 +23,19 @@ namespace BusinessAccessLayer.BALScreen
                 return null;
             }
         }
+        public BusinessObjects.Models.Screen selectActiveScreenByBankId(int bankId)
+        {
+            try
+            {
+                DataAccessLayer.DALScreen.DALScreen screenDAL = new DataAccessLayer.DALScreen.DALScreen();
+                return screenDAL.selectActiveScreenByBankId(bankId);
+            }
+            catch (Exception ex)
+            {
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
+                return null;
+            }
+        }
         public int deleteScreenById(int pScreenId)
         {
             try

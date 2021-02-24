@@ -18,7 +18,7 @@ namespace BusinessCommon.ExceptionsWriter
             }
             catch (Exception exception)
             {
-                saveEventsAndErrors(exception, message, EventLogEntryType.Error);
+                throw exception;
             }
         }
 
@@ -60,7 +60,7 @@ namespace BusinessCommon.ExceptionsWriter
             }
             catch (Exception exception)
             {
-                saveEventsAndErrors(exception, message, EventLogEntryType.Error);
+                throw exception;
             }
         }
 
@@ -107,13 +107,11 @@ namespace BusinessCommon.ExceptionsWriter
                         innerException = innerException.InnerException;
                     }
                 }
-                EventLog log = new EventLog("BankConfigurationPortalLogs");
-                log.Source = "BankConfigurationPortal";
-                log.WriteEntry(sbExceptionMessage.ToString(), type);
+                EventLog.WriteEntry("BankConfigurationPortal", sbExceptionMessage.ToString(), type);
             }
             catch (Exception exception)
             {
-                saveEventsAndExceptions(exception, message, EventLogEntryType.Error);
+                saveEventsAndExceptionsToLogFile(exception, message, EventLogEntryType.Error);
             }
         }
     }

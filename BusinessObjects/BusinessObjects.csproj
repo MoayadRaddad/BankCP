@@ -69,6 +69,7 @@
     <Compile Include="Models\Branch.cs" />
     <Compile Include="Models\Button.cs" />
     <Compile Include="Models\Counter.cs" />
+    <Compile Include="Models\CustomButton.cs" />
     <Compile Include="Models\GreaterThanAttribute.cs" />
     <Compile Include="Models\IssueTicketButton.cs" />
     <Compile Include="Models\LessThanAttribute.cs" />

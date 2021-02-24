@@ -23,6 +23,22 @@ namespace BusinessAccessLayer.BALButton
                 return null;
             }
         }
+        public List<BusinessObjects.Models.CustomButton> selectButtonsbyBranchIdAnsScreenId(int pBankId, int pBranchId, int pScreenId)
+        {
+            try
+            {
+                DataAccessLayer.DALButton.DALButton button = new DataAccessLayer.DALButton.DALButton();
+                List<BusinessObjects.Models.CustomButton> lstButtons = new List<BusinessObjects.Models.CustomButton>();
+                lstButtons = button.selectButtonsbybranchIdScreenId(pBankId, pBranchId, pScreenId, BusinessObjects.Models.btnType.IssueTicket);
+                lstButtons.AddRange(button.selectButtonsbybranchIdScreenId(pBankId, pBranchId, pScreenId, BusinessObjects.Models.btnType.ShowMessage));
+                return lstButtons;
+            }
+            catch (Exception ex)
+            {
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
+                return null;
+            }
+        }
         public int deleteScreenAndButtonByScreenId(int pScreenId)
         {
             try

@@ -43,6 +43,43 @@ namespace DataAccessLayer.DALButton
                 return null;
             }
         }
+        public List<BusinessObjects.Models.CustomButton> selectButtonsbybranchIdScreenId(int pBankId, int pBranchId, int pScreenId, BusinessObjects.Models.btnType btnType)
+        {
+            try
+            {
+                List<BusinessObjects.Models.CustomButton> lstButtons = new List<BusinessObjects.Models.CustomButton>();
+                string pquery;
+                List<SqlParameter> screenParams = new List<SqlParameter>();
+                if (btnType == BusinessObjects.Models.btnType.IssueTicket)
+                {
+                    pquery = @"SELECT tblIssueTicketButton.* FROM tblIssueTicketButton inner join tblAllocateCounterService
+                               on tblIssueTicketButton.serviceId = tblAllocateCounterService.serviceId inner join tblCounters
+                               on tblAllocateCounterService.counterId = tblCounters.id inner join tblBranches on tblCounters.branchId = tblBranches.id
+                               where tblBranches.id = @branchId and tblIssueTicketButton.screenId = @screenId and tblBranches.bankId = @bankId";
+                    screenParams.Add(new SqlParameter("@branchId", pBranchId));
+                }
+                else
+                {
+                    pquery = @"SELECT tblShowMessageButton.* FROM tblShowMessageButton inner join tblScreens
+                               on tblShowMessageButton.screenId = tblScreens.id where screenId = @screenId and tblScreens.bankId = @bankId";
+                }
+                screenParams.Add(new SqlParameter("@screenId", pScreenId));
+                screenParams.Add(new SqlParameter("@bankId", pBankId));
+                DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
+                DataSet dataSet = dBHelper.executeAdapter(pquery, screenParams);
+                foreach (DataRow dataRow in dataSet.Tables[0].Rows)
+                {
+                    lstButtons.Add(new BusinessObjects.Models.CustomButton(Convert.ToInt32(dataRow["id"]), dataRow["enName"].ToString(), dataRow["arName"].ToString(),
+                        Convert.ToInt32(dataRow["screenId"]), btnType.ToString()));
+                }
+                return lstButtons;
+            }
+            catch (Exception ex)
+            {
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
+                return null;
+            }
+        }
         public BusinessObjects.Models.ShowMessageButton insertShowMessageButton(BusinessObjects.Models.ShowMessageButton pButton)
         {
             try
@@ -131,7 +168,7 @@ namespace DataAccessLayer.DALButton
             {
                 foreach (var item in pButtonsIds)
                 {
-                    if(Convert.ToInt32(item.Key) != 0)
+                    if (Convert.ToInt32(item.Key) != 0)
                     {
                         string pquery = string.Empty;
                         pquery = "delete from tbl" + item.Value.ToString() + "Button where " + ConditionColumn + " = @id";

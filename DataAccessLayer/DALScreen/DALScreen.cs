@@ -20,7 +20,7 @@ namespace DataAccessLayer.DALScreen
                 screenParams.Add(new SqlParameter("@bankId", pBank.id));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
                 DataSet dataSet = dBHelper.executeAdapter(pquery, screenParams);
-                if(dataSet != null)
+                if (dataSet != null)
                 {
                     foreach (DataRow dataRow in dataSet.Tables[0].Rows)
                     {
@@ -33,6 +33,34 @@ namespace DataAccessLayer.DALScreen
                 {
                     return null;
                 }
+            }
+            catch (Exception ex)
+            {
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
+                return null;
+            }
+        }
+        public BusinessObjects.Models.Screen selectActiveScreenByBankId(int bankId)
+        {
+            try
+            {
+                string pquery = "SELECT * FROM tblScreens where bankId = @bankId and isActive = 1";
+                List<SqlParameter> screenParams = new List<SqlParameter>();
+                screenParams.Add(new SqlParameter("@bankId", bankId));
+                DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
+                DataSet dataSet = dBHelper.executeAdapter(pquery, screenParams);
+                if (dataSet == null)
+                {
+                    return null;
+                }
+                if (dataSet.Tables[0].Rows.Count == 0)
+                {
+                    return new BusinessObjects.Models.Screen();
+                }
+                DataRow dataRow = dataSet.Tables[0].Rows[0];
+                BusinessObjects.Models.Screen screen = new BusinessObjects.Models.Screen(Convert.ToInt32(dataRow["id"])
+                    , Convert.ToString(dataRow["name"]), Convert.ToBoolean(dataRow["isActive"]), Convert.ToInt32(dataRow["bankId"]));
+                return screen;
             }
             catch (Exception ex)
             {
