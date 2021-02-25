@@ -22,8 +22,8 @@ namespace BankConfigurationPortal
             try
             {
                 AreaRegistration.RegisterAllAreas();
-                FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
                 GlobalConfiguration.Configure(WebApiConfig.Register);
+                FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
                 RouteConfig.RegisterRoutes(RouteTable.Routes);
                 BundleConfig.RegisterBundles(BundleTable.Bundles);
                 GlobalConfiguration.Configuration.Formatters.Clear();

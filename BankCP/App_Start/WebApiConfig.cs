@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.Owin.Security.OAuth;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace BankCP.App_Start
     {
         public static void Register(HttpConfiguration config)
         {
+            config.SuppressDefaultHostAuthentication();
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(

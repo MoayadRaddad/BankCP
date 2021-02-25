@@ -27,25 +27,9 @@ namespace BankCP
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                 ExpireTimeSpan = TimeSpan.FromMinutes(30),
                 CookieName = "BankConfigurationPortal",
-                LoginPath = new PathString("/Login/login"),
-                Provider = new CookieAuthenticationProvider()
-                {
-                    OnApplyRedirect = ctx =>
-                    {
-                        if (!IsApiRequest(ctx.Request))
-                        {
-                            ctx.Response.Redirect(ctx.RedirectUri);
-                        }
-                    }
-                }
+                LoginPath = new PathString("/Login/login")
             });
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
-        }
-
-        private static bool IsApiRequest(IOwinRequest request)
-        {
-            string apiPath = VirtualPathUtility.ToAbsolute("~/api/");
-            return request.Uri.LocalPath.StartsWith(apiPath);
         }
     }
 }
