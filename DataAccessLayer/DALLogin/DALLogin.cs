@@ -53,7 +53,7 @@ namespace DataAccessLayer.DALLogin
         {
             try
             {
-                string pquery = "select tblUsers.bankId from tblUsers where userName = @userName and password = @password";
+                string pquery = "select bankId,userName from tblUsers where userName = @userName and password = @password";
                 List<SqlParameter> UserParams = new List<SqlParameter>();
                 UserParams.Add(new SqlParameter("@userName", userName));
                 UserParams.Add(new SqlParameter("@password", password));
@@ -63,6 +63,7 @@ namespace DataAccessLayer.DALLogin
                 if (dataSet != null && dataSet.Tables[0].Rows.Count > 0)
                 {
                     user.bankId = Convert.ToInt32(dataSet.Tables[0].Rows[0][0].ToString());
+                    user.userName = dataSet.Tables[0].Rows[0][1].ToString();
                     return user;
                 }
                 return null;

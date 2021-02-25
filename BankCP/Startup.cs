@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using BankCP.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.OAuth;
 using Owin;
 using System;
 using System.Security.Claims;
@@ -15,9 +19,12 @@ namespace BankCP
 {
     public class Startup
     {
+        public static OAuthAuthorizationServerOptions OAuthOptions { get; private set; }
+        public static string PublicClientId { get; private set; }
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+            ConfigureOAuth(app);
         }
 
         private static void ConfigureAuth(IAppBuilder app)
@@ -30,6 +37,21 @@ namespace BankCP
                 LoginPath = new PathString("/Login/login")
             });
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
+        }
+
+        private void ConfigureOAuth(IAppBuilder app)
+        {
+            OAuthOptions = new OAuthAuthorizationServerOptions
+            {
+                TokenEndpointPath = new PathString("/Token"),
+                Provider = new AppOAuthProvider("self"),
+                AuthorizeEndpointPath = new PathString("/Login/login"),
+                AccessTokenExpireTimeSpan = TimeSpan.FromHours(4),
+                AllowInsecureHttp = true 
+            };
+            app.UseOAuthBearerTokens(OAuthOptions); 
+            app.UseTwoFactorSignInCookie(DefaultAuthenticationTypes.TwoFactorCookie, TimeSpan.FromMinutes(5));
+            app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
         }
     }
 }

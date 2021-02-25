@@ -330,6 +330,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AppOAuthProvider.cs" />
     <Compile Include="Models\BasicAuthenticationAttribute.cs" />
     <Compile Include="Models\CustomerServiceModel.cs" />
     <Compile Include="Models\ServiceAllocate.cs" />

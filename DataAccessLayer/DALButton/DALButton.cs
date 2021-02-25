@@ -55,7 +55,7 @@ namespace DataAccessLayer.DALButton
                     pquery = @"SELECT tblIssueTicketButton.* FROM tblIssueTicketButton inner join tblAllocateCounterService
                                on tblIssueTicketButton.serviceId = tblAllocateCounterService.serviceId inner join tblCounters
                                on tblAllocateCounterService.counterId = tblCounters.id inner join tblBranches on tblCounters.branchId = tblBranches.id
-                               where tblBranches.id = @branchId and tblIssueTicketButton.screenId = @screenId and tblBranches.bankId = @bankId";
+                               where tblBranches.id = @branchId and tblIssueTicketButton.screenId = @screenId and tblAllocateCounterService.bankId = @bankId";
                     screenParams.Add(new SqlParameter("@branchId", pBranchId));
                 }
                 else

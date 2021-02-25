@@ -13,7 +13,7 @@ using BankConfigurationPortal.Models;
 namespace BankCP.Controllers
 {
     [RoutePrefix("api/Screen")]
-    [BasicAuthentication]
+    [Authorize]
     public class ScreenController : ApiController
     {
         [Route("{bankId}")]
