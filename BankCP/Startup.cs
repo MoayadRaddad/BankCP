@@ -46,7 +46,8 @@ namespace BankCP
                 TokenEndpointPath = new PathString("/Token"),
                 Provider = new AppOAuthProvider("self"),
                 AuthorizeEndpointPath = new PathString("/Login/login"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(30)
+                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(30),
+                AllowInsecureHttp = true //Don't do this in production ONLY FOR DEVELOPING: ALLOW INSECURE HTTP!
             };
             app.UseOAuthBearerTokens(OAuthOptions); 
             app.UseTwoFactorSignInCookie(DefaultAuthenticationTypes.TwoFactorCookie, TimeSpan.FromMinutes(5));
