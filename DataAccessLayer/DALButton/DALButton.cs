@@ -43,36 +43,41 @@ namespace DataAccessLayer.DALButton
                 return null;
             }
         }
-        public List<BusinessObjects.Models.CustomButton> selectButtonsbybranchIdScreenId(int pBankId, int pBranchId, int pScreenId, BusinessObjects.Models.btnType btnType)
+        public List<BusinessObjects.Models.CustomButton> selectButtonsbybranchIdScreenId(int pBankId, int pBranchId, int pScreenId)
         {
             try
             {
-                List<BusinessObjects.Models.CustomButton> lstButtons = new List<BusinessObjects.Models.CustomButton>();
-                string pquery;
-                List<SqlParameter> screenParams = new List<SqlParameter>();
-                if (btnType == BusinessObjects.Models.btnType.IssueTicket)
+                List<BusinessObjects.Models.CustomButton> lstCustomButtons = new List<BusinessObjects.Models.CustomButton>();
+                string pquery = "sp_selectButtonsOnActiveScreen";
+                List<SqlParameter> customButtonsParams = new List<SqlParameter>();
+                customButtonsParams.Add(new SqlParameter("@bankId", pBankId));
+                customButtonsParams.Add(new SqlParameter("@branchId", pBranchId));
+                customButtonsParams.Add(new SqlParameter("@screenId", pScreenId));
+                DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
+                DataSet dataSet = dBHelper.executeAdapterProc(pquery, customButtonsParams);
+                if (dataSet != null)
                 {
-                    pquery = @"SELECT tblIssueTicketButton.* FROM tblIssueTicketButton inner join tblAllocateCounterService
-                               on tblIssueTicketButton.serviceId = tblAllocateCounterService.serviceId inner join tblCounters
-                               on tblAllocateCounterService.counterId = tblCounters.id inner join tblBranches on tblCounters.branchId = tblBranches.id
-                               where tblBranches.id = @branchId and tblIssueTicketButton.screenId = @screenId and tblAllocateCounterService.bankId = @bankId";
-                    screenParams.Add(new SqlParameter("@branchId", pBranchId));
+                    if (dataSet.Tables[0].Rows.Count != 0)
+                    {
+                        if (Convert.ToInt32((dataSet.Tables[0].Rows[0])["id"]) > 0)
+                        {
+                            foreach (DataRow dataRow in dataSet.Tables[0].Rows)
+                            {
+                                BusinessObjects.Models.CustomButton customButton = new BusinessObjects.Models.CustomButton();
+                                customButton.id = Convert.ToInt32(dataRow["id"]);
+                                customButton.enName = dataRow["enName"].ToString();
+                                customButton.arName = dataRow["arName"].ToString();
+                                customButton.type = dataRow["type"].ToString();
+                                lstCustomButtons.Add(customButton);
+                            }
+                        }
+                    }
+                    return lstCustomButtons;
                 }
                 else
                 {
-                    pquery = @"SELECT tblShowMessageButton.* FROM tblShowMessageButton inner join tblScreens
-                               on tblShowMessageButton.screenId = tblScreens.id where screenId = @screenId and tblScreens.bankId = @bankId";
+                    return null;
                 }
-                screenParams.Add(new SqlParameter("@screenId", pScreenId));
-                screenParams.Add(new SqlParameter("@bankId", pBankId));
-                DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
-                DataSet dataSet = dBHelper.executeAdapter(pquery, screenParams);
-                foreach (DataRow dataRow in dataSet.Tables[0].Rows)
-                {
-                    lstButtons.Add(new BusinessObjects.Models.CustomButton(Convert.ToInt32(dataRow["id"]), dataRow["enName"].ToString(), dataRow["arName"].ToString(),
-                        Convert.ToInt32(dataRow["screenId"]), btnType.ToString()));
-                }
-                return lstButtons;
             }
             catch (Exception ex)
             {

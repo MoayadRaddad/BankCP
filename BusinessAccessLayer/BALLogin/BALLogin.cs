@@ -23,12 +23,12 @@ namespace BusinessAccessLayer.BALLogin
                 return null;
             }
         }
-        public BusinessObjects.Models.User UserCheck(string userName, string password)
+        public BusinessObjects.Models.User UserCheck(string userName, string password, int bankId)
         {
             try
             {
                 DataAccessLayer.DALLogin.DALLogin dALLogin = new DataAccessLayer.DALLogin.DALLogin();
-                return dALLogin.UserCheck(userName, password);
+                return dALLogin.UserCheck(userName, password, bankId);
             }
             catch (Exception ex)
             {

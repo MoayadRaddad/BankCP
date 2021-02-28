@@ -49,14 +49,15 @@ namespace DataAccessLayer.DALLogin
                 return null;
             }
         }
-        public BusinessObjects.Models.User UserCheck(string userName, string password)
+        public BusinessObjects.Models.User UserCheck(string userName, string password, int bankId)
         {
             try
             {
-                string pquery = "select bankId,userName from tblUsers where userName = @userName and password = @password";
+                string pquery = "select bankId,userName from tblUsers where userName = @userName and password = @password and bankId = @bankId";
                 List<SqlParameter> UserParams = new List<SqlParameter>();
                 UserParams.Add(new SqlParameter("@userName", userName));
                 UserParams.Add(new SqlParameter("@password", password));
+                UserParams.Add(new SqlParameter("@bankId", bankId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
                 DataSet dataSet = dBHelper.executeAdapter(pquery, UserParams);
                 BusinessObjects.Models.User user = new BusinessObjects.Models.User();

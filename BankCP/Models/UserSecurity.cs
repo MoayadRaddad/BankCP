@@ -9,12 +9,12 @@ namespace BankConfigurationPortal.Models
 {
     public class UserSecurity
     {
-        public static BusinessObjects.Models.User Login(string userName, string password)
+        public static BusinessObjects.Models.User Login(string userName, string password, int bankId)
         {
             try
             {
                 BusinessAccessLayer.BALLogin.BALLogin bALLogin = new BusinessAccessLayer.BALLogin.BALLogin();
-                return bALLogin.UserCheck(userName, password);
+                return bALLogin.UserCheck(userName, password, bankId);
             }
             catch(Exception ex)
             {

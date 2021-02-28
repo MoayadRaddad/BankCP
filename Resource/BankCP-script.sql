@@ -569,6 +569,43 @@ END CATCH
 END
 
 GO
+
+IF EXISTS ( SELECT * FROM   sysobjects WHERE name = N'sp_selectButtonsOnActiveScreen' )
+BEGIN
+    DROP PROCEDURE [dbo].[sp_selectButtonsOnActiveScreen]
+END
+GO
+
+CREATE proc [dbo].[sp_selectButtonsOnActiveScreen]
+@bankId int,
+@branchId int,
+@ScreenId int
+as
+begin
+BEGIN TRY 
+IF (EXISTS (SELECT * FROM tblBranches where tblBranches.id = @branchId))
+begin
+IF (EXISTS (SELECT * FROM tblScreens where tblScreens.id = @ScreenId))
+(SELECT tblIssueTicketButton.id, tblIssueTicketButton.enName, tblIssueTicketButton.arName, 'IssueTicket' as type
+							FROM tblIssueTicketButton inner join tblScreens on tblIssueTicketButton.screenId = tblScreens.id
+							inner join tblAllocateCounterService on tblIssueTicketButton.serviceId = tblAllocateCounterService.serviceId
+							inner join tblCounters on tblAllocateCounterService.counterId = tblCounters.id
+							where tblCounters.branchId = @branchId and tblIssueTicketButton.screenId = @ScreenId and tblAllocateCounterService.bankId = @bankId and tblScreens.isActive = 1)
+							union 
+(SELECT tblShowMessageButton.id, tblShowMessageButton.enName, tblShowMessageButton.arName, 'ShowMessage' as type FROM tblShowMessageButton inner join tblScreens
+                            on tblShowMessageButton.screenId = tblScreens.id and tblScreens.isActive = 1 where screenId = @ScreenId and tblScreens.bankId = @bankId)
+else
+select 0 as id;
+end
+else
+select 0 as id;
+END TRY  
+BEGIN CATCH  
+     THROW; 
+END CATCH 
+END
+
+GO
 update tblService set minimumServiceTime = 45, maximumServiceTime = 300 where minimumServiceTime is null
 
 GO

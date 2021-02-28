@@ -9,6 +9,8 @@ using System.Diagnostics;
 using BusinessObjects.Models;
 using BusinessAccessLayer.BALScreen;
 using BankConfigurationPortal.Models;
+using System.Security.Claims;
+using System.Threading;
 
 namespace BankCP.Controllers
 {
@@ -16,12 +18,13 @@ namespace BankCP.Controllers
     [Authorize]
     public class ScreenController : ApiController
     {
-        [Route("{bankId}")]
-        public IHttpActionResult get(int bankId)
+        public IHttpActionResult get()
         {
             try
             {
                 BALScreen bALScreen = new BALScreen();
+                var identity = (ClaimsPrincipal)Thread.CurrentPrincipal;
+                int bankId = Convert.ToInt32(identity.Claims.Where(c => c.Type == "BankId").Select(c => c.Value).SingleOrDefault());
                 Screen screen = bALScreen.selectActiveScreenByBankId(bankId);
                 if (screen == null)
                 {

@@ -28,10 +28,7 @@ namespace BusinessAccessLayer.BALButton
             try
             {
                 DataAccessLayer.DALButton.DALButton button = new DataAccessLayer.DALButton.DALButton();
-                List<BusinessObjects.Models.CustomButton> lstButtons = new List<BusinessObjects.Models.CustomButton>();
-                lstButtons = button.selectButtonsbybranchIdScreenId(pBankId, pBranchId, pScreenId, BusinessObjects.Models.btnType.IssueTicket);
-                lstButtons.AddRange(button.selectButtonsbybranchIdScreenId(pBankId, pBranchId, pScreenId, BusinessObjects.Models.btnType.ShowMessage));
-                return lstButtons;
+                return button.selectButtonsbybranchIdScreenId(pBankId, pBranchId, pScreenId);
             }
             catch (Exception ex)
             {

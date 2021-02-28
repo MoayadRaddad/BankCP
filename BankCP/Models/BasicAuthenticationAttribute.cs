@@ -32,7 +32,8 @@ namespace BankConfigurationPortal.Models
                     string[] usernamePasswordArray = decodedAuthenticationToken.Split(':');
                     string userName = usernamePasswordArray[0];
                     string password = usernamePasswordArray[1];
-                    BusinessObjects.Models.User user = UserSecurity.Login(userName, password);
+                    int bankId = int.Parse(usernamePasswordArray[2]);
+                    BusinessObjects.Models.User user = UserSecurity.Login(userName, password, bankId);
                     if (user != null)
                     {
                         Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity(user.bankId.ToString()), null);
