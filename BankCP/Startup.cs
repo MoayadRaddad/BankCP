@@ -63,7 +63,7 @@ namespace BankCP
                 {
                     TokenEndpointPath = new PathString("/api/Token"),
                     Provider = new AppOAuthProvider("self"),
-                    AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(30),
+                    AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(15),
                     AllowInsecureHttp = true //Don't do this in production ONLY FOR DEVELOPING: ALLOW INSECURE HTTP!
                 };
                 app.UseOAuthBearerTokens(OAuthOptions);
