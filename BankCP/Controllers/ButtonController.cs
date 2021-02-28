@@ -15,7 +15,7 @@ using System.Web;
 
 namespace BankCP.Controllers
 {
-    [RoutePrefix("api/Button")]
+    [RoutePrefix("api/Buttons")]
     [Authorize]
     public class ButtonController : ApiController
     {
