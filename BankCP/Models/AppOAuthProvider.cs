@@ -1,9 +1,11 @@
 ﻿using BankConfigurationPortal.Models;
+using BusinessCommon.ExceptionsWriter;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -17,72 +19,118 @@ namespace BankCP.Models
 
         public AppOAuthProvider(string publicClientId)
         {
-            if (publicClientId == null)
+            try
             {
-                throw new ArgumentNullException(nameof(publicClientId));
-            } 
-            _publicClientId = publicClientId;
+                if (publicClientId == null)
+                {
+                    throw new ArgumentNullException(nameof(publicClientId));
+                }
+                _publicClientId = publicClientId;
+            }
+            catch (Exception ex)
+            {
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
+            }
         }
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            string usernameVal = context.UserName;
-            string passwordVal = context.Password;
-            BusinessObjects.Models.User user = UserSecurity.Login(usernameVal, passwordVal); 
-            if (user == null)
+            try
             {
-                context.SetError("invalid_grant", "The user name or password is incorrect.");
-                context.Rejected();
+                string usernameVal = context.UserName;
+                string passwordVal = context.Password;
+                BusinessObjects.Models.User user = UserSecurity.Login(usernameVal, passwordVal);
+                if (user == null)
+                {
+                    context.SetError("invalid_grant", "The user name or password is incorrect.");
+                    context.Rejected();
+                }
+                else
+                {
+                    var claims = new List<Claim>();
+                    claims.Add(new Claim("BankId", user.bankId.ToString()));
+                    claims.Add(new Claim(ClaimTypes.Name, user.userName));
+                    ClaimsIdentity oAuthClaimIdentity = new ClaimsIdentity(claims, OAuthDefaults.AuthenticationType);
+                    ClaimsIdentity cookiesClaimIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationType);
+                    AuthenticationProperties properties = CreateProperties(user.userName);
+                    AuthenticationTicket ticket = new AuthenticationTicket(oAuthClaimIdentity, properties);
+                    context.Validated(ticket);
+                    context.Request.Context.Authentication.SignIn(cookiesClaimIdentity);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                var claims = new List<Claim>();
-                claims.Add(new Claim("BankId", user.bankId.ToString()));
-                claims.Add(new Claim(ClaimTypes.Name, user.userName));
-                ClaimsIdentity oAuthClaimIdentity = new ClaimsIdentity(claims, OAuthDefaults.AuthenticationType);
-                ClaimsIdentity cookiesClaimIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationType); 
-                AuthenticationProperties properties = CreateProperties(user.userName);
-                AuthenticationTicket ticket = new AuthenticationTicket(oAuthClaimIdentity, properties);  
-                context.Validated(ticket);
-                context.Request.Context.Authentication.SignIn(cookiesClaimIdentity);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
             }
         }
 
         public override Task TokenEndpoint(OAuthTokenEndpointContext context)
         {
-            foreach (KeyValuePair<string, string> property in context.Properties.Dictionary)
-            {  
-                context.AdditionalResponseParameters.Add(property.Key, property.Value);
+            try
+            {
+                foreach (KeyValuePair<string, string> property in context.Properties.Dictionary)
+                {
+                    context.AdditionalResponseParameters.Add(property.Key, property.Value);
+                }
+                return Task.FromResult<object>(null);
             }
-            return Task.FromResult<object>(null);
+            catch (Exception ex)
+            {
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
+                return null;
+            }
         }
-        
+
         public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
-            if (context.ClientId == null)
-            { 
-                context.Validated();
-            }
-            return Task.FromResult<object>(null);
-        }
-        
-        public override Task ValidateClientRedirectUri(OAuthValidateClientRedirectUriContext context)
-        {
-            if (context.ClientId == _publicClientId)
-            { 
-                Uri expectedRootUri = new Uri(context.Request.Uri, "/");
-                if (expectedRootUri.AbsoluteUri == context.RedirectUri)
+            try
+            {
+                if (context.ClientId == null)
                 {
                     context.Validated();
                 }
-            }  
-            return Task.FromResult<object>(null);
+                return Task.FromResult<object>(null);
+            }
+            catch (Exception ex)
+            {
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
+                return null;
+            }
+        }
+
+        public override Task ValidateClientRedirectUri(OAuthValidateClientRedirectUriContext context)
+        {
+            try
+            {
+                if (context.ClientId == _publicClientId)
+                {
+                    Uri expectedRootUri = new Uri(context.Request.Uri, "/");
+                    if (expectedRootUri.AbsoluteUri == context.RedirectUri)
+                    {
+                        context.Validated();
+                    }
+                }
+                return Task.FromResult<object>(null);
+            }
+            catch (Exception ex)
+            {
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
+                return null;
+            }
         }
 
         public static AuthenticationProperties CreateProperties(string userName)
         {
-            IDictionary<string, string> data = new Dictionary<string, string>{{ "userName", userName }};
-            return new AuthenticationProperties(data);
+            try
+            {
+                IDictionary<string, string> data = new Dictionary<string, string> { { "userName", userName } };
+                return new AuthenticationProperties(data);
+            }
+            catch (Exception ex)
+            {
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
+                return null;
+            }
         }
     }
 }

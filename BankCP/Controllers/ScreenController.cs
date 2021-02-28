@@ -17,7 +17,7 @@ namespace BankCP.Controllers
     public class ScreenController : ApiController
     {
         [Route("{bankId}")]
-        public IHttpActionResult getActiveScreenByBankId(int bankId)
+        public IHttpActionResult get(int bankId)
         {
             try
             {

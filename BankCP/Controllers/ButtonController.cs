@@ -20,7 +20,7 @@ namespace BankCP.Controllers
     public class ButtonController : ApiController
     {
         [Route("{branchId}/{screenId}")]
-        public IHttpActionResult getButtonsForBranch(int branchId, int screenId)
+        public IHttpActionResult get(int branchId, int screenId)
         {
             try
             {

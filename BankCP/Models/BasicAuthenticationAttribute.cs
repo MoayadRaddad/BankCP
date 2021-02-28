@@ -10,6 +10,8 @@ using System.Web;
 using System.Web.Http.Filters;
 using System.Net.Http;
 using System.Web.Http.Controllers;
+using BusinessCommon.ExceptionsWriter;
+using System.Diagnostics;
 
 namespace BankConfigurationPortal.Models
 {
@@ -17,26 +19,33 @@ namespace BankConfigurationPortal.Models
     {
         public override void OnAuthorization(HttpActionContext actionContext)
         {
-            if (actionContext.Request.Headers.Authorization == null)
+            try
             {
-                actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized);
-            }
-            else
-            {
-                string authenticationToken = actionContext.Request.Headers.Authorization.Parameter;
-                string decodedAuthenticationToken = Encoding.UTF8.GetString(Convert.FromBase64String(authenticationToken));
-                string[] usernamePasswordArray = decodedAuthenticationToken.Split(':');
-                string userName = usernamePasswordArray[0];
-                string password = usernamePasswordArray[1];
-                BusinessObjects.Models.User user = UserSecurity.Login(userName, password);
-                if (user != null)
-                {
-                    Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity(user.bankId.ToString()), null);
-                }
-                else
+                if (actionContext.Request.Headers.Authorization == null)
                 {
                     actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized);
                 }
+                else
+                {
+                    string authenticationToken = actionContext.Request.Headers.Authorization.Parameter;
+                    string decodedAuthenticationToken = Encoding.UTF8.GetString(Convert.FromBase64String(authenticationToken));
+                    string[] usernamePasswordArray = decodedAuthenticationToken.Split(':');
+                    string userName = usernamePasswordArray[0];
+                    string password = usernamePasswordArray[1];
+                    BusinessObjects.Models.User user = UserSecurity.Login(userName, password);
+                    if (user != null)
+                    {
+                        Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity(user.bankId.ToString()), null);
+                    }
+                    else
+                    {
+                        actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
             }
         }
     }
