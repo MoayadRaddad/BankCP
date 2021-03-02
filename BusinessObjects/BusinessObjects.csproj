@@ -70,6 +70,8 @@
     <Compile Include="Models\Button.cs" />
     <Compile Include="Models\Counter.cs" />
     <Compile Include="Models\CustomButton.cs" />
+    <Compile Include="Models\CustomIssueTicketButton.cs" />
+    <Compile Include="Models\CustomShowMessageButton.cs" />
     <Compile Include="Models\GreaterThanAttribute.cs" />
     <Compile Include="Models\IssueTicketButton.cs" />
     <Compile Include="Models\LessThanAttribute.cs" />

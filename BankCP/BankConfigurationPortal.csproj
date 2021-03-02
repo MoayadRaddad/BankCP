@@ -321,12 +321,13 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AllocateController.cs" />
     <Compile Include="Controllers\BranchesController.cs" />
-    <Compile Include="Controllers\ButtonController.cs" />
     <Compile Include="Controllers\CountersController.cs" />
+    <Compile Include="Controllers\IssueTicketController.cs" />
     <Compile Include="Controllers\LangController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ScreenController.cs" />
     <Compile Include="Controllers\ServicesController.cs" />
+    <Compile Include="Controllers\ShowMessageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -413,6 +414,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\IssueTicket\" />
+    <Folder Include="Views\ShowMessage\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -460,7 +463,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>false</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50214</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

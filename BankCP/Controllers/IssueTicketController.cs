@@ -15,9 +15,9 @@ using System.Web;
 
 namespace BankCP.Controllers
 {
-    [RoutePrefix("api/Buttons")]
+    [RoutePrefix("api/IssueTicket")]
     [Authorize]
-    public class ButtonController : ApiController
+    public class IssueTicketController : ApiController
     {
         [Route("{branchId}/{screenId}")]
         public IHttpActionResult get(int branchId, int screenId)
@@ -27,7 +27,7 @@ namespace BankCP.Controllers
                 BALButton bALButton = new BALButton();
                 var identity = (ClaimsPrincipal)Thread.CurrentPrincipal;
                 int bankId = Convert.ToInt32(identity.Claims.Where(c => c.Type == "BankId").Select(c => c.Value).SingleOrDefault());
-                List<CustomButton> lstButtons = bALButton.selectButtonsbyBranchIdAnsScreenId(bankId, branchId, screenId);
+                List<CustomIssueTicketButton> lstButtons = bALButton.selectIssueTicketbyBranchIdAnsScreenId(bankId, branchId, screenId);
                 if (lstButtons == null)
                 {
                     return Content(HttpStatusCode.InternalServerError, "Database Error");

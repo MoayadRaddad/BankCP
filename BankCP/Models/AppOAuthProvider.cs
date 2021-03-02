@@ -40,17 +40,17 @@ namespace BankCP.Models
                 var form = await context.Request.ReadFormAsync();
                 string usernameVal = context.UserName;
                 string passwordVal = context.Password;
-                int bankId = Convert.ToInt32(form["bankId"]);
-                BusinessObjects.Models.User user = UserSecurity.Login(usernameVal, passwordVal, bankId);
+                string bankName = form["bankName"];
+                BusinessObjects.Models.User user = UserSecurity.Login(usernameVal, passwordVal, bankName);
                 if (user == null)
                 {
-                    context.SetError("The user name, password or bankId is incorrect.", "invalid_grant");
+                    context.SetError("The user name, password or bankName is incorrect.", "invalid_grant");
                     context.Rejected();
                 }
                 else
                 {
                     var claims = new List<Claim>();
-                    claims.Add(new Claim("BankId", bankId.ToString()));
+                    claims.Add(new Claim("BankId", user.bankId.ToString()));
                     claims.Add(new Claim(ClaimTypes.Name, user.userName));
                     ClaimsIdentity oAuthClaimIdentity = new ClaimsIdentity(claims, OAuthDefaults.AuthenticationType);
                     ClaimsIdentity cookiesClaimIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationType);

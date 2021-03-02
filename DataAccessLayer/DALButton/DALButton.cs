@@ -43,18 +43,18 @@ namespace DataAccessLayer.DALButton
                 return null;
             }
         }
-        public List<BusinessObjects.Models.CustomButton> selectButtonsbybranchIdScreenId(int pBankId, int pBranchId, int pScreenId)
+        public List<BusinessObjects.Models.CustomIssueTicketButton> selectIssueTicketbyBranchIdAnsScreenId(int pBankId, int pBranchId, int pScreenId)
         {
             try
             {
-                List<BusinessObjects.Models.CustomButton> lstCustomButtons = new List<BusinessObjects.Models.CustomButton>();
-                string pquery = "sp_selectButtonsOnActiveScreen";
-                List<SqlParameter> customButtonsParams = new List<SqlParameter>();
-                customButtonsParams.Add(new SqlParameter("@bankId", pBankId));
-                customButtonsParams.Add(new SqlParameter("@branchId", pBranchId));
-                customButtonsParams.Add(new SqlParameter("@screenId", pScreenId));
+                List<BusinessObjects.Models.CustomIssueTicketButton> lstIssueTicketButtons = new List<BusinessObjects.Models.CustomIssueTicketButton>();
+                string pquery = "selectIssueTicketbyBranchIdAndScreen";
+                List<SqlParameter> issueTicketButtonsParams = new List<SqlParameter>();
+                issueTicketButtonsParams.Add(new SqlParameter("@bankId", pBankId));
+                issueTicketButtonsParams.Add(new SqlParameter("@branchId", pBranchId));
+                issueTicketButtonsParams.Add(new SqlParameter("@screenId", pScreenId));
                 DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
-                DataSet dataSet = dBHelper.executeAdapterProc(pquery, customButtonsParams);
+                DataSet dataSet = dBHelper.executeAdapterProc(pquery, issueTicketButtonsParams);
                 if (dataSet != null)
                 {
                     if (dataSet.Tables[0].Rows.Count != 0)
@@ -63,16 +63,61 @@ namespace DataAccessLayer.DALButton
                         {
                             foreach (DataRow dataRow in dataSet.Tables[0].Rows)
                             {
-                                BusinessObjects.Models.CustomButton customButton = new BusinessObjects.Models.CustomButton();
-                                customButton.id = Convert.ToInt32(dataRow["id"]);
-                                customButton.enName = dataRow["enName"].ToString();
-                                customButton.arName = dataRow["arName"].ToString();
-                                customButton.type = dataRow["type"].ToString();
-                                lstCustomButtons.Add(customButton);
+                                BusinessObjects.Models.CustomIssueTicketButton issueTicketButton = new BusinessObjects.Models.CustomIssueTicketButton();
+                                issueTicketButton.id = Convert.ToInt32(dataRow["id"]);
+                                issueTicketButton.enName = dataRow["enName"].ToString();
+                                issueTicketButton.arName = dataRow["arName"].ToString();
+                                issueTicketButton.serviceId = Convert.ToInt32(dataRow["serviceId"]);
+                                issueTicketButton.screenId = Convert.ToInt32(dataRow["screenId"]);
+                                lstIssueTicketButtons.Add(issueTicketButton);
                             }
                         }
                     }
-                    return lstCustomButtons;
+                    return lstIssueTicketButtons;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
+                return null;
+            }
+        }
+        public List<BusinessObjects.Models.CustomShowMessageButton> selectShowMessagebyBranchIdAnsScreenId(int pBankId, int pBranchId, int pScreenId)
+        {
+            try
+            {
+                List<BusinessObjects.Models.CustomShowMessageButton> lstShowMessageButtons = new List<BusinessObjects.Models.CustomShowMessageButton>();
+                string pquery = "selectShowMessagebyBranchIdAndScreen";
+                List<SqlParameter> showMessageButtonsParams = new List<SqlParameter>();
+                showMessageButtonsParams.Add(new SqlParameter("@bankId", pBankId));
+                showMessageButtonsParams.Add(new SqlParameter("@branchId", pBranchId));
+                showMessageButtonsParams.Add(new SqlParameter("@screenId", pScreenId));
+                DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
+                DataSet dataSet = dBHelper.executeAdapterProc(pquery, showMessageButtonsParams);
+                if (dataSet != null)
+                {
+                    if (dataSet.Tables[0].Rows.Count != 0)
+                    {
+                        if (Convert.ToInt32((dataSet.Tables[0].Rows[0])["id"]) > 0)
+                        {
+                            foreach (DataRow dataRow in dataSet.Tables[0].Rows)
+                            {
+                                BusinessObjects.Models.CustomShowMessageButton showMessageButton = new BusinessObjects.Models.CustomShowMessageButton();
+                                showMessageButton.id = Convert.ToInt32(dataRow["id"]);
+                                showMessageButton.enName = dataRow["enName"].ToString();
+                                showMessageButton.arName = dataRow["arName"].ToString();
+                                showMessageButton.messageEN = dataRow["messageEN"].ToString();
+                                showMessageButton.messageAR = dataRow["messageAR"].ToString();
+                                showMessageButton.screenId = Convert.ToInt32(dataRow["screenId"]);
+                                lstShowMessageButtons.Add(showMessageButton);
+                            }
+                        }
+                    }
+                    return lstShowMessageButtons;
                 }
                 else
                 {

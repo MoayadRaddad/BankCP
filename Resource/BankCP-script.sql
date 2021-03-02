@@ -570,30 +570,60 @@ END
 
 GO
 
-IF EXISTS ( SELECT * FROM   sysobjects WHERE name = N'sp_selectButtonsOnActiveScreen' )
+IF EXISTS ( SELECT * FROM   sysobjects WHERE name = N'selectIssueTicketbyBranchIdAndScreen' )
 BEGIN
-    DROP PROCEDURE [dbo].[sp_selectButtonsOnActiveScreen]
+    DROP PROCEDURE [dbo].[selectIssueTicketbyBranchIdAndScreen]
 END
 GO
 
-CREATE proc [dbo].[sp_selectButtonsOnActiveScreen]
+create proc [dbo].[selectIssueTicketbyBranchIdAndScreen]
 @bankId int,
 @branchId int,
 @ScreenId int
 as
 begin
 BEGIN TRY 
-IF (EXISTS (SELECT * FROM tblBranches where tblBranches.id = @branchId))
+IF (EXISTS (SELECT * FROM tblBranches inner join tblBanks on tblBranches.bankId = tblBanks.id where tblBranches.id = @branchId and tblBanks.id = @bankId and tblBranches.active = 1))
 begin
-IF (EXISTS (SELECT * FROM tblScreens where tblScreens.id = @ScreenId))
-(SELECT tblIssueTicketButton.id, tblIssueTicketButton.enName, tblIssueTicketButton.arName, 'IssueTicket' as type
+IF (EXISTS (SELECT * FROM tblScreens where tblScreens.id = @ScreenId and tblScreens.isActive = 1))
+SELECT tblIssueTicketButton.*
 							FROM tblIssueTicketButton inner join tblScreens on tblIssueTicketButton.screenId = tblScreens.id
 							inner join tblAllocateCounterService on tblIssueTicketButton.serviceId = tblAllocateCounterService.serviceId
-							inner join tblCounters on tblAllocateCounterService.counterId = tblCounters.id
-							where tblCounters.branchId = @branchId and tblIssueTicketButton.screenId = @ScreenId and tblAllocateCounterService.bankId = @bankId and tblScreens.isActive = 1)
-							union 
-(SELECT tblShowMessageButton.id, tblShowMessageButton.enName, tblShowMessageButton.arName, 'ShowMessage' as type FROM tblShowMessageButton inner join tblScreens
-                            on tblShowMessageButton.screenId = tblScreens.id and tblScreens.isActive = 1 where screenId = @ScreenId and tblScreens.bankId = @bankId)
+							inner join tblCounters on tblAllocateCounterService.counterId = tblCounters.id inner join tblService on tblIssueTicketButton.serviceId = tblService.id
+							where tblCounters.branchId = @branchId and tblIssueTicketButton.screenId = @ScreenId and tblAllocateCounterService.bankId = @bankId and tblCounters.active = 1
+							and tblService.active = 1
+
+else
+select 0 as id;
+end
+else
+select 0 as id;
+END TRY  
+BEGIN CATCH  
+     THROW; 
+END CATCH 
+END
+
+GO
+
+IF EXISTS ( SELECT * FROM   sysobjects WHERE name = N'selectShowMessagebyBranchIdAndScreen' )
+BEGIN
+    DROP PROCEDURE [dbo].[selectShowMessagebyBranchIdAndScreen]
+END
+GO
+
+CREATE proc [dbo].[selectShowMessagebyBranchIdAndScreen]
+@bankId int,
+@branchId int,
+@ScreenId int
+as
+begin
+BEGIN TRY 
+IF (EXISTS (SELECT * FROM tblBranches inner join tblBanks on tblBranches.bankId = tblBanks.id where tblBranches.id = @branchId and tblBanks.id = @bankId and tblBranches.active = 1))
+begin
+IF (EXISTS (SELECT * FROM tblScreens where tblScreens.id = @ScreenId and tblScreens.isActive = 1))
+SELECT tblShowMessageButton.* FROM tblShowMessageButton inner join tblScreens
+                            on tblShowMessageButton.screenId = tblScreens.id where screenId = @ScreenId and tblScreens.bankId = @bankId
 else
 select 0 as id;
 end
