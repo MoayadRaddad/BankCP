@@ -130,6 +130,61 @@ namespace DataAccessLayer.DALButton
                 return null;
             }
         }
+        public BusinessObjects.Models.CustomIssueTicketAndShowMessageButtons selectIssueTicketAndShowMessageButtons(int pBankId, int pBranchId, int pScreenId)
+        {
+            try
+            {
+                BusinessObjects.Models.CustomIssueTicketAndShowMessageButtons lstButtons = new BusinessObjects.Models.CustomIssueTicketAndShowMessageButtons();
+                string pquery = "sp_selectIssueTicketAndShowMessageButtons";
+                List<SqlParameter> buttonsParams = new List<SqlParameter>();
+                buttonsParams.Add(new SqlParameter("@bankId", pBankId));
+                buttonsParams.Add(new SqlParameter("@branchId", pBranchId));
+                buttonsParams.Add(new SqlParameter("@screenId", pScreenId));
+                DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
+                DataSet dataSet = dBHelper.executeAdapterProc(pquery, buttonsParams);
+                if (dataSet == null) return null;
+                if (dataSet.Tables[0].Rows.Count != 0)
+                {
+                    if (Convert.ToInt32((dataSet.Tables[0].Rows[0])["id"]) > 0)
+                    {
+                        List<BusinessObjects.Models.CustomIssueTicketButton> lstIssueTicketButtons = new List<BusinessObjects.Models.CustomIssueTicketButton>();
+                        List<BusinessObjects.Models.CustomShowMessageButton> lstShowMessageButtons = new List<BusinessObjects.Models.CustomShowMessageButton>();
+                        foreach (DataRow dataRow in dataSet.Tables[0].Rows)
+                        {
+                            if (dataRow["type"].ToString() == "IssueTicket")
+                            {
+                                BusinessObjects.Models.CustomIssueTicketButton issueTicketButton = new BusinessObjects.Models.CustomIssueTicketButton();
+                                issueTicketButton.id = Convert.ToInt32(dataRow["id"]);
+                                issueTicketButton.enName = dataRow["enName"].ToString();
+                                issueTicketButton.arName = dataRow["arName"].ToString();
+                                issueTicketButton.serviceId = Convert.ToInt32(dataRow["serviceId"]);
+                                issueTicketButton.screenId = Convert.ToInt32(dataRow["screenId"]);
+                                lstIssueTicketButtons.Add(issueTicketButton);
+                            }
+                            else
+                            {
+                                BusinessObjects.Models.CustomShowMessageButton showMessageButton = new BusinessObjects.Models.CustomShowMessageButton();
+                                showMessageButton.id = Convert.ToInt32(dataRow["id"]);
+                                showMessageButton.enName = dataRow["enName"].ToString();
+                                showMessageButton.arName = dataRow["arName"].ToString();
+                                showMessageButton.messageEN = dataRow["messageEN"].ToString();
+                                showMessageButton.messageAR = dataRow["messageAR"].ToString();
+                                showMessageButton.screenId = Convert.ToInt32(dataRow["screenId"]);
+                                lstShowMessageButtons.Add(showMessageButton);
+                            }
+                        }
+                        lstButtons.issueTicketButtons = lstIssueTicketButtons;
+                        lstButtons.showMessageButtons = lstShowMessageButtons;
+                    }
+                }
+                return lstButtons;
+            }
+            catch (Exception ex)
+            {
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
+                return null;
+            }
+        }
         public BusinessObjects.Models.ShowMessageButton insertShowMessageButton(BusinessObjects.Models.ShowMessageButton pButton)
         {
             try

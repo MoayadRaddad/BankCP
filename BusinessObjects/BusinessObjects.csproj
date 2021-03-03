@@ -76,6 +76,7 @@
     <Compile Include="Models\IssueTicketButton.cs" />
     <Compile Include="Models\LessThanAttribute.cs" />
     <Compile Include="Models\logInfo.cs" />
+    <Compile Include="Models\CustomIssueTicketAndShowMessageButtons.cs" />
     <Compile Include="Models\ResultsEnum.cs" />
     <Compile Include="Models\Screen.cs" />
     <Compile Include="Models\Service.cs" />

@@ -583,7 +583,7 @@ create proc [dbo].[selectIssueTicketbyBranchIdAndScreen]
 as
 begin
 BEGIN TRY 
-IF (EXISTS (SELECT * FROM tblBranches inner join tblBanks on tblBranches.bankId = tblBanks.id where tblBranches.id = @branchId and tblBanks.id = @bankId and tblBranches.active = 1))
+IF (EXISTS (SELECT * FROM tblBranches where tblBranches.id = @branchId and tblBranches.bankId = @bankId and tblBranches.active = 1))
 begin
 IF (EXISTS (SELECT * FROM tblScreens where tblScreens.id = @ScreenId and tblScreens.isActive = 1))
 SELECT tblIssueTicketButton.*
@@ -619,7 +619,7 @@ CREATE proc [dbo].[selectShowMessagebyBranchIdAndScreen]
 as
 begin
 BEGIN TRY 
-IF (EXISTS (SELECT * FROM tblBranches inner join tblBanks on tblBranches.bankId = tblBanks.id where tblBranches.id = @branchId and tblBanks.id = @bankId and tblBranches.active = 1))
+IF (EXISTS (SELECT * FROM tblBranches where tblBranches.id = @branchId and tblBranches.bankId = @bankId and tblBranches.active = 1))
 begin
 IF (EXISTS (SELECT * FROM tblScreens where tblScreens.id = @ScreenId and tblScreens.isActive = 1))
 SELECT tblShowMessageButton.* FROM tblShowMessageButton inner join tblScreens

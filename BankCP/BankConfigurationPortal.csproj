@@ -321,6 +321,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AllocateController.cs" />
     <Compile Include="Controllers\BranchesController.cs" />
+    <Compile Include="Controllers\ButtonsController.cs" />
     <Compile Include="Controllers\CountersController.cs" />
     <Compile Include="Controllers\IssueTicketController.cs" />
     <Compile Include="Controllers\LangController.cs" />
@@ -414,6 +415,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Buttons\" />
     <Folder Include="Views\IssueTicket\" />
     <Folder Include="Views\ShowMessage\" />
   </ItemGroup>
