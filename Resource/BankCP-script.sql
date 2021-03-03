@@ -636,6 +636,46 @@ END CATCH
 END
 
 GO
+
+IF EXISTS ( SELECT * FROM   sysobjects WHERE name = N'sp_selectIssueTicketAndShowMessageButtons' )
+BEGIN
+    DROP PROCEDURE [dbo].[sp_selectIssueTicketAndShowMessageButtons]
+END
+GO
+
+CREATE proc [dbo].[sp_selectIssueTicketAndShowMessageButtons]
+@bankId int,
+@branchId int,
+@ScreenId int
+as
+begin
+BEGIN TRY 
+IF (EXISTS (SELECT * FROM tblBranches where tblBranches.id = @branchId and tblBranches.bankId = @bankId and tblBranches.active = 1))
+begin
+IF (EXISTS (SELECT * FROM tblScreens where tblScreens.id = @ScreenId and tblScreens.isActive = 1))
+(SELECT tblShowMessageButton.id, tblShowMessageButton.enName, tblShowMessageButton.arName, tblShowMessageButton.screenId, 'ShowMessage' as type, null as serviceId, tblShowMessageButton.messageEN,
+tblShowMessageButton.messageAR
+FROM tblShowMessageButton inner join tblScreens
+                            on tblShowMessageButton.screenId = tblScreens.id where screenId = @screenId and tblScreens.bankId = @bankId)
+							union
+							(SELECT tblIssueTicketButton.id, tblIssueTicketButton.enName, tblIssueTicketButton.arName, tblIssueTicketButton.screenId, 'IssueTicket' as type,
+							tblIssueTicketButton.serviceId, null as messageEN, null as messageAR FROM tblIssueTicketButton inner join tblScreens on tblIssueTicketButton.screenId = tblScreens.id
+							inner join tblAllocateCounterService on tblIssueTicketButton.serviceId = tblAllocateCounterService.serviceId
+							inner join tblCounters on tblAllocateCounterService.counterId = tblCounters.id inner join tblService on tblIssueTicketButton.serviceId = tblService.id
+							where tblCounters.branchId = @branchId and tblIssueTicketButton.screenId = @screenId and tblAllocateCounterService.bankId = @bankId and tblCounters.active = 1
+							and tblService.active = 1)
+else
+select 0 as id;
+end
+else
+select 0 as id;
+END TRY  
+BEGIN CATCH  
+     THROW; 
+END CATCH 
+END
+
+GO
 update tblService set minimumServiceTime = 45, maximumServiceTime = 300 where minimumServiceTime is null
 
 GO
