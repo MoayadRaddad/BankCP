@@ -12,6 +12,7 @@ using System.Web.Routing;
 using System.Web.Http;
 using BankCP.App_Start;
 using System.Net.Http.Formatting;
+using System.ServiceModel.Activation;
 
 namespace BankConfigurationPortal
 {

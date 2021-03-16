@@ -233,6 +233,10 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Activation" />
+    <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Text.Encodings.Web, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.Encodings.Web.4.5.0\lib\netstandard2.0\System.Text.Encodings.Web.dll</HintPath>
     </Reference>
@@ -389,6 +393,7 @@
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\sweetalert.js" />
+    <Content Include="WCFServices.svc" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -416,6 +421,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Buttons\" />
+    <Folder Include="Views\cust\" />
     <Folder Include="Views\IssueTicket\" />
     <Folder Include="Views\ShowMessage\" />
   </ItemGroup>
@@ -449,6 +455,13 @@
       <Project>{870e9bf0-8490-43cf-a3cc-2d88618a5f91}</Project>
       <Name>GlobalResource</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WCFService\WCFService.csproj">
+      <Project>{f299f980-fcf6-4030-a068-3fa41ef41a8b}</Project>
+      <Name>WCFService</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -465,11 +478,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50214</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:50214/</IISUrl>
+          <IISUrl>http://localhost:1111/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
