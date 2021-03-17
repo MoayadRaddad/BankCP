@@ -1,4 +1,5 @@
-﻿using BusinessAccessLayer.BALButton;
+﻿using BusinessAccessLayer.BALBank;
+using BusinessAccessLayer.BALButton;
 using BusinessAccessLayer.BALScreen;
 using BusinessCommon.ExceptionsWriter;
 using BusinessObjects.Models;
@@ -10,10 +11,11 @@ using System.Runtime.Serialization;
 using System.Security.Claims;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
+using System.ServiceModel.Web;
 using System.Text;
 using System.Threading;
 
-namespace WCFService
+namespace WCFBankServices
 {
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
     public class WCFServices : IWCFServices
@@ -54,14 +56,6 @@ namespace WCFService
                 ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return null;
             }
-        }
-
-        public List<Screen> GetScreens()
-        {
-            List<Screen> players = new List<Screen>();
-            players.Add(new Screen { name = "Peyton"});
-            players.Add(new Screen { name = "Drew"});
-            return players;
         }
     }
 }

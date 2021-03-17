@@ -134,18 +134,6 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
-      <xs:element name="GetScreens">
-        <xs:complexType>
-          <xs:sequence />
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="GetScreensResponse">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/BusinessObjects.Models" minOccurs="0" name="GetScreensResult" nillable="true" type="q3:ArrayOfScreen" />
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
     </xs:schema>
     <xs:schema xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:element name="anyType" nillable="true" type="xs:anyType" />
@@ -248,12 +236,6 @@
         </xs:complexContent>
       </xs:complexType>
       <xs:element name="CustomShowMessageButton" nillable="true" type="tns:CustomShowMessageButton" />
-      <xs:complexType name="ArrayOfScreen">
-        <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="Screen" nillable="true" type="tns:Screen" />
-        </xs:sequence>
-      </xs:complexType>
-      <xs:element name="ArrayOfScreen" nillable="true" type="tns:ArrayOfScreen" />
     </xs:schema>
   </wsdl:types>
   <wsdl:message name="IWCFServices_getScreen_InputMessage">
@@ -268,12 +250,6 @@
   <wsdl:message name="IWCFServices_getButtons_OutputMessage">
     <wsdl:part name="parameters" element="tns:getButtonsResponse" />
   </wsdl:message>
-  <wsdl:message name="IWCFServices_GetScreens_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetScreens" />
-  </wsdl:message>
-  <wsdl:message name="IWCFServices_GetScreens_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetScreensResponse" />
-  </wsdl:message>
   <wsdl:portType name="IWCFServices">
     <wsdl:operation name="getScreen">
       <wsdl:input wsaw:Action="http://tempuri.org/IWCFServices/getScreen" message="tns:IWCFServices_getScreen_InputMessage" />
@@ -282,10 +258,6 @@
     <wsdl:operation name="getButtons">
       <wsdl:input wsaw:Action="http://tempuri.org/IWCFServices/getButtons" message="tns:IWCFServices_getButtons_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IWCFServices/getButtonsResponse" message="tns:IWCFServices_getButtons_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="GetScreens">
-      <wsdl:input wsaw:Action="http://tempuri.org/IWCFServices/GetScreens" message="tns:IWCFServices_GetScreens_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IWCFServices/GetScreensResponse" message="tns:IWCFServices_GetScreens_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="WSHttpBinding_IWCFServices" type="tns:IWCFServices">
@@ -309,21 +281,12 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetScreens">
-      <soap12:operation soapAction="http://tempuri.org/IWCFServices/GetScreens" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="WCFServices">
     <wsdl:port name="WSHttpBinding_IWCFServices" binding="tns:WSHttpBinding_IWCFServices">
-      <soap12:address location="https://moayad.sedco-online.com/WCFServices/WCFServices.svc" />
+      <soap12:address location="https://moayad.sedco-online.com/WCFServices.svc" />
       <wsa10:EndpointReference>
-        <wsa10:Address>https://moayad.sedco-online.com/WCFServices/WCFServices.svc</wsa10:Address>
+        <wsa10:Address>https://moayad.sedco-online.com/WCFServices.svc</wsa10:Address>
       </wsa10:EndpointReference>
     </wsdl:port>
   </wsdl:service>

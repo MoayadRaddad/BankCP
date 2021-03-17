@@ -10,6 +10,19 @@ namespace BusinessAccessLayer.BALBank
 {
     public class BALBank
     {
+        public BusinessObjects.Models.Bank getBankById(int id)
+        {
+            try
+            {
+                DataAccessLayer.DALBank.DALBank dALBank = new DataAccessLayer.DALBank.DALBank();
+                return dALBank.getBankById(id);
+            }
+            catch (Exception ex)
+            {
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
+                return null;
+            }
+        }
         public BusinessObjects.Models.Bank checkBankExist(BusinessObjects.Models.Bank pBank)
         {
             try

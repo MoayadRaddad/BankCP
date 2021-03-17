@@ -7,13 +7,10 @@ using System.ServiceModel.Web;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WCFService
+namespace WCFBankServices
 {
     public class RestAuthorizationManager : ServiceAuthorizationManager
     {
-        /// <summary>  
-        /// Method source sample taken from here: http://bit.ly/1hUa1LR  
-        /// </summary>  
         protected override bool CheckAccessCore(OperationContext operationContext)
         {
             string userName;
@@ -22,7 +19,6 @@ namespace WCFService
             string client = OperationContext.Current.ServiceSecurityContext.PrimaryIdentity.Name;
             if (string.IsNullOrEmpty(client))
             {
-                //Extract the Authorization header, and parse out the credentials converting the Base64 string:  
                 var authHeader = WebOperationContext.Current.IncomingRequest.Headers["Authorization"];
                 if ((authHeader != null) && (authHeader != string.Empty))
                 {
@@ -31,21 +27,20 @@ namespace WCFService
                         .Split(':');
                     userName = svcCredentials[0];
                     password = svcCredentials[1];
-                    bankName = "bank1";
+                    bankName = WebOperationContext.Current.IncomingRequest.Headers["bankname"];
                 }
                 else
-                {
-                    //No authorization header was provided, so challenge the client to provide before proceeding:  
+                { 
                     WebOperationContext.Current.OutgoingResponse.Headers.Add("WWW-Authenticate: Basic realm=\"MyWCFService\"");
-                    //Throw an exception with the associated HTTP status code equivalent to HTTP status 401  
                     throw new WebFaultException(HttpStatusCode.Unauthorized);
                 }
             }
             else
             {
+                BusinessAccessLayer.BALBank.BALBank bALBank = new BusinessAccessLayer.BALBank.BALBank();
                 userName = getHeader("username");
                 password = getHeader("password");
-                bankName = getHeader("bankname");
+                bankName = bALBank.getBankById(Convert.ToInt32(getHeader("bankid"))).name;
             }
             BusinessAccessLayer.BALLogin.BALLogin bALLogin = new BusinessAccessLayer.BALLogin.BALLogin();
             BusinessObjects.Models.User userInformation = bALLogin.UserCheck(userName, password, bankName);

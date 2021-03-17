@@ -31,23 +31,26 @@ namespace WCFServicesApp
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.screenTab = new System.Windows.Forms.TabPage();
-            this.buttonTab = new System.Windows.Forms.TabPage();
-            this.gv_Screen = new System.Windows.Forms.DataGridView();
-            this.gv_Button = new System.Windows.Forms.DataGridView();
-            this.getButtons = new System.Windows.Forms.Button();
-            this.txtBankId = new System.Windows.Forms.TextBox();
-            this.txtBranchId = new System.Windows.Forms.TextBox();
-            this.txtScreenId = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.txtBankId_Screen = new System.Windows.Forms.TextBox();
             this.getScreen = new System.Windows.Forms.Button();
+            this.gv_Screen = new System.Windows.Forms.DataGridView();
+            this.buttonTab = new System.Windows.Forms.TabPage();
+            this.textBranchId = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtScreenId = new System.Windows.Forms.TextBox();
+            this.getButtons = new System.Windows.Forms.Button();
+            this.gv_Button = new System.Windows.Forms.DataGridView();
+            this.txtBankId = new System.Windows.Forms.TextBox();
+            this.lblBankId = new System.Windows.Forms.Label();
+            this.lblUserName = new System.Windows.Forms.Label();
+            this.txtUserName = new System.Windows.Forms.TextBox();
+            this.lblPassword = new System.Windows.Forms.Label();
+            this.txtPassword = new System.Windows.Forms.TextBox();
+            this.textBankId = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.screenTab.SuspendLayout();
-            this.buttonTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gv_Screen)).BeginInit();
+            this.buttonTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gv_Button)).BeginInit();
             this.SuspendLayout();
             // 
@@ -56,59 +59,92 @@ namespace WCFServicesApp
             this.tabControl1.Controls.Add(this.screenTab);
             this.tabControl1.Controls.Add(this.buttonTab);
             this.tabControl1.ItemSize = new System.Drawing.Size(400, 25);
-            this.tabControl1.Location = new System.Drawing.Point(12, 12);
+            this.tabControl1.Location = new System.Drawing.Point(12, 48);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(776, 426);
+            this.tabControl1.Size = new System.Drawing.Size(776, 439);
             this.tabControl1.TabIndex = 3;
             // 
             // screenTab
             // 
-            this.screenTab.Controls.Add(this.label6);
-            this.screenTab.Controls.Add(this.txtBankId_Screen);
             this.screenTab.Controls.Add(this.getScreen);
             this.screenTab.Controls.Add(this.gv_Screen);
             this.screenTab.Location = new System.Drawing.Point(4, 29);
             this.screenTab.Name = "screenTab";
             this.screenTab.Padding = new System.Windows.Forms.Padding(3);
-            this.screenTab.Size = new System.Drawing.Size(768, 393);
+            this.screenTab.Size = new System.Drawing.Size(768, 406);
             this.screenTab.TabIndex = 0;
             this.screenTab.Text = "Screen";
             this.screenTab.UseVisualStyleBackColor = true;
             // 
-            // buttonTab
+            // getScreen
             // 
-            this.buttonTab.Controls.Add(this.label3);
-            this.buttonTab.Controls.Add(this.label2);
-            this.buttonTab.Controls.Add(this.label1);
-            this.buttonTab.Controls.Add(this.txtScreenId);
-            this.buttonTab.Controls.Add(this.txtBranchId);
-            this.buttonTab.Controls.Add(this.txtBankId);
-            this.buttonTab.Controls.Add(this.getButtons);
-            this.buttonTab.Controls.Add(this.gv_Button);
-            this.buttonTab.Location = new System.Drawing.Point(4, 29);
-            this.buttonTab.Name = "buttonTab";
-            this.buttonTab.Padding = new System.Windows.Forms.Padding(3);
-            this.buttonTab.Size = new System.Drawing.Size(768, 393);
-            this.buttonTab.TabIndex = 1;
-            this.buttonTab.Text = "Button";
-            this.buttonTab.UseVisualStyleBackColor = true;
+            this.getScreen.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.getScreen.Location = new System.Drawing.Point(666, 18);
+            this.getScreen.Name = "getScreen";
+            this.getScreen.Size = new System.Drawing.Size(96, 38);
+            this.getScreen.TabIndex = 9;
+            this.getScreen.Text = "Get Screen";
+            this.getScreen.UseVisualStyleBackColor = true;
+            this.getScreen.Click += new System.EventHandler(this.getScreen_Click);
             // 
             // gv_Screen
             // 
             this.gv_Screen.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gv_Screen.Location = new System.Drawing.Point(0, 62);
             this.gv_Screen.Name = "gv_Screen";
-            this.gv_Screen.Size = new System.Drawing.Size(765, 325);
+            this.gv_Screen.Size = new System.Drawing.Size(765, 338);
             this.gv_Screen.TabIndex = 0;
             // 
-            // gv_Button
+            // buttonTab
             // 
-            this.gv_Button.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gv_Button.Location = new System.Drawing.Point(2, 78);
-            this.gv_Button.Name = "gv_Button";
-            this.gv_Button.Size = new System.Drawing.Size(765, 310);
-            this.gv_Button.TabIndex = 1;
+            this.buttonTab.Controls.Add(this.textBranchId);
+            this.buttonTab.Controls.Add(this.label3);
+            this.buttonTab.Controls.Add(this.label2);
+            this.buttonTab.Controls.Add(this.txtScreenId);
+            this.buttonTab.Controls.Add(this.getButtons);
+            this.buttonTab.Controls.Add(this.gv_Button);
+            this.buttonTab.Location = new System.Drawing.Point(4, 29);
+            this.buttonTab.Name = "buttonTab";
+            this.buttonTab.Padding = new System.Windows.Forms.Padding(3);
+            this.buttonTab.Size = new System.Drawing.Size(768, 406);
+            this.buttonTab.TabIndex = 1;
+            this.buttonTab.Text = "Button";
+            this.buttonTab.UseVisualStyleBackColor = true;
+            // 
+            // textBranchId
+            // 
+            this.textBranchId.Location = new System.Drawing.Point(100, 28);
+            this.textBranchId.Name = "textBranchId";
+            this.textBranchId.Size = new System.Drawing.Size(100, 20);
+            this.textBranchId.TabIndex = 21;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(239, 28);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(70, 18);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Screen Id";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(5, 28);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(70, 18);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "Branch Id";
+            // 
+            // txtScreenId
+            // 
+            this.txtScreenId.Location = new System.Drawing.Point(328, 29);
+            this.txtScreenId.Name = "txtScreenId";
+            this.txtScreenId.Size = new System.Drawing.Size(100, 20);
+            this.txtScreenId.TabIndex = 5;
             // 
             // getButtons
             // 
@@ -121,101 +157,95 @@ namespace WCFServicesApp
             this.getButtons.UseVisualStyleBackColor = true;
             this.getButtons.Click += new System.EventHandler(this.getButtons_Click);
             // 
+            // gv_Button
+            // 
+            this.gv_Button.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gv_Button.Location = new System.Drawing.Point(2, 66);
+            this.gv_Button.Name = "gv_Button";
+            this.gv_Button.Size = new System.Drawing.Size(765, 334);
+            this.gv_Button.TabIndex = 1;
+            // 
             // txtBankId
             // 
-            this.txtBankId.Location = new System.Drawing.Point(92, 28);
+            this.txtBankId.Location = new System.Drawing.Point(0, 0);
             this.txtBankId.Name = "txtBankId";
             this.txtBankId.Size = new System.Drawing.Size(100, 20);
-            this.txtBankId.TabIndex = 3;
+            this.txtBankId.TabIndex = 0;
             // 
-            // txtBranchId
+            // lblBankId
             // 
-            this.txtBranchId.Location = new System.Drawing.Point(314, 28);
-            this.txtBranchId.Name = "txtBranchId";
-            this.txtBranchId.Size = new System.Drawing.Size(100, 20);
-            this.txtBranchId.TabIndex = 4;
+            this.lblBankId.AutoSize = true;
+            this.lblBankId.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblBankId.Location = new System.Drawing.Point(16, 21);
+            this.lblBankId.Name = "lblBankId";
+            this.lblBankId.Size = new System.Drawing.Size(57, 18);
+            this.lblBankId.TabIndex = 16;
+            this.lblBankId.Text = "Bank Id";
             // 
-            // txtScreenId
+            // lblUserName
             // 
-            this.txtScreenId.Location = new System.Drawing.Point(551, 28);
-            this.txtScreenId.Name = "txtScreenId";
-            this.txtScreenId.Size = new System.Drawing.Size(100, 20);
-            this.txtScreenId.TabIndex = 5;
+            this.lblUserName.AutoSize = true;
+            this.lblUserName.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblUserName.Location = new System.Drawing.Point(303, 21);
+            this.lblUserName.Name = "lblUserName";
+            this.lblUserName.Size = new System.Drawing.Size(84, 18);
+            this.lblUserName.TabIndex = 18;
+            this.lblUserName.Text = "User Name";
             // 
-            // label1
+            // txtUserName
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(17, 29);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(57, 18);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "Bank Id";
+            this.txtUserName.Location = new System.Drawing.Point(394, 22);
+            this.txtUserName.Name = "txtUserName";
+            this.txtUserName.Size = new System.Drawing.Size(100, 20);
+            this.txtUserName.TabIndex = 17;
             // 
-            // label2
+            // lblPassword
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(228, 27);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(70, 18);
-            this.label2.TabIndex = 7;
-            this.label2.Text = "Branch Id";
+            this.lblPassword.AutoSize = true;
+            this.lblPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPassword.Location = new System.Drawing.Point(590, 21);
+            this.lblPassword.Name = "lblPassword";
+            this.lblPassword.Size = new System.Drawing.Size(75, 18);
+            this.lblPassword.TabIndex = 20;
+            this.lblPassword.Text = "Password";
             // 
-            // label3
+            // txtPassword
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(462, 27);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(70, 18);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "Screen Id";
+            this.txtPassword.Location = new System.Drawing.Point(681, 22);
+            this.txtPassword.Name = "txtPassword";
+            this.txtPassword.PasswordChar = '*';
+            this.txtPassword.Size = new System.Drawing.Size(100, 20);
+            this.txtPassword.TabIndex = 19;
             // 
-            // label6
+            // textBankId
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(15, 23);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(57, 18);
-            this.label6.TabIndex = 13;
-            this.label6.Text = "Bank Id";
-            // 
-            // txtBankId_Screen
-            // 
-            this.txtBankId_Screen.Location = new System.Drawing.Point(106, 24);
-            this.txtBankId_Screen.Name = "txtBankId_Screen";
-            this.txtBankId_Screen.Size = new System.Drawing.Size(100, 20);
-            this.txtBankId_Screen.TabIndex = 10;
-            // 
-            // getScreen
-            // 
-            this.getScreen.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.getScreen.Location = new System.Drawing.Point(254, 14);
-            this.getScreen.Name = "getScreen";
-            this.getScreen.Size = new System.Drawing.Size(96, 38);
-            this.getScreen.TabIndex = 9;
-            this.getScreen.Text = "Get Screen";
-            this.getScreen.UseVisualStyleBackColor = true;
-            this.getScreen.Click += new System.EventHandler(this.getScreen_Click);
+            this.textBankId.Location = new System.Drawing.Point(89, 22);
+            this.textBankId.Name = "textBankId";
+            this.textBankId.Size = new System.Drawing.Size(100, 20);
+            this.textBankId.TabIndex = 10;
             // 
             // Services
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(800, 499);
+            this.Controls.Add(this.textBankId);
+            this.Controls.Add(this.lblPassword);
+            this.Controls.Add(this.txtPassword);
+            this.Controls.Add(this.lblUserName);
+            this.Controls.Add(this.txtUserName);
+            this.Controls.Add(this.lblBankId);
             this.Controls.Add(this.tabControl1);
             this.Name = "Services";
-            this.Text = "Form1";
+            this.Text = "WCF Bank Services Tester";
             this.tabControl1.ResumeLayout(false);
             this.screenTab.ResumeLayout(false);
-            this.screenTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gv_Screen)).EndInit();
             this.buttonTab.ResumeLayout(false);
             this.buttonTab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gv_Screen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gv_Button)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -223,19 +253,22 @@ namespace WCFServicesApp
 
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage screenTab;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox txtBankId_Screen;
         private System.Windows.Forms.Button getScreen;
         private System.Windows.Forms.DataGridView gv_Screen;
         private System.Windows.Forms.TabPage buttonTab;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtScreenId;
-        private System.Windows.Forms.TextBox txtBranchId;
         private System.Windows.Forms.TextBox txtBankId;
         private System.Windows.Forms.Button getButtons;
         private System.Windows.Forms.DataGridView gv_Button;
+        private System.Windows.Forms.Label lblBankId;
+        private System.Windows.Forms.Label lblUserName;
+        private System.Windows.Forms.TextBox txtUserName;
+        private System.Windows.Forms.Label lblPassword;
+        private System.Windows.Forms.TextBox txtPassword;
+        private System.Windows.Forms.TextBox textBankId;
+        private System.Windows.Forms.TextBox textBranchId;
     }
 }
 

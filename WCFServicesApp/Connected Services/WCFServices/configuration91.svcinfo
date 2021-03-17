@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="mKg/+hIdUzVQHGky3mAMGRvXG1W6R8ie6tbcJJDebdQ=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="WmjAvBK0FGd/ryx3X92kkZEVa4wQLH6IfkOt1eK/iWE=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="wsHttpBinding" name="WSHttpBinding_IWCFServices">
       <properties>
@@ -127,10 +127,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="WSHttpBinding_IWCFServices" contract="WCFServices.IWCFServices" bindingType="wsHttpBinding" address="https://moayad.sedco-online.com/WCFServices/WCFServices.svc" bindingConfiguration="WSHttpBinding_IWCFServices">
+    <endpoint name="WSHttpBinding_IWCFServices" contract="WCFServices.IWCFServices" bindingType="wsHttpBinding" address="https://moayad.sedco-online.com/WCFServices.svc" bindingConfiguration="WSHttpBinding_IWCFServices">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>https://moayad.sedco-online.com/WCFServices/WCFServices.svc</serializedValue>
+          <serializedValue>https://moayad.sedco-online.com/WCFServices.svc</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

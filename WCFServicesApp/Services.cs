@@ -22,22 +22,86 @@ namespace WCFServicesApp
             try
             {
                 InitializeComponent();
-                //client = new WCFServices.WCFServicesClient();
-                client = new WCFServices.WCFServicesClient();
-                client.ClientCredentials.UserName.UserName = "admin";
-                client.ClientCredentials.UserName.Password = "admin";
-                var scope = new OperationContextScope(client.InnerChannel);
-                ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-                var webUser = new MessageHeader<string>("admin");
-                var webUserHeader = webUser.GetUntypedHeader("userName", "ns");
-                OperationContext.Current.OutgoingMessageHeaders.Add(webUserHeader);
-                setHeader("username", "admin");
-                setHeader("password", "admin");
-                setHeader("bankname", "bank1");
             }
             catch (Exception ex)
             {
                 ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
+            }
+        }
+
+        private void getScreen_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (checkUserInfoFill())
+                {
+                    SetCredentials(textBankId.Text, txtUserName.Text, txtPassword.Text);
+                    var screen = client.getScreen(textBankId.Text);
+                    List<BusinessObjects.Models.Screen> lstScreens = new List<BusinessObjects.Models.Screen>();
+                    lstScreens.Add(screen);
+                    if (screen == null || screen.id == 0)
+                    {
+                        gv_Screen.DataSource = null;
+                        MessageBox.Show("Item not found");
+                        return;
+                    }
+                    gv_Screen.DataSource = lstScreens;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message != "Access is denied.")
+                {
+                    ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
+                }
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void getButtons_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (checkUserInfoFill())
+                {
+                    int branchId;
+                    int screenId;
+                    if (string.IsNullOrEmpty(textBranchId.Text) || !int.TryParse(textBranchId.Text, out branchId))
+                    {
+                        MessageBox.Show("Please fill branch id with a numeric number");
+                        return;
+                    }
+                    if (string.IsNullOrEmpty(txtScreenId.Text) || !int.TryParse(txtScreenId.Text, out screenId))
+                    {
+                        MessageBox.Show("Please fill screen id with a numeric number");
+                        return;
+                    }
+                    SetCredentials(textBankId.Text, txtUserName.Text, txtPassword.Text);
+                    var buttons = client.getButtons(textBankId.Text, branchId.ToString(), screenId.ToString());
+                    List<BusinessObjects.Models.CustomButton> lstButtons = new List<BusinessObjects.Models.CustomButton>();
+                    if (buttons == null)
+                    {
+                        MessageBox.Show("Item/s not found");
+                        return;
+                    }
+                    foreach (var item in buttons.showMessageButtons)
+                    {
+                        lstButtons.Add(new BusinessObjects.Models.CustomButton(item.id, item.enName, item.arName, item.screenId, item.type));
+                    }
+                    foreach (var item in buttons.issueTicketButtons)
+                    {
+                        lstButtons.Add(new BusinessObjects.Models.CustomButton(item.id, item.enName, item.arName, item.screenId, item.type));
+                    }
+                    gv_Button.DataSource = lstButtons;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message != "Access is denied.")
+                {
+                    ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
+                }
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -48,77 +112,37 @@ namespace WCFServicesApp
             OperationContext.Current.OutgoingMessageHeaders.Add(webUserHeader);
         }
 
-        private void getScreen_Click(object sender, EventArgs e)
+        public void SetCredentials(string bankId, string userName, string password)
         {
-            try
-            {
-                var x = client.ClientCredentials.UserName;
-                int bankId;
-                if (string.IsNullOrEmpty(txtBankId_Screen.Text) || !int.TryParse(txtBankId_Screen.Text, out bankId))
-                {
-                    MessageBox.Show("Please fill bank id with a numeric number");
-                    return;
-                }
-                var screen = client.getScreen(bankId.ToString());
-                List<BusinessObjects.Models.Screen> lstScreens = new List<BusinessObjects.Models.Screen>();
-                lstScreens.Add(screen);
-                if (screen == null || screen.id == 0)
-                {
-                    gv_Screen.DataSource = null;
-                    MessageBox.Show("Item not found");
-                    return;
-                }
-                gv_Screen.DataSource = lstScreens;
-            }
-            catch (Exception ex)
-            {
-                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
-            }
+            client = new WCFServices.WCFServicesClient();
+            client.ClientCredentials.UserName.UserName = userName;
+            client.ClientCredentials.UserName.Password = password;
+            var scope = new OperationContextScope(client.InnerChannel);
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            setHeader("username", userName);
+            setHeader("password", password);
+            setHeader("bankid", bankId);
         }
 
-        private void getButtons_Click(object sender, EventArgs e)
+        private bool checkUserInfoFill()
         {
-            try
+            int bankId;
+            if (string.IsNullOrEmpty(textBankId.Text) || !int.TryParse(textBankId.Text, out bankId))
             {
-                int bankId;
-                int branchId;
-                int screenId;
-                if (string.IsNullOrEmpty(txtBankId.Text) || !int.TryParse(txtBankId.Text, out bankId))
-                {
-                    MessageBox.Show("Please fill bank id with a numeric number");
-                    return;
-                }
-                if (string.IsNullOrEmpty(txtBranchId.Text) || !int.TryParse(txtBranchId.Text, out branchId))
-                {
-                    MessageBox.Show("Please fill branch id with a numeric number");
-                    return;
-                }
-                if (string.IsNullOrEmpty(txtScreenId.Text) || !int.TryParse(txtScreenId.Text, out screenId))
-                {
-                    MessageBox.Show("Please fill screen id with a numeric number");
-                    return;
-                }
-                var buttons = client.getButtons(bankId.ToString(), branchId.ToString(), screenId.ToString());
-                List<BusinessObjects.Models.CustomButton> lstButtons = new List<BusinessObjects.Models.CustomButton>();
-                if (buttons == null)
-                {
-                    MessageBox.Show("Item/s not found");
-                    return;
-                }
-                foreach (var item in buttons.showMessageButtons)
-                {
-                    lstButtons.Add(new BusinessObjects.Models.CustomButton(item.id, item.enName, item.arName, item.screenId, item.type));
-                }
-                foreach (var item in buttons.issueTicketButtons)
-                {
-                    lstButtons.Add(new BusinessObjects.Models.CustomButton(item.id, item.enName, item.arName, item.screenId, item.type));
-                }
-                gv_Button.DataSource = lstButtons;
+                MessageBox.Show("Please fill bank id with a numeric number");
+                return false;
             }
-            catch (Exception ex)
+            if (string.IsNullOrEmpty(txtUserName.Text))
             {
-                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
+                MessageBox.Show("Please fill username");
+                return false;
             }
+            if (string.IsNullOrEmpty(txtPassword.Text))
+            {
+                MessageBox.Show("Please fill password");
+                return false;
+            }
+            return true;
         }
     }
 }

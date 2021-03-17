@@ -26,12 +26,6 @@ namespace WCFServicesApp.WCFServices {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWCFServices/getButtons", ReplyAction="http://tempuri.org/IWCFServices/getButtonsResponse")]
         System.Threading.Tasks.Task<BusinessObjects.Models.CustomIssueTicketAndShowMessageButtons> getButtonsAsync(string bankId, string branchId, string screenId);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWCFServices/GetScreens", ReplyAction="http://tempuri.org/IWCFServices/GetScreensResponse")]
-        BusinessObjects.Models.Screen[] GetScreens();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWCFServices/GetScreens", ReplyAction="http://tempuri.org/IWCFServices/GetScreensResponse")]
-        System.Threading.Tasks.Task<BusinessObjects.Models.Screen[]> GetScreensAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -75,14 +69,6 @@ namespace WCFServicesApp.WCFServices {
         
         public System.Threading.Tasks.Task<BusinessObjects.Models.CustomIssueTicketAndShowMessageButtons> getButtonsAsync(string bankId, string branchId, string screenId) {
             return base.Channel.getButtonsAsync(bankId, branchId, screenId);
-        }
-        
-        public BusinessObjects.Models.Screen[] GetScreens() {
-            return base.Channel.GetScreens();
-        }
-        
-        public System.Threading.Tasks.Task<BusinessObjects.Models.Screen[]> GetScreensAsync() {
-            return base.Channel.GetScreensAsync();
         }
     }
 }
