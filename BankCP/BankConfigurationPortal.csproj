@@ -393,6 +393,7 @@
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\sweetalert.js" />
+    <Content Include="WCFServices.svc" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -453,6 +454,10 @@
     <ProjectReference Include="..\GlobalResource\GlobalResource.csproj">
       <Project>{870e9bf0-8490-43cf-a3cc-2d88618a5f91}</Project>
       <Name>GlobalResource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WCFBankServices\WCFBankServices.csproj">
+      <Project>{946aa7be-0b5f-4ad1-ab3e-db8dac401fc1}</Project>
+      <Name>WCFBankServices</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

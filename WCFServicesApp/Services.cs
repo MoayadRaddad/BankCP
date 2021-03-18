@@ -37,14 +37,14 @@ namespace WCFServicesApp
                 {
                     SetCredentials(textBankId.Text, txtUserName.Text, txtPassword.Text);
                     var screen = client.getScreen(textBankId.Text);
-                    List<BusinessObjects.Models.Screen> lstScreens = new List<BusinessObjects.Models.Screen>();
-                    lstScreens.Add(screen);
                     if (screen == null || screen.id == 0)
                     {
                         gv_Screen.DataSource = null;
                         MessageBox.Show("Item not found");
                         return;
                     }
+                    List<BusinessObjects.Models.Screen> lstScreens = new List<BusinessObjects.Models.Screen>();
+                    lstScreens.Add(screen);
                     gv_Screen.DataSource = lstScreens;
                 }
             }
@@ -79,18 +79,24 @@ namespace WCFServicesApp
                     SetCredentials(textBankId.Text, txtUserName.Text, txtPassword.Text);
                     var buttons = client.getButtons(textBankId.Text, branchId.ToString(), screenId.ToString());
                     List<BusinessObjects.Models.CustomButton> lstButtons = new List<BusinessObjects.Models.CustomButton>();
-                    if (buttons == null)
+                    if (buttons == null || (buttons.issueTicketButtons == null && buttons.showMessageButtons == null))
                     {
                         MessageBox.Show("Item/s not found");
                         return;
                     }
-                    foreach (var item in buttons.showMessageButtons)
+                    if (buttons.showMessageButtons != null)
                     {
-                        lstButtons.Add(new BusinessObjects.Models.CustomButton(item.id, item.enName, item.arName, item.screenId, item.type));
+                        foreach (var item in buttons.showMessageButtons)
+                        {
+                            lstButtons.Add(new BusinessObjects.Models.CustomButton(item.id, item.enName, item.arName, item.screenId, item.type));
+                        }
                     }
-                    foreach (var item in buttons.issueTicketButtons)
+                    if (buttons.issueTicketButtons != null)
                     {
-                        lstButtons.Add(new BusinessObjects.Models.CustomButton(item.id, item.enName, item.arName, item.screenId, item.type));
+                        foreach (var item in buttons.issueTicketButtons)
+                        {
+                            lstButtons.Add(new BusinessObjects.Models.CustomButton(item.id, item.enName, item.arName, item.screenId, item.type));
+                        }
                     }
                     gv_Button.DataSource = lstButtons;
                 }
