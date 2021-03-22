@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="68c2630f-4203-4ae5-81c1-55d43cbc69ff" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="125acd75-ec21-4dac-aaac-e7ca69463266" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -19,10 +19,13 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost:1111/WCFServices.svc?singleWsdl" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://localhost:1111/WCFServices.svc?wsdl" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="WCFServices.wsdl" MetadataType="Wsdl" ID="c5fbe72f-c7cf-48e3-a511-0429b3c40f2f" SourceId="1" SourceUrl="http://localhost:1111/WCFServices.svc?singleWsdl" />
+    <MetadataFile FileName="WCFServices.wsdl" MetadataType="Wsdl" ID="9ea94343-a262-4395-9b1a-9b372bb27e4e" SourceId="1" SourceUrl="http://localhost:1111/WCFServices.svc?wsdl" />
+    <MetadataFile FileName="WCFServices.xsd" MetadataType="Schema" ID="23d6399a-5547-4dc8-96c5-a62dd46851b5" SourceId="1" SourceUrl="http://localhost:1111/WCFServices.svc?xsd=xsd2" />
+    <MetadataFile FileName="WCFServices1.xsd" MetadataType="Schema" ID="c954340c-8a8d-47a5-a72c-8e8d7434f513" SourceId="1" SourceUrl="http://localhost:1111/WCFServices.svc?xsd=xsd1" />
+    <MetadataFile FileName="WCFServices2.xsd" MetadataType="Schema" ID="73d0f651-283b-4a92-bb1b-52c502260a02" SourceId="1" SourceUrl="http://localhost:1111/WCFServices.svc?xsd=xsd0" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

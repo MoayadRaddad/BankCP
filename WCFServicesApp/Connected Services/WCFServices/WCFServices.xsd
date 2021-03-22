@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/BusinessObjects.Models" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/BusinessObjects.Models" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="Screen">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="bankId" type="xs:int" />
+      <xs:element minOccurs="0" name="id" type="xs:int" />
+      <xs:element minOccurs="0" name="isActive" type="xs:boolean" />
+      <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Screen" nillable="true" type="tns:Screen" />
+  <xs:complexType name="CustomIssueTicketAndShowMessageButtons">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="issueTicketButtons" nillable="true" type="tns:ArrayOfCustomIssueTicketButton" />
+      <xs:element minOccurs="0" name="showMessageButtons" nillable="true" type="tns:ArrayOfCustomShowMessageButton" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CustomIssueTicketAndShowMessageButtons" nillable="true" type="tns:CustomIssueTicketAndShowMessageButtons" />
+  <xs:complexType name="ArrayOfCustomIssueTicketButton">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CustomIssueTicketButton" nillable="true" type="tns:CustomIssueTicketButton" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCustomIssueTicketButton" nillable="true" type="tns:ArrayOfCustomIssueTicketButton" />
+  <xs:complexType name="CustomIssueTicketButton">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CustomButton">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="serviceId" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CustomIssueTicketButton" nillable="true" type="tns:CustomIssueTicketButton" />
+  <xs:complexType name="CustomButton">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="enName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="id" type="xs:int" />
+      <xs:element minOccurs="0" name="screenId" type="xs:int" />
+      <xs:element minOccurs="0" name="type" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CustomButton" nillable="true" type="tns:CustomButton" />
+  <xs:complexType name="ArrayOfCustomShowMessageButton">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CustomShowMessageButton" nillable="true" type="tns:CustomShowMessageButton" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCustomShowMessageButton" nillable="true" type="tns:ArrayOfCustomShowMessageButton" />
+  <xs:complexType name="CustomShowMessageButton">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CustomButton">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="messageAR" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="messageEN" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CustomShowMessageButton" nillable="true" type="tns:CustomShowMessageButton" />
+</xs:schema>

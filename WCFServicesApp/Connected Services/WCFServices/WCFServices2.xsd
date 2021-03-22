@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:1111/WCFServices.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/BusinessObjects.Models" />
+  <xs:element name="getScreen">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="bankId" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getScreenResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/BusinessObjects.Models" minOccurs="0" name="getScreenResult" nillable="true" type="q1:Screen" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getButtons">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="bankId" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="branchId" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="screenId" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getButtonsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/BusinessObjects.Models" minOccurs="0" name="getButtonsResult" nillable="true" type="q2:CustomIssueTicketAndShowMessageButtons" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

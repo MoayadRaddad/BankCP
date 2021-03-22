@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -35,8 +36,22 @@ namespace WCFServicesApp
             {
                 if (checkUserInfoFill())
                 {
-                    SetCredentials(textBankId.Text, txtUserName.Text, txtPassword.Text);
-                    var screen = client.getScreen(textBankId.Text);
+                    BusinessObjects.Models.Screen screen = new BusinessObjects.Models.Screen();
+                    string credentials = SetCredentials(txtUserName.Text, txtPassword.Text, txtBankName.Text);
+                    using (OperationContextScope scope =
+                              new OperationContextScope(client.InnerChannel))
+                    {
+                        HttpRequestMessageProperty request = new HttpRequestMessageProperty();
+                        request.Headers[System.Net.HttpRequestHeader.Authorization] = "Basic " + credentials;
+                        OperationContext.Current.OutgoingMessageProperties.Add(HttpRequestMessageProperty.Name, request);
+                        screen = client.getScreen(txtBankIdScreen.Text);
+                    }
+                    int bankId;
+                    if (string.IsNullOrEmpty(txtBankIdScreen.Text) || !int.TryParse(txtBankIdScreen.Text, out bankId))
+                    {
+                        MessageBox.Show("Please fill bank id with a numeric number");
+                        return;
+                    }
                     if (screen == null || screen.id == 0)
                     {
                         gv_Screen.DataSource = null;
@@ -64,8 +79,14 @@ namespace WCFServicesApp
             {
                 if (checkUserInfoFill())
                 {
+                    int bankId;
                     int branchId;
                     int screenId;
+                    if (string.IsNullOrEmpty(txtBankIdButtons.Text) || !int.TryParse(txtBankIdButtons.Text, out bankId))
+                    {
+                        MessageBox.Show("Please fill bank id with a numeric number");
+                        return;
+                    }
                     if (string.IsNullOrEmpty(textBranchId.Text) || !int.TryParse(textBranchId.Text, out branchId))
                     {
                         MessageBox.Show("Please fill branch id with a numeric number");
@@ -76,8 +97,16 @@ namespace WCFServicesApp
                         MessageBox.Show("Please fill screen id with a numeric number");
                         return;
                     }
-                    SetCredentials(textBankId.Text, txtUserName.Text, txtPassword.Text);
-                    var buttons = client.getButtons(textBankId.Text, branchId.ToString(), screenId.ToString());
+                    string credentials = SetCredentials(txtUserName.Text, txtPassword.Text, txtBankName.Text);
+                    BusinessObjects.Models.CustomIssueTicketAndShowMessageButtons buttons = new BusinessObjects.Models.CustomIssueTicketAndShowMessageButtons();
+                    using (OperationContextScope scope =
+                              new OperationContextScope(client.InnerChannel))
+                    {
+                        HttpRequestMessageProperty request = new HttpRequestMessageProperty();
+                        request.Headers[System.Net.HttpRequestHeader.Authorization] = "Basic " + credentials;
+                        OperationContext.Current.OutgoingMessageProperties.Add(HttpRequestMessageProperty.Name, request);
+                        buttons = client.getButtons(txtBankIdButtons.Text, branchId.ToString(), screenId.ToString());
+                    }
                     List<BusinessObjects.Models.CustomButton> lstButtons = new List<BusinessObjects.Models.CustomButton>();
                     if (buttons == null || (buttons.issueTicketButtons == null && buttons.showMessageButtons == null))
                     {
@@ -111,31 +140,12 @@ namespace WCFServicesApp
             }
         }
 
-        private void setHeader(string name, string value)
-        {
-            var webUser = new MessageHeader<string>(value);
-            var webUserHeader = webUser.GetUntypedHeader(name, "ns");
-            OperationContext.Current.OutgoingMessageHeaders.Add(webUserHeader);
-        }
-
-        public void SetCredentials(string bankId, string userName, string password)
-        {
-            client = new WCFServices.WCFServicesClient();
-            client.ClientCredentials.UserName.UserName = userName;
-            client.ClientCredentials.UserName.Password = password;
-            var scope = new OperationContextScope(client.InnerChannel);
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            setHeader("username", userName);
-            setHeader("password", password);
-            setHeader("bankid", bankId);
-        }
 
         private bool checkUserInfoFill()
         {
-            int bankId;
-            if (string.IsNullOrEmpty(textBankId.Text) || !int.TryParse(textBankId.Text, out bankId))
+            if (string.IsNullOrEmpty(txtBankName.Text))
             {
-                MessageBox.Show("Please fill bank id with a numeric number");
+                MessageBox.Show("Please fill bank name");
                 return false;
             }
             if (string.IsNullOrEmpty(txtUserName.Text))
@@ -149,6 +159,20 @@ namespace WCFServicesApp
                 return false;
             }
             return true;
+        }
+
+        private string SetCredentials(string userName, string password, string bankName)
+        {
+            client = new WCFServices.WCFServicesClient();
+            return EncodeBasicAuthenticationCredentials(userName, password, bankName);
+        }
+
+        private string EncodeBasicAuthenticationCredentials(string username, string password, string bankName)
+        {
+            string credentials = username + ":" + password + ":" + bankName;
+            var asciiCredentials = (from c in credentials
+                                    select c <= 0x7f ? (byte)c : (byte)'?').ToArray();
+            return Convert.ToBase64String(asciiCredentials);
         }
     }
 }

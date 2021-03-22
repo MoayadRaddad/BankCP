@@ -50,6 +50,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IdentityModel" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
@@ -89,6 +90,15 @@
       <DependentUpon>Services.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Connected Services\WCFServices\WCFServices.wsdl" />
+    <None Include="Connected Services\WCFServices\WCFServices.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WCFServices\WCFServices1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WCFServices\WCFServices2.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\DataSources\BusinessObjects.Models.CustomIssueTicketAndShowMessageButtons.datasource" />
     <None Include="Properties\DataSources\BusinessObjects.Models.Screen.datasource" />
     <None Include="Properties\Settings.settings">
