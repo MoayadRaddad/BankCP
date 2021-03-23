@@ -143,36 +143,60 @@ namespace WCFServicesApp
 
         private bool checkUserInfoFill()
         {
-            if (string.IsNullOrEmpty(txtBankName.Text))
+            try
             {
-                MessageBox.Show("Please fill bank name");
+                if (string.IsNullOrEmpty(txtBankName.Text))
+                {
+                    MessageBox.Show("Please fill bank name");
+                    return false;
+                }
+                if (string.IsNullOrEmpty(txtUserName.Text))
+                {
+                    MessageBox.Show("Please fill username");
+                    return false;
+                }
+                if (string.IsNullOrEmpty(txtPassword.Text))
+                {
+                    MessageBox.Show("Please fill password");
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
                 return false;
             }
-            if (string.IsNullOrEmpty(txtUserName.Text))
-            {
-                MessageBox.Show("Please fill username");
-                return false;
-            }
-            if (string.IsNullOrEmpty(txtPassword.Text))
-            {
-                MessageBox.Show("Please fill password");
-                return false;
-            }
-            return true;
         }
 
         private string SetCredentials(string userName, string password, string bankName)
         {
-            client = new WCFServices.WCFServicesClient();
-            return EncodeBasicAuthenticationCredentials(userName, password, bankName);
+            try
+            {
+                client = new WCFServices.WCFServicesClient();
+                return EncodeBasicAuthenticationCredentials(userName, password, bankName);
+            }
+            catch (Exception ex)
+            {
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
+                return null;
+            }
         }
 
         private string EncodeBasicAuthenticationCredentials(string username, string password, string bankName)
         {
-            string credentials = username + ":" + password + ":" + bankName;
-            var asciiCredentials = (from c in credentials
-                                    select c <= 0x7f ? (byte)c : (byte)'?').ToArray();
-            return Convert.ToBase64String(asciiCredentials);
+            try
+            {
+                string credentials = username + ":" + password + ":" + bankName;
+                var asciiCredentials = (from c in credentials
+                                        select c <= 0x7f ? (byte)c : (byte)'?').ToArray();
+                return Convert.ToBase64String(asciiCredentials);
+            }
+            catch (Exception ex)
+            {
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
+                return null;
+            }
         }
     }
 }

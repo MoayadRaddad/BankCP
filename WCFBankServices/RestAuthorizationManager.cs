@@ -1,6 +1,8 @@
-﻿using System;
+﻿using BusinessCommon.ExceptionsWriter;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -20,26 +22,34 @@ namespace WCFBankServices
     {
         protected override bool CheckAccessCore(OperationContext operationContext)
         {
-            string userName;
-            string password;
-            string bankName;
-            var authHeader = WebOperationContext.Current.IncomingRequest.Headers["Authorization"];
-            if ((authHeader != null) && (authHeader != string.Empty))
+            try
             {
-                var svcCredentials = System.Text.ASCIIEncoding.ASCII
-                    .GetString(Convert.FromBase64String(authHeader.Substring(6)))
-                    .Split(':');
-                userName = svcCredentials[0];
-                password = svcCredentials[1];
-                bankName = svcCredentials[2];
-                BusinessAccessLayer.BALLogin.BALLogin bALLogin = new BusinessAccessLayer.BALLogin.BALLogin();
-                BusinessObjects.Models.User userInformation = bALLogin.UserCheck(userName, password, bankName);
-                return userInformation == null ? false : true;
+                string userName;
+                string password;
+                string bankName;
+                var authHeader = WebOperationContext.Current.IncomingRequest.Headers["Authorization"];
+                if ((authHeader != null) && (authHeader != string.Empty))
+                {
+                    var svcCredentials = System.Text.ASCIIEncoding.ASCII
+                        .GetString(Convert.FromBase64String(authHeader.Substring(6)))
+                        .Split(':');
+                    userName = svcCredentials[0];
+                    password = svcCredentials[1];
+                    bankName = svcCredentials[2];
+                    BusinessAccessLayer.BALLogin.BALLogin bALLogin = new BusinessAccessLayer.BALLogin.BALLogin();
+                    BusinessObjects.Models.User userInformation = bALLogin.UserCheck(userName, password, bankName);
+                    return userInformation == null ? false : true;
+                }
+                else
+                {
+                    WebOperationContext.Current.OutgoingResponse.Headers.Add("WWW-Authenticate: Basic realm=\"MyWCFService\"");
+                    throw new WebFaultException(HttpStatusCode.Unauthorized);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                WebOperationContext.Current.OutgoingResponse.Headers.Add("WWW-Authenticate: Basic realm=\"MyWCFService\"");
-                throw new WebFaultException(HttpStatusCode.Unauthorized);
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
+                return false;
             }
         }
     }
