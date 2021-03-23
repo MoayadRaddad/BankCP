@@ -44,13 +44,7 @@ namespace WCFServicesApp
                         HttpRequestMessageProperty request = new HttpRequestMessageProperty();
                         request.Headers[System.Net.HttpRequestHeader.Authorization] = "Basic " + credentials;
                         OperationContext.Current.OutgoingMessageProperties.Add(HttpRequestMessageProperty.Name, request);
-                        screen = client.getScreen(txtBankIdScreen.Text);
-                    }
-                    int bankId;
-                    if (string.IsNullOrEmpty(txtBankIdScreen.Text) || !int.TryParse(txtBankIdScreen.Text, out bankId))
-                    {
-                        MessageBox.Show("Please fill bank id with a numeric number");
-                        return;
+                        screen = client.getScreen(txtBankName.Text);
                     }
                     if (screen == null || screen.id == 0)
                     {
@@ -79,14 +73,8 @@ namespace WCFServicesApp
             {
                 if (checkUserInfoFill())
                 {
-                    int bankId;
                     int branchId;
                     int screenId;
-                    if (string.IsNullOrEmpty(txtBankIdButtons.Text) || !int.TryParse(txtBankIdButtons.Text, out bankId))
-                    {
-                        MessageBox.Show("Please fill bank id with a numeric number");
-                        return;
-                    }
                     if (string.IsNullOrEmpty(textBranchId.Text) || !int.TryParse(textBranchId.Text, out branchId))
                     {
                         MessageBox.Show("Please fill branch id with a numeric number");
@@ -105,7 +93,7 @@ namespace WCFServicesApp
                         HttpRequestMessageProperty request = new HttpRequestMessageProperty();
                         request.Headers[System.Net.HttpRequestHeader.Authorization] = "Basic " + credentials;
                         OperationContext.Current.OutgoingMessageProperties.Add(HttpRequestMessageProperty.Name, request);
-                        buttons = client.getButtons(txtBankIdButtons.Text, branchId.ToString(), screenId.ToString());
+                        buttons = client.getButtons(txtBankName.Text, branchId.ToString(), screenId.ToString());
                     }
                     List<BusinessObjects.Models.CustomButton> lstButtons = new List<BusinessObjects.Models.CustomButton>();
                     if (buttons == null || (buttons.issueTicketButtons == null && buttons.showMessageButtons == null))

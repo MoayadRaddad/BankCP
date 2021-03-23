@@ -24,8 +24,11 @@ namespace WCFBankServices
         {
             try
             {
+                var authHeader = WebOperationContext.Current.IncomingRequest.Headers["Authorization"];
+                var svcCredentials = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(authHeader.Substring(6))).Split(':');
+                string bankName = svcCredentials[2];
                 BALScreen bALScreen = new BALScreen();
-                Screen screen = bALScreen.selectActiveScreenByBankId(Convert.ToInt32(bankId));
+                Screen screen = bALScreen.selectActiveScreenByBankName(bankName);
                 if (screen == null)
                 {
                     ExceptionsWriter.saveEventsAndExceptions(new FaultException("Database Error"), "Exceptions not handled", EventLogEntryType.Error);
@@ -43,8 +46,11 @@ namespace WCFBankServices
         {
             try
             {
+                var authHeader = WebOperationContext.Current.IncomingRequest.Headers["Authorization"];
+                var svcCredentials = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(authHeader.Substring(6))).Split(':');
+                string bankName = svcCredentials[2];
                 BALButton bALButton = new BALButton();
-                CustomIssueTicketAndShowMessageButtons lstButtons = bALButton.selectIssueTicketAndShowMessageButtons(Convert.ToInt32(bankId), Convert.ToInt32(branchId), Convert.ToInt32(screenId));
+                CustomIssueTicketAndShowMessageButtons lstButtons = bALButton.selectIssueTicketAndShowMessageButtonsByBankName(bankName, Convert.ToInt32(branchId), Convert.ToInt32(screenId));
                 if (lstButtons == null)
                 {
                     ExceptionsWriter.saveEventsAndExceptions(new FaultException("Database Error"), "Exceptions not handled", EventLogEntryType.Error);

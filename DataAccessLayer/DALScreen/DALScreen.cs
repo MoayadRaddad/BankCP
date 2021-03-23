@@ -68,6 +68,34 @@ namespace DataAccessLayer.DALScreen
                 return null;
             }
         }
+        public BusinessObjects.Models.Screen selectActiveScreenByBankName(string bankName)
+        {
+            try
+            {
+                string pquery = "SELECT tblScreens.* FROM tblScreens inner join tblBanks on tblBanks.id = tblScreens.bankId where tblBanks.name = @bankName and isActive = 1";
+                List<SqlParameter> screenParams = new List<SqlParameter>();
+                screenParams.Add(new SqlParameter("@bankName", bankName));
+                DALDBHelper.DALDBHelper dBHelper = new DALDBHelper.DALDBHelper();
+                DataSet dataSet = dBHelper.executeAdapter(pquery, screenParams);
+                if (dataSet == null)
+                {
+                    return null;
+                }
+                if (dataSet.Tables[0].Rows.Count == 0)
+                {
+                    return new BusinessObjects.Models.Screen();
+                }
+                DataRow dataRow = dataSet.Tables[0].Rows[0];
+                BusinessObjects.Models.Screen screen = new BusinessObjects.Models.Screen(Convert.ToInt32(dataRow["id"])
+                    , Convert.ToString(dataRow["name"]), Convert.ToBoolean(dataRow["isActive"]), Convert.ToInt32(dataRow["bankId"]));
+                return screen;
+            }
+            catch (Exception ex)
+            {
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
+                return null;
+            }
+        }
         public int deleteScreenById(int pScreenId)
         {
             try

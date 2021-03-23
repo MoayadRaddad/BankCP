@@ -676,6 +676,46 @@ END CATCH
 END
 
 GO
+
+IF EXISTS ( SELECT * FROM   sysobjects WHERE name = N'sp_selectIssueTicketAndShowMessageButtonsByBankName' )
+BEGIN
+    DROP PROCEDURE [dbo].[sp_selectIssueTicketAndShowMessageButtonsByBankName]
+END
+GO
+
+create proc [dbo].[sp_selectIssueTicketAndShowMessageButtonsByBankName]
+@bankName nvarchar(250),
+@branchId int,
+@ScreenId int
+as
+begin
+BEGIN TRY 
+IF (EXISTS (SELECT * FROM tblBranches inner join tblBanks on tblBanks.id = tblBranches.bankId where tblBranches.id = @branchId and tblBanks.name = @bankName and tblBranches.active = 1))
+begin
+IF (EXISTS (SELECT * FROM tblScreens where tblScreens.id = @ScreenId and tblScreens.isActive = 1))
+(SELECT tblShowMessageButton.id, tblShowMessageButton.enName, tblShowMessageButton.arName, tblShowMessageButton.screenId, 'ShowMessage' as type, null as serviceId, tblShowMessageButton.messageEN,
+tblShowMessageButton.messageAR
+FROM tblShowMessageButton inner join tblScreens
+                            on tblShowMessageButton.screenId = tblScreens.id inner join tblBanks on tblBanks.id = tblScreens.bankId where screenId = @screenId and tblBanks.name = @bankName)
+							union
+							(SELECT tblIssueTicketButton.id, tblIssueTicketButton.enName, tblIssueTicketButton.arName, tblIssueTicketButton.screenId, 'IssueTicket' as type,
+							tblIssueTicketButton.serviceId, null as messageEN, null as messageAR FROM tblIssueTicketButton inner join tblScreens on tblIssueTicketButton.screenId = tblScreens.id
+							inner join tblAllocateCounterService on tblIssueTicketButton.serviceId = tblAllocateCounterService.serviceId
+							inner join tblCounters on tblAllocateCounterService.counterId = tblCounters.id inner join tblService on tblIssueTicketButton.serviceId = tblService.id inner join tblBanks on tblBanks.id = tblService.bankId
+							where tblCounters.branchId = @branchId and tblIssueTicketButton.screenId = @screenId and tblBanks.name = @bankName and tblCounters.active = 1
+							and tblService.active = 1)
+else
+select 0 as id;
+end
+else
+select 0 as id;
+END TRY  
+BEGIN CATCH  
+     THROW; 
+END CATCH 
+END
+
+GO
 update tblService set minimumServiceTime = 45, maximumServiceTime = 300 where minimumServiceTime is null
 
 GO

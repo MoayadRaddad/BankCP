@@ -41,16 +41,12 @@ namespace WCFServicesApp
             this.getButtons = new System.Windows.Forms.Button();
             this.gv_Button = new System.Windows.Forms.DataGridView();
             this.txtBankId = new System.Windows.Forms.TextBox();
-            this.lblBankId = new System.Windows.Forms.Label();
             this.lblUserName = new System.Windows.Forms.Label();
             this.txtUserName = new System.Windows.Forms.TextBox();
             this.lblPassword = new System.Windows.Forms.Label();
             this.txtPassword = new System.Windows.Forms.TextBox();
-            this.txtBankIdScreen = new System.Windows.Forms.TextBox();
             this.txtBankName = new System.Windows.Forms.TextBox();
             this.lblBankName = new System.Windows.Forms.Label();
-            this.txtBankIdButtons = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.screenTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gv_Screen)).BeginInit();
@@ -71,10 +67,8 @@ namespace WCFServicesApp
             // 
             // screenTab
             // 
-            this.screenTab.Controls.Add(this.txtBankIdScreen);
             this.screenTab.Controls.Add(this.getScreen);
             this.screenTab.Controls.Add(this.gv_Screen);
-            this.screenTab.Controls.Add(this.lblBankId);
             this.screenTab.Location = new System.Drawing.Point(4, 29);
             this.screenTab.Name = "screenTab";
             this.screenTab.Padding = new System.Windows.Forms.Padding(3);
@@ -104,8 +98,6 @@ namespace WCFServicesApp
             // 
             // buttonTab
             // 
-            this.buttonTab.Controls.Add(this.txtBankIdButtons);
-            this.buttonTab.Controls.Add(this.label1);
             this.buttonTab.Controls.Add(this.textBranchId);
             this.buttonTab.Controls.Add(this.label3);
             this.buttonTab.Controls.Add(this.label2);
@@ -122,7 +114,7 @@ namespace WCFServicesApp
             // 
             // textBranchId
             // 
-            this.textBranchId.Location = new System.Drawing.Point(277, 28);
+            this.textBranchId.Location = new System.Drawing.Point(102, 28);
             this.textBranchId.Name = "textBranchId";
             this.textBranchId.Size = new System.Drawing.Size(100, 20);
             this.textBranchId.TabIndex = 21;
@@ -131,7 +123,7 @@ namespace WCFServicesApp
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(416, 28);
+            this.label3.Location = new System.Drawing.Point(241, 28);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(70, 18);
             this.label3.TabIndex = 8;
@@ -141,7 +133,7 @@ namespace WCFServicesApp
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(182, 28);
+            this.label2.Location = new System.Drawing.Point(7, 28);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(70, 18);
             this.label2.TabIndex = 7;
@@ -149,7 +141,7 @@ namespace WCFServicesApp
             // 
             // txtScreenId
             // 
-            this.txtScreenId.Location = new System.Drawing.Point(505, 29);
+            this.txtScreenId.Location = new System.Drawing.Point(330, 29);
             this.txtScreenId.Name = "txtScreenId";
             this.txtScreenId.Size = new System.Drawing.Size(100, 20);
             this.txtScreenId.TabIndex = 5;
@@ -179,16 +171,6 @@ namespace WCFServicesApp
             this.txtBankId.Name = "txtBankId";
             this.txtBankId.Size = new System.Drawing.Size(100, 20);
             this.txtBankId.TabIndex = 0;
-            // 
-            // lblBankId
-            // 
-            this.lblBankId.AutoSize = true;
-            this.lblBankId.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBankId.Location = new System.Drawing.Point(9, 28);
-            this.lblBankId.Name = "lblBankId";
-            this.lblBankId.Size = new System.Drawing.Size(57, 18);
-            this.lblBankId.TabIndex = 16;
-            this.lblBankId.Text = "Bank Id";
             // 
             // lblUserName
             // 
@@ -225,13 +207,6 @@ namespace WCFServicesApp
             this.txtPassword.Size = new System.Drawing.Size(100, 20);
             this.txtPassword.TabIndex = 19;
             // 
-            // txtBankIdScreen
-            // 
-            this.txtBankIdScreen.Location = new System.Drawing.Point(82, 29);
-            this.txtBankIdScreen.Name = "txtBankIdScreen";
-            this.txtBankIdScreen.Size = new System.Drawing.Size(100, 20);
-            this.txtBankIdScreen.TabIndex = 10;
-            // 
             // txtBankName
             // 
             this.txtBankName.Location = new System.Drawing.Point(117, 19);
@@ -249,23 +224,6 @@ namespace WCFServicesApp
             this.lblBankName.TabIndex = 22;
             this.lblBankName.Text = "Bank Name";
             // 
-            // txtBankIdButtons
-            // 
-            this.txtBankIdButtons.Location = new System.Drawing.Point(76, 29);
-            this.txtBankIdButtons.Name = "txtBankIdButtons";
-            this.txtBankIdButtons.Size = new System.Drawing.Size(100, 20);
-            this.txtBankIdButtons.TabIndex = 22;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(3, 28);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(57, 18);
-            this.label1.TabIndex = 23;
-            this.label1.Text = "Bank Id";
-            // 
             // Services
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -282,7 +240,6 @@ namespace WCFServicesApp
             this.Text = "WCF Bank Services Tester";
             this.tabControl1.ResumeLayout(false);
             this.screenTab.ResumeLayout(false);
-            this.screenTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gv_Screen)).EndInit();
             this.buttonTab.ResumeLayout(false);
             this.buttonTab.PerformLayout();
@@ -305,17 +262,13 @@ namespace WCFServicesApp
         private System.Windows.Forms.TextBox txtBankId;
         private System.Windows.Forms.Button getButtons;
         private System.Windows.Forms.DataGridView gv_Button;
-        private System.Windows.Forms.Label lblBankId;
         private System.Windows.Forms.Label lblUserName;
         private System.Windows.Forms.TextBox txtUserName;
         private System.Windows.Forms.Label lblPassword;
         private System.Windows.Forms.TextBox txtPassword;
-        private System.Windows.Forms.TextBox txtBankIdScreen;
         private System.Windows.Forms.TextBox textBranchId;
         private System.Windows.Forms.TextBox txtBankName;
         private System.Windows.Forms.Label lblBankName;
-        private System.Windows.Forms.TextBox txtBankIdButtons;
-        private System.Windows.Forms.Label label1;
     }
 }
 

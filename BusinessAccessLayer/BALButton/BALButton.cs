@@ -63,6 +63,20 @@ namespace BusinessAccessLayer.BALButton
                 return null;
             }
         }
+        public BusinessObjects.Models.CustomIssueTicketAndShowMessageButtons selectIssueTicketAndShowMessageButtonsByBankName(string pBankName, int pBranchId, int pScreenId)
+        {
+            try
+            {
+                DataAccessLayer.DALButton.DALButton button = new DataAccessLayer.DALButton.DALButton();
+                BusinessObjects.Models.CustomIssueTicketAndShowMessageButtons lstButtons = new BusinessObjects.Models.CustomIssueTicketAndShowMessageButtons();
+                return button.selectIssueTicketAndShowMessageButtonsByBankName(pBankName, pBranchId, pScreenId);
+            }
+            catch (Exception ex)
+            {
+                ExceptionsWriter.saveEventsAndExceptions(ex, "Exceptions not handled", EventLogEntryType.Error);
+                return null;
+            }
+        }
         public int deleteScreenAndButtonByScreenId(int pScreenId)
         {
             try
